@@ -1,2 +1,1832 @@
--- This script was generated using the MoonVeil Obfuscator v1.4.5 [https://moonveil.cc]
-local ri=loadstring(game:HttpGet'https://raw.githubusercontent.com/neaxusxgod-png/INS-ui/main/uilib.min.lua')()or INSui local Jc=ri:CreateWindow{title='Seim Havoc V2',subtitle='v2.0',size=Vector2 .new(580,460)};Jc:AddSettingsTab'cog'local ei,Ok,lg,jm,nk=game:GetService'Lighting',game:GetService'HttpService',game:GetService'RunService',game:GetService'Players',workspace.CurrentCamera local g,Pe,Eg,Vl,td,fn,Ck,ak=jm.LocalPlayer,math.sqrt,math.floor,math.clamp,math.abs,math.max,math.huge,Vector2 .new(0,0);_G.ESP={SelectedItems={},SelectedCrates={},MaxDistance=500,Enabled=true};_G.WEAPON_ESP={Enabled=false,SelectedWeapons={},MaxDistance=500}local qa,jj={['.338 Lapua Magnum']='mythic',['.408 Cheyenne Tactical']='mythic',['.45 ACP']='uncommon',['.50 Action Express']='uncommon',['0.2 BTC']='rare',['12 Gauge Buckshot']='uncommon',['23x75mm Shrapnel-10']='mythic',['23x75mm Zvezda flashbang round']='mythic',['4.6x30mm']='uncommon',['40x46mm M406 grenade']='mythic',['5.11 Hexgrid Plate Carrier']='mythic',['5.45x39mm']='uncommon',['5.56x45 Beta C-Mag 100-round drum magazine']='uncommon',['5.56x45 Colt AR-15 STANAG 20-round magazine']='uncommon',['5.56x45 Colt AR-15 STANAG 30-round magazine']='uncommon',['5.56x45 Colt AR-15 STANAG 60-round magazine']='uncommon',['5.56x45 PMAG 60-round magazine']='uncommon',['5.56x45 TV 100-round magazine']='uncommon',['5.56x45mm NATO']='uncommon',['5.7x28mm']='uncommon',['5.8x42mm']='uncommon',['7.62x39mm']='uncommon',['7.62x51mm NATO']='uncommon',['7.62x54mmR']='uncommon',['9x18mm']='uncommon',['9x19mm']='uncommon',['9x39 20-round magazine']='uncommon',['9x39 30-round magazine']='uncommon',['9x39mm']='uncommon',['A7 Delta Riot Helmet']='gear_common',['AA Battery']='common',['ACOG TA11D 3.5x35 riflescope']='uncommon',['AI-2']='usable_item',Airstrike='mythic',['AK 7.62x39 40-round magazine']='uncommon',['AK 7.62x39 Magpul PMAG 30 GEN M3 30-round magazine']='uncommon',['AK-74 5.45x39 6L20 30-round magazine']='uncommon',['AK-74 5.45x39 Magpul PMAG 30 GEN M3 30-round magazine']='uncommon',['Altyn bulletproof Helmet']='mythic',['Altyn helmet face shield']='gear_rare',['Aluminium Nails']='common',['Ammunition case']='usable_item',['AN/PEQ-15 tactical device']='uncommon',['Angled foregrip']='uncommon',['Antique teapot']='rare',['AS VAL']='mythic',AWP='mythic',['AWP .338 Lapua Magnum 5-round magazine']='uncommon',Awl='common',Bandage='usable_item',['Barbed Wire Bat']='uncommon',['Bimetallic Thermometer']='rare',['Box of Sugar']='common_households',['Bramit 7.62x54R sound suppressor']='uncommon',Brassknuckles='uncommon',Cables='common',['Can of Beef']='rare',['Can of Mackerel']='common_households',['Can of Salt']='common_households',['Can of Tuna']='common_households',Capacitors='common',['Car Battery']='common',Cash='cash',['Chemical Solution']='common',['CMMG Mk47 Mutant']='mythic',['CMT ZCOMP linear compensator']='mythic',['Colt 4x20 riflescope']='uncommon',['Compact antenna']='rare',["Conductor\'s Gold Pocket Watch"]='rare',['Construction Measuring Tape']='common',['Corrugated Tube']='rare',['Cottage Cache Key']='keys',['Dawnscript Fragment']='rare',['DC 800 High Cut Combat Helmet']='gear_rare',Deodorant='common_households',['Diamond ring']='mythic',Diary='rare',Dogtag='common',['Domino Crown']='rare',['DP-27']='mythic',['DP-27 7.62x54mmR 47-round pan magazine']='uncommon',['Duct tape']='common',['Electric Drill']='common',['Empty dish']='common_households',['EOTech 553 holographic sight']='uncommon',['F-1']='uncommon',['FAST MT Helmet']='gear_rare',['FAST multi-hit ballistic face shield']='gear_rare',['Field repair kit']='usable_item',['Flash Drive']='common',Flour='common_households',['FN P90 5.7x28 50-round magazine']='uncommon',['FN SCAR-H 7.62x51 20-round magazine']='uncommon',['FN SCAR-H 7.62x51 50-round drum magazine']='uncommon',['Forest Green Ghillie Suit']='mythic',['FORT-9 Heavy Assault Rig']='gear_rare',['FORTIS Coastal Outpost Cache Key']='keys',['FORTIS Level-0 keycard']='keys',['FORTIS Level-1 keycard']='keys',['FORTIS Level-2 keycard']='keys',['FORTIS Level-3 keycard']='keys',['FORTIS Level-4 keycard']='keys',['FORTIS Level-5 keycard']='keys',['FORTIS Level-6 keycard']='keys',['FORTIS MK.II Gloves']='mythic',Gears='common',['Gemtech SFN-57 5.7x28 sound suppressor']='uncommon',Geolocator='common',Glue='common',['Gold bar']='mythic',['Gold Trophy']='rare',['Golden Cube']='rare',['Golden Skull']='rare',['Golden Smartphone']='rare',['Golden Watch']='rare',['Graphics card']='rare',Gunpowder='rare',['Gzhel-K Body Armor']='mythic',['Hand Wraps']='gear_common',['Havocola Cherry Burn']='common_households',['Havocola Classic']='common_households',['HK MP5 9x19 30-round magazine']='uncommon',['HK MP5 9x19 50-round drum magazine']='uncommon',['HK MP7 4.6x30 40-round magazine']='uncommon',['HK MP7 SD 2 4.6x30 sound suppressor']='uncommon',['HK UMP .45 ACP 25-round magazine']='uncommon',HK416='mythic',['HM6: Hemostatic Inhaler']='usable_item_inhaler',['Homemade Soap']='common_households',['HVC Gen4 Body Armor']='mythic',['HVC Gen4 Body Armor (HMK)']='mythic',['HVC Plate Carrier']='gear_rare',['HVC-10T Night Vision Goggles']='gear_rare',['Improvised plastic sound suppressor']='uncommon',['Insecticide spray']='common_households',['Insects Spray']='common_households',['Insulin pump']='common',['Integrated Tactical Plate Carrier']='gear_rare',['Intelligence folder']='rare',['Intervention M200']='mythic',Karambit='uncommon',Katana='mythic',Ketchup='common_households',['Keycard holder case']='usable_item',['Korund-VM Body Armor']='gear_rare',['KS-23M']='mythic',['Leupold Mark 8 8x24 riflescope']='uncommon',Lockpick='uncommon',['Long Screwdriver']='common',['LVPO 10x28 riflescope']='uncommon',['M18 (White)']='uncommon',['M200 .408 Cheyenne Tactical 5-round magazine']='uncommon',M249='mythic',['M4 Benelli']='mythic',['M40 Gas Mask Filter']='gear_rare',['M40-1 Gas Mask']='gear_common',['M40-2 Gas Mask']='gear_common',M4A1='mythic',M67='uncommon',M79='mythic',M84='uncommon',['Magic Lamp']='rare',Magnet='common',Mask='gear_common',['MBC Plate Carrier']='gear_common',['Measuring tape']='common',['Meat grinder']='common_households',['Medical bloodset']='common',['Medical Kit']='usable_item',['Medical set']='rare',['Metal Awl']='common',['Metal Cutting Scissors']='common',['Metal fuel tank']='common_households',Microcircuits='common',['Military Backpack']='mythic',['Military Helmet']='gear_common',['Mk14 7.62x51 10-round magazine']='common',['Mk14 EBR']='mythic',Molotov='uncommon',['MOTR Concealable Reinforced Vest']='gear_common',['Mounting Foam']='common',['MP9 9x19 sound suppressor']='uncommon',['MSA Paraclete Plate Carrier']='gear_rare',Mug='common_households',Nails='common',['NCStar AQPTLMG Compact Green Laser']='uncommon',['Nightforce ATACR 7-35x56']='uncommon',['Nomad Route Notes']='rare',['North Dolphin Hospital Safe Key']='keys',['Northmont Sparkling Cider']='rare',['NovaTec reflex sight']='uncommon',['NovaTec RMR reflex sight']='uncommon',['ODWave 556 5.56x45 sound suppressor']='uncommon',['Oil Filter sound suppressor']='uncommon',['OKP-7 reflex sight']='uncommon',['Orange juice carton']='common_households',['PA3: Relief Inhaler']='usable_item_inhaler',['Pack of matches']='common_households',['Palmolive handwash']='common_households',['PBS-1 sound suppressor']='uncommon',Perfume='common_households',['PG-7V HEAT grenade']='mythic',Pickaxe='uncommon',['PICO-A1 Light Lower Body Armor']='gear_common',['PICO-A2 Heavy Lower Body Armor']='gear_rare',['Pile of meds']='common',['Pipe wrench']='rare',Pipecleaner='common',Porcelain='rare',['Power unit']='common',Powerbank='common',['Precisive Grips']='gear_rare',['Printer Paper']='common',['PSO-1 4x24 scope']='uncommon',['PU-1 3.5x riflescope']='uncommon',['PureFire X300 Ultra']='uncommon',['PX27 Headlamp']='gear_rare',['QDSS-NT4 5.56x45 sound suppressor']='uncommon',RAM='rare',['Rapid Emergency AED Compact Tool']='mythic',['Rat Poison']='rare',['RG-9: Regenerative Inhaler']='usable_item_inhaler',RGO='mythic',['RK-1 tactical foregrip']='uncommon',['ROVER Motorcycle Helmet']='gear_common',['RPG-7']='mythic',['RPK-16 5.45x39 95-round drum magazine']='uncommon',['RV11: Emergency Resuscitator Inhaler']='usable_item_inhaler',['S&M Backpack']='usable_item',['S7: Stimulant Inhaler']='usable_item_inhaler',['SA-58']='mythic',['SA58/FAL 7.62x51 20-round magazine']='uncommon',['SA58/FAL 7.62x51 50-round drum magazine']='uncommon',['Saiga 12']='mythic',['SAIPH signal pistol']='usable_item',['SAS drive']='rare',['SCAR-H']='mythic',Scissors='common_households',['Scrap Metal']='common',Screwdriver='common',['Scuba Gear']='gear_common',['Sealed black file']='rare',['Sealing Foam']='common',['Sewing Kit']='common',Shampoo='common_households',['Shards in the Code: Season One']='common',['SHARK muzzle brake']='mythic',['SilKo Osprey 9 9x19 sound suppressor']='uncommon',['SilKo Salvo 12 12ga sound suppressor']='uncommon',['Slick Plate Carrier']='mythic',['Sling Bag']='usable_item',Smartphone='common',['Sodium Bicarbonate']='common',['Sodium Chloride']='common',Splint='usable_item',Spoon='common_households',SR16='mythic',SSD='rare',['Sticky Tape']='common',String='common',Superpunch='uncommon',['SureFire 3-prong flash hider']='uncommon',['SureFire 4-prong flash hider']='uncommon',['Surgical kit']='rare',['SV-98 7.62x54R sound suppressor']='uncommon',['T-7 Thermal Goggles']='mythic',['T178 Raid Backpack']='mythic',['Tactical Sword']='uncommon',['Tank Battery']='rare',['The 5th Annual Bloxy Award']='rare',['The Crucible']='contraband',['The Greatest Admin plushie']='rare',['Titanium Alloy Plate']='rare',['Toilet paper']='common_households',Tomahawk='uncommon',Toothpaste='common_households',Tourniquet='usable_item',['Tube of cold welding']='common',['Type 04-1 holographic sight']='uncommon',['Type 95 5.8x42mm 30-round magazine']='uncommon',['UH-1 holographic sight']='uncommon',['ULACH IIIA Helmet']='gear_rare',['USB extension cable']='common',['Vanish 30 5.56x45 sound suppressor']='mythic',['Vegetable oil']='common_households',['Vertical foregrip']='uncommon',['Vintage Gold Crown']='rare',Vitamins='common',['VSS modern stock']='mythic',['VSS Vintorez']='mythic',Watch='common_households',['Weapon case']='usable_item',['Weapon parts']='rare',['White tube']='common',Wrench='common',['XLaser pointer module']='mythic',['Xtreme Motorcycle Helmet']='gear_common',['YMA95-1 3.5x riflescope']='uncommon'},{common=Color3 .fromRGB(200,200,200),common_gun=Color3 .fromRGB(180,220,180),common_households=Color3 .fromRGB(210,210,210),uncommon=Color3 .fromRGB(80,200,80),rare=Color3 .fromRGB(180,60,255),mythic=Color3 .fromRGB(255,40,40),keys=Color3 .fromRGB(255,230,50),usable_item=Color3 .fromRGB(60,210,210),usable_item_inhaler=Color3 .fromRGB(60,210,210),gear_common=Color3 .fromRGB(180,130,255),gear_rare=Color3 .fromRGB(220,80,255),contraband=Color3 .fromRGB(255,30,30),cash=Color3 .fromRGB(100,255,100)}local function qe(Zl)local Pd=qa[Zl]return(Pd and jj[Pd])or Color3 .fromRGB(255,255,255)end local Ya={}for eb in pairs(qa)do Ya[eb]=qe(eb)end local function nh(i_)local Wh=i_:lower()return Wh:find'x18mm'or Wh:find'x19mm'or Wh:find'x39mm'or Wh:find'x51mm'or Wh:find'x54mm'or Wh:find'x28mm'or Wh:find'x42mm'or Wh:find'x30mm'or Wh:find'x45'or Wh:find'x75mm'or Wh:find'gauge buckshot'or Wh:find'%.338'or Wh:find'%.408'or Wh:find'%.45 acp'or Wh:find'%.50 action'or Wh:find'4%.6x'or Wh:find'5%.45x'or Wh:find'5%.56x'or Wh:find'5%.7x'or Wh:find'5%.8x'or Wh:find'7%.62x'or Wh:find'9x39mm'or Wh:find'23x75mm'or Wh:find'40x46mm'end local function q(Qk)local kl=Qk:lower()return kl:find'magazine'or kl:find'%-round 'or kl:find'suppressor'or kl:find'silencer'or kl:find'foregrip'or kl:find'grip'or kl:find'riflescope'or kl:find'scope'or kl:find'holographic'or kl:find'reflex sight'or kl:find'flash hider'or kl:find'muzzle brake'or kl:find'compensator'or kl:find'laser'or kl:find'tactical device'or kl:find'headlamp'end local Ze={mythic={},rare={},uncommon={},common={},keys={},usable={},household={},ammo={},attachments={}}for Fg,zf in pairs(qa)do if nh(Fg)then Ze.ammo[#Ze.ammo+1]=Fg elseif q(Fg)then Ze.attachments[#Ze.attachments+1]=Fg elseif zf=='mythic'then Ze.mythic[#Ze.mythic+1]=Fg elseif zf=='rare'then Ze.rare[#Ze.rare+1]=Fg elseif zf=='uncommon'then Ze.uncommon[#Ze.uncommon+1]=Fg elseif zf=='common'then Ze.common[#Ze.common+1]=Fg elseif zf=='keys'then Ze.keys[#Ze.keys+1]=Fg elseif zf=='usable_item'or zf=='usable_item_inhaler'then Ze.usable[#Ze.usable+1]=Fg elseif zf=='common_households'then Ze.household[#Ze.household+1]=Fg end end for te,xg in pairs(Ze)do table.sort(xg)end local fb,Gf,bj,Ji={'Ammunition Box','Cabinet','Cash Register','Closet','Complex Crate','Computer','Dishwasher','Double Washing Machine','Duffel Bag','Envelope','File Cabinet','Fridge','HospitalCabinet','HospitalCloset','HospitalTable','Locker','Medical Box','Medium Wooden Crate','Military Crate','Military File Cabinet','Military Radio','Miltary Server Unit','Pistol Case','Raider Cache','Rifle Case','Ruined Locker','Ruined Small Case','Safe','Server Unit','Small Case','StandingATM','Stove',"Surgeon\'s Tool Shelf",'TallFridge','Technical Shelf','Tool Shelf','Toolbox','WallATM','Washing Machine','Weapon Box','Weapon Locker','Wooden Crate'},{['Ammunition Box']=Color3 .fromRGB(255,80,40),Cabinet=Color3 .fromRGB(160,120,80),['Cash Register']=Color3 .fromRGB(80,200,80),Closet=Color3 .fromRGB(200,160,255),['Complex Crate']=Color3 .fromRGB(255,160,40),Computer=Color3 .fromRGB(60,180,255),Dishwasher=Color3 .fromRGB(120,220,240),['Double Washing Machine']=Color3 .fromRGB(100,200,255),['Duffel Bag']=Color3 .fromRGB(180,140,80),Envelope=Color3 .fromRGB(255,240,140),['File Cabinet']=Color3 .fromRGB(160,160,160),Fridge=Color3 .fromRGB(180,240,255),HospitalCabinet=Color3 .fromRGB(200,255,220),HospitalCloset=Color3 .fromRGB(160,240,200),HospitalTable=Color3 .fromRGB(120,220,180),Locker=Color3 .fromRGB(100,140,200),['Medical Box']=Color3 .fromRGB(255,60,100),['Medium Wooden Crate']=Color3 .fromRGB(200,140,60),['Military Crate']=Color3 .fromRGB(100,160,60),['Military File Cabinet']=Color3 .fromRGB(80,140,80),['Military Radio']=Color3 .fromRGB(60,200,120),['Miltary Server Unit']=Color3 .fromRGB(40,180,100),['Pistol Case']=Color3 .fromRGB(255,100,60),['Raider Cache']=Color3 .fromRGB(200,60,60),['Rifle Case']=Color3 .fromRGB(220,80,40),['Ruined Locker']=Color3 .fromRGB(140,100,80),['Ruined Small Case']=Color3 .fromRGB(160,110,90),Safe=Color3 .fromRGB(80,80,200),['Server Unit']=Color3 .fromRGB(60,140,255),['Small Case']=Color3 .fromRGB(255,180,80),StandingATM=Color3 .fromRGB(40,200,200),Stove=Color3 .fromRGB(220,120,60),["Surgeon\'s Tool Shelf"]=Color3 .fromRGB(100,255,200),TallFridge=Color3 .fromRGB(160,220,255),['Technical Shelf']=Color3 .fromRGB(120,160,220),['Tool Shelf']=Color3 .fromRGB(200,160,80),Toolbox=Color3 .fromRGB(255,140,20),WallATM=Color3 .fromRGB(20,180,180),['Washing Machine']=Color3 .fromRGB(140,200,255),['Weapon Box']=Color3 .fromRGB(255,60,60),['Weapon Locker']=Color3 .fromRGB(220,40,40),['Wooden Crate']=Color3 .fromRGB(180,120,40)},{['311 Double Barrel']='common_gun',['870 MCS']='common_gun',['AK-74M']='common_gun',['AKS-74U']='common_gun',['AS VAL']='mythic',AWP='mythic',['Beretta 92X']='common_gun',['Citori 725']='common_gun',['CMMG Mk47 Mutant']='mythic',['Colt Python']='common_gun',Deagle='common_gun',['DIY Flamethrower']='common_gun',['DP-27']='mythic',['GL 19 Gen4']='common_gun',HK416='mythic',['Intervention M200']='mythic',['KS-23M']='mythic',['KRISS Vector']='common_gun',M16A1='common_gun',M1911='common_gun',M249='mythic',['M4 Benelli']='mythic',M4A1='mythic',M79='mythic',['MAC-10']='common_gun',Makarov='common_gun',['Mk14 EBR']='mythic',MP34='common_gun',MP5A5='common_gun',MP7='common_gun',MP9='common_gun',P90='common_gun',['QBZ-95']='common_gun',['RPG-7']='mythic',RPK='common_gun',['SA-58']='mythic',['Saiga 12']='mythic',['SCAR-H']='mythic',SKS='common_gun',SR16='mythic',['SV-98']='common_gun',SVD='common_gun',UMP45='common_gun',['VSS Vintorez']='mythic'},{}for wl in pairs(bj)do Ji[#Ji+1]=wl end table.sort(Ji)local Ma={}do local sm={};pcall(function()local Lk=game:HttpGet'https://offsets.imtheo.lol/Offsets.json';sm=(Ok:JSONDecode(Lk)or{}).Offsets or{}end)local function Bm(qh,sg,ha)local vf=sm[qh]return(vf and vf[sg])or ha end Ma.FOG_END=Bm('Lighting','FogEnd',316);Ma.FOG_START=Bm('Lighting','FogStart',320);Ma.ATMO_DENSITY=Bm('Atmosphere','Density',232);Ma.ATMO_GLARE=Bm('Atmosphere','Glare',236);Ma.ATMO_HAZE=Bm('Atmosphere','Haze',240);Ma.ATMO_OFFSET=Bm('Atmosphere','Offset',244)end local og={lightingAddr=0,atmoAddr=0,origEnd=100000,origStart=0,origDensity=0.29999999999999999,origGlare=0,origHaze=0,origOffset=0.25,captured=false,enabled=false,last=false}local function re_()og.captured=true;pcall(function()og.lightingAddr=ei.Address or 0 end);pcall(function()og.origEnd=ei.FogEnd;og.origStart=ei.FogStart end)local Tg=ei:FindFirstChildOfClass'Atmosphere'if Tg then pcall(function()og.atmoAddr=Tg.Address or 0 end);pcall(function()og.origDensity=Tg.Density;og.origGlare=Tg.Glare;og.origHaze=Tg.Haze;og.origOffset=Tg.Offset end)end end local function we()if not og.captured then re_()end if not memory_write then return end if og.lightingAddr~=0 then memory_write('float',og.lightingAddr+Ma.FOG_END,900000000);memory_write('float',og.lightingAddr+Ma.FOG_START,900000000)end if og.atmoAddr~=0 then memory_write('float',og.atmoAddr+Ma.ATMO_DENSITY,0);memory_write('float',og.atmoAddr+Ma.ATMO_GLARE,0);memory_write('float',og.atmoAddr+Ma.ATMO_HAZE,0);memory_write('float',og.atmoAddr+Ma.ATMO_OFFSET,0)end end local function Bb()if not og.captured or not memory_write then return end if og.lightingAddr~=0 then memory_write('float',og.lightingAddr+Ma.FOG_END,og.origEnd);memory_write('float',og.lightingAddr+Ma.FOG_START,og.origStart)end if og.atmoAddr~=0 then memory_write('float',og.atmoAddr+Ma.ATMO_DENSITY,og.origDensity);memory_write('float',og.atmoAddr+Ma.ATMO_GLARE,og.origGlare);memory_write('float',og.atmoAddr+Ma.ATMO_HAZE,og.origHaze);memory_write('float',og.atmoAddr+Ma.ATMO_OFFSET,og.origOffset)end end local Rg,Em,nf,Xe,pi={enabled=false,cache=nil,keys={'vPunchBase','hPunchBase','vel','spreadReduce','spread','weight','unAimWeight','aimWeight'},payload={vPunchBase=0,hPunchBase=0,spreadReduce=100,spread={y={[1]=0,[2]=0,[3]=0},x={[1]=0,[2]=0,[3]=0},z={[1]=0,[2]=0,[3]=0}},vel=100000,weight=0,aimWeight=0,unAimWeight=0}},{enabled=false,loopThread=nil},{'search_speed','searchSpeed','SearchSpeed','searchTime','SearchTime','searchDuration','lootSearchTime','containerSearchTime','level','required_level'},{search_speed=999999,searchSpeed=999999,SearchSpeed=999999,searchTime=0,SearchTime=0,searchDuration=0,lootSearchTime=0,containerSearchTime=0,level=50,required_level=0},nil local function Ve()pcall(function()if not pi or#pi==0 then pi=getgc(nf)end if pi and#pi>0 then applygc(pi,Xe)end end)end local function Ra(Kg)if not Kg then return end local de=Kg:FindFirstChild'playerData'local Ui=de and de:FindFirstChild'skills'if not Ui then return end local ke=Ui:FindFirstChild'Scavenger'local _d=ke and ke:FindFirstChild'level'if _d then pcall(function()_d.Value=50 end)end end local function ae()local Hb=jm.LocalPlayer if not Hb then return end local Fl=Hb.Character;Ra(Fl)if Fl then local jc,Tc=pcall(function()return Fl.Parent end)if jc and Tc and Tc~=workspace then Ra(Tc:FindFirstChild(Hb.Name))end end end local function Xh()pi=nil;Ve();ae();Em.loopThread=task.spawn(function()while Em.enabled do task.wait(2)if not Em.enabled then break end Ve();ae()end end)end local function L()Em.enabled=false;Em.loopThread=nil;pi=nil end local Qg=Drawing.Fonts.Monospace local function rb(Ri,Wj)if Ri.vis~=Wj then Ri.o.Visible=Wj;Ri.vis=Wj end end local function yl(Fb,cn,ia)if Fb.px~=cn or Fb.py~=ia then Fb.o.Position=Vector2 .new(cn,ia);Fb.px=cn;Fb.py=ia end end local function P(Ag,lh)if Ag.txt~=lh then Ag.o.Text=lh;Ag.txt=lh end end local function hl(Cj,Ci)if Cj.col~=Ci then Cj.o.Color=Ci;Cj.col=Ci end end local function kd(Yh,Xg)if Yh.vis~=Xg then Yh.o.Visible=Xg;Yh.vis=Xg end end local function Hj(Vg,Dm)if Vg.col~=Dm then Vg.o.Color=Dm;Vg.col=Dm end end local function Td(hd,Bj,mh)if hd.px~=Bj or hd.py~=mh then hd.o.Position=Vector2 .new(Bj,mh);hd.px=Bj;hd.py=mh end end local function Zd(Mi,We)if Mi.txt~=We then Mi.o.Text=We;Mi.txt=We end end local function Bl(gk,e_,zm,Cm,zh)if gk.fx~=e_ or gk.fy~=zm then gk.o.From=Vector2 .new(e_,zm);gk.fx=e_;gk.fy=zm end if gk.gx~=Cm or gk.gy~=zh then gk.o.To=Vector2 .new(Cm,zh);gk.gx=Cm;gk.gy=zh end end if _G.HAVOC_ESP_CLEANUP then pcall(_G.HAVOC_ESP_CLEANUP)end local gg,Hg,vi=true,{},nil local function Dk(R)Hg[R]=true return R end _G.HAVOC_ESP_CLEANUP=function()gg=false if vi then pcall(function()vi:Disconnect()end);vi=nil end for Tm in pairs(Hg)do pcall(function()Tm:Remove()end)end Hg={};pcall(Bb);L()end local uf,oa={NAME=Color3 .fromRGB(238,238,238),DIST=Color3 .fromRGB(205,205,205),WPN=Color3 .fromRGB(205,205,205),HP=Color3 .fromRGB(120,235,120),HP_BG=Color3 .fromRGB(40,40,40),BOX=Color3 .fromRGB(255,80,80),TRACER=Color3 .fromRGB(255,80,80),CORPSE=Color3 .fromRGB(180,180,180),PLAYER_NAME=Color3 .fromRGB(80,220,255),PLAYER_BOX=Color3 .fromRGB(80,220,255),PLAYER_TRACER=Color3 .fromRGB(80,220,255),PLAYER_HP=Color3 .fromRGB(80,220,255),MAX_SLOTS=128,HEAD_OFF=Vector3 .new(0,2.7999999999999998,0),FOOT_OFF=Vector3 .new(0,3.2000000000000002,0),TEXT_SIZE=13,CHARW=7,GAP=6},{enabled=false,distMax=1500,snap={box=true,name=true,dist=true,health=true,weapon=true,tracer=false},MAX_SLOTS=64,slots={},lastDrawn=0,items={},timer=0,updateRate=15}local function Qb(Pk)local Nj=Dk(Drawing.new'Line');Nj.Thickness=1;Nj.Color=Pk or Color3 .new(1,1,1);Nj.Visible=false return Nj end local function la(vk)local Lf=Dk(Drawing.new'Text');Lf.Size=uf.TEXT_SIZE;Lf.Center=true;Lf.Outline=true;Lf.Font=Qg;Lf.Color=vk or uf.NAME;Lf.Visible=false return Lf end local function vj(Jf)local Z=Dk(Drawing.new'Circle');Z.Radius=4;Z.Filled=true;Z.Thickness=1;Z.Color=Jf or Color3 .new(1,1,1);Z.Visible=false return Z end local function ua(Kd)return{o=Kd}end local oi={}local function Oa(uh)uh=Vl(uh,0,1)local yc=Eg(uh*100)local Rj=oi[yc]if not Rj then Rj=Color3 .fromRGB(Eg(255*(1-uh)),Eg(235*uh),60);oi[yc]=Rj end return Rj end local function _b(ne,um,bg)ne=ne or uf.BOX;um=um or uf.TRACER;bg=bg or uf.NAME local Zm=Dk(Drawing.new'Line');Zm.Thickness=3;Zm.Color=uf.HP_BG;Zm.Visible=false local xh=Dk(Drawing.new'Line');xh.Thickness=3;xh.Color=uf.HP;xh.Visible=false return{box={ua(Qb(ne)),ua(Qb(ne)),ua(Qb(ne)),ua(Qb(ne))},hpBg=ua(Zm),hpFg=ua(xh),name=ua(la(bg)),dist=ua(la(uf.DIST)),wpn=ua(la(uf.WPN)),tracer=ua(Qb(um)),dot=ua(vj(uf.CORPSE))}end local rc={}for Ch=1,uf.MAX_SLOTS do rc[Ch]=_b(uf.BOX,uf.TRACER,uf.NAME)end for Na=1,oa.MAX_SLOTS do oa.slots[Na]=_b(uf.PLAYER_BOX,uf.PLAYER_TRACER,uf.PLAYER_NAME)end local function zl(Og)for ph=1,4 do kd(Og.box[ph],false)end kd(Og.hpBg,false);kd(Og.hpFg,false);kd(Og.name,false);kd(Og.dist,false);kd(Og.wpn,false);kd(Og.tracer,false);kd(Og.dot,false)end local function Ye(xa)return#xa*uf.CHARW end local function id(Ob,A,Fc,hh,jb)Zd(Ob,hh);Td(Ob,A,Fc);Hj(Ob,jb);kd(Ob,true)end local function rk(Bg,Nb,hk,mi,bb,mm)Bl(Bg.box[1],Nb,hk,Nb+mi,hk);Bl(Bg.box[2],Nb,hk+bb,Nb+mi,hk+bb);Bl(Bg.box[3],Nb,hk,Nb,hk+bb);Bl(Bg.box[4],Nb+mi,hk,Nb+mi,hk+bb)for lj=1,4 do Hj(Bg.box[lj],mm);kd(Bg.box[lj],true)end end local function Ee()local ea=g and g.Character local Mm=ea and ea:FindFirstChild'HumanoidRootPart'local Ca=Mm and Mm.Position if not Ca then oa.items={}return end local Vi,X,xi,Ab,xm=Ca.X,Ca.Y,Ca.Z,oa.distMax^2,{}for yg,bk in ipairs(jm:GetPlayers())do if bk~=g then local u_=bk.Character local wg=u_ and u_:FindFirstChild'HumanoidRootPart'if wg and wg.Parent then local Kb=wg.Position local ud,Im,uj=Kb.X-Vi,Kb.Y-X,Kb.Z-xi local sk=ud*ud+Im*Im+uj*uj if sk<=Ab then local _g,fk,bn,dg local G=u_:FindFirstChildOfClass'Humanoid'if G then pcall(function()_g=G.Health;fk=G.MaxHealth end)if _g and fk and fk>0 then bn=Vl(_g/fk,0,1);dg=Oa(bn)end end local Rk local me=u_:FindFirstChildOfClass'Tool'if me then Rk=me.Name end xm[#xm+1]={part=wg,name='[PLAYER] '..bk.Name,distText=Eg(Pe(sk))..'m',healthRatio=bn,healthColor=dg,weapon=Rk,_distSq=sk}end end end end table.sort(xm,function(be,hj)return be._distSq<hj._distSq end)local dh={}for r_,Md in ipairs(xm)do if#dh>=oa.MAX_SLOTS then break end dh[#dh+1]=Md end oa.items=dh end local function Xm(Gd,Vf,v,dc,pl,Dj,Uj,xj)local ig=Vf.part if not(ig and ig.Parent)then return false end local sa=ig.Position local pd,H=WorldToScreen(sa+uf.HEAD_OFF)if not H then return false end local en_,Bf=WorldToScreen(sa-uf.FOOT_OFF)local nj,ce=pd.X,pd.Y-uf.TEXT_SIZE-2 if v.box and Bf then local sh=fn(td(en_.Y-pd.Y),1)local pa=sh*0.5;rk(Gd,nj-pa*0.5,pd.Y,pa,sh,pl)else for tg=1,4 do kd(Gd.box[tg],false)end end if v.health and Vf.healthRatio and Bf then local Rc=fn(td(en_.Y-pd.Y),10)local Nl,pk=nj-Rc*0.25-5,fn(Rc*Vf.healthRatio,1);Bl(Gd.hpBg,Nl,pd.Y,Nl,pd.Y+Rc);Hj(Gd.hpBg,uf.HP_BG);kd(Gd.hpBg,true);Bl(Gd.hpFg,Nl,pd.Y+Rc,Nl,pd.Y+Rc-pk);Hj(Gd.hpFg,Vf.healthColor or uf.HP);kd(Gd.hpFg,true)else kd(Gd.hpBg,false);kd(Gd.hpFg,false)end local kc,Nh=v.name and Vf.name or nil,v.dist and Vf.distText or nil local Db,Ga,Jj,Of=kc and Ye(kc)or 0,Nh and Ye(Nh)or 0,0,0 if kc then Jj=Jj+Db;Of=Of+1 end if Nh then Jj=Jj+Ga;Of=Of+1 end if Of>1 then Jj=Jj+uf.GAP*(Of-1)end local le=nj-Jj*0.5 if kc then id(Gd.name,le+Db*0.5,ce,kc,dc);le=le+Db+uf.GAP else kd(Gd.name,false)end if Nh then id(Gd.dist,le+Ga*0.5,ce,Nh,uf.DIST)else kd(Gd.dist,false)end if v.weapon and Vf.weapon and Bf then id(Gd.wpn,nj,en_.Y+2,Vf.weapon,uf.WPN)else kd(Gd.wpn,false)end kd(Gd.dot,false)if v.tracer then Bl(Gd.tracer,Uj,xj,nj,pd.Y);Hj(Gd.tracer,Dj);kd(Gd.tracer,true)else kd(Gd.tracer,false)end return true end local function Ha(Sb)local Xk=Sb:FindFirstChildOfClass'Tool'if Xk then return Xk.Name end end local function aa()local xe={}for Eb,Mg in ipairs(jm:GetPlayers())do local Af=Mg.Character if Af then xe[Af]=true end end return xe end local function La(Cl,dl,Sd,wj,Re)if Re>8 then return end local Gk,Mc=pcall(function()return Cl:GetChildren()end)if not Gk or not Mc then return end for qd,aj in ipairs(Mc)do if aj~=dl and not Sd[aj]then local oe;pcall(function()oe=aj:FindFirstChildOfClass'Humanoid'end)if oe then local Ph=aj:FindFirstChild'HumanoidRootPart'or aj:FindFirstChild'Torso'or aj:FindFirstChild'Head'if not Ph then pcall(function()Ph=aj:FindFirstChildWhichIsA'BasePart'end)end if Ph then local Ud,d_;pcall(function()Ud=oe.Health;d_=oe.MaxHealth end);wj[#wj+1]={model=aj,hrp=Ph,hp=Ud,maxhp=d_,weapon=Ha(aj)}end else local Yk=aj.ClassName if Yk=='Model'or Yk=='Folder'then La(aj,dl,Sd,wj,Re+1)end end end end end local U={folder=nil,cache={},stamp=0}local function cf(Bd)local ek,rl=pcall(function()return Bd:GetChildren()end)if not ek or not rl then return 0 end local Kf=0 for Xd,He in ipairs(rl)do if He.ClassName=='Model'then local Yb,vg=pcall(function()return He:FindFirstChildOfClass'Humanoid'end)if Yb and vg then Kf=Kf+1 end end end return Kf end local function Zk()local y=g and g.Character if y then local j,lc=pcall(function()return y.Parent end)if j and lc and lc~=workspace and cf(lc)>=1 then return lc end end local jh,ec=nil,0 local bi,dn=pcall(function()return workspace:GetChildren()end)if bi and dn then for Jg,Qe in ipairs(dn)do local Ba=Qe.ClassName if Ba=='Model'or Ba=='Folder'then local Za=cf(Qe)if Za>ec then ec=Za;jh=Qe end end end end if ec>=1 then return jh end end local function Ef()if U.folder then local ll,Fi=pcall(function()return U.folder.Parent end)if ll and Fi then return U.folder end U.folder=nil end U.folder=Zk()return U.folder end local function tf()local Tf=os.clock()if(Tf-U.stamp)<0.5 then return U.cache end U.stamp=Tf local Fm,gj,wi,al={},Ef(),g and g.Character,aa()if gj then pcall(La,gj,wi,al,Fm,0)end U.cache=Fm return Fm end local gd={item=nil,crate=nil,sentry=nil,corpse=nil,slider=nil,mine=nil,tripmine=nil}local function ik()if gd.item then local ji,vm=pcall(function()return gd.item.Parent end)if ji and vm then return gd.item end gd.item=nil end local Oj,rd=pcall(function()return workspace.Buildings.Loots:FindFirstChild'Items'end);gd.item=Oj and rd or nil return gd.item end local function Gb()if gd.crate then local dm,Va=pcall(function()return gd.crate.Parent end)if dm and Va then return gd.crate end gd.crate=nil end local Vd,va=pcall(function()return workspace.Buildings.Loots.Loots:FindFirstChild'Crates'end);gd.crate=Vd and va or nil return gd.crate end local function Pj()if gd.sentry then local nl,Lh=pcall(function()return gd.sentry.Parent end)if nl and Lh then return gd.sentry end gd.sentry=nil end local ij,Q=pcall(function()return workspace.Buildings.EventObjects.Sentries end);gd.sentry=ij and Q or nil return gd.sentry end local function Am()if gd.corpse then local wd,yd=pcall(function()return gd.corpse.Parent end)if wd and yd then return gd.corpse end gd.corpse=nil end local Xf,s_=pcall(function()return workspace.Buildings.Loots.Loots:FindFirstChild'Characters'end);gd.corpse=Xf and s_ or nil return gd.corpse end local function Xl()if gd.slider then local gh,Yl=pcall(function()return gd.slider.Parent end)if gh and Yl then return gd.slider end gd.slider=nil end local cm,Tj=pcall(function()return workspace.Buildings.Loots.Interactable:FindFirstChild'KeycardSliders'end);gd.slider=cm and Tj or nil return gd.slider end local function nb()if gd.mine then local fj,Mb=pcall(function()return gd.mine.Parent end)if fj and Mb then return gd.mine end gd.mine=nil end local n_,md=pcall(function()return workspace.Buildings.EventObjects.Minefields end);gd.mine=n_ and md or nil return gd.mine end local function Wg()if gd.tripmine then local ob,yi=pcall(function()return gd.tripmine.Parent end)if ob and yi then return gd.tripmine end gd.tripmine=nil end local jd,Vm=pcall(function()return workspace.Buildings.EnvInteractable.Mines:FindFirstChild'Tripmines'end);gd.tripmine=jd and Vm or nil return gd.tripmine end local Oh={POOL_SIZE=200,TTL=1,labelPool={},dotPool={},lastDrawn=0,stamp=0,cache={}}for Ia=1,Oh.POOL_SIZE do local Yf=Dk(Drawing.new'Text');Yf.Center=true;Yf.Outline=true;Yf.Size=13;Yf.Font=Qg;Yf.Visible=false;Oh.labelPool[Ia]={o=Yf,vis=false,px=0,py=0,txt='',col=Color3 .new(1,1,1)}local ra=Dk(Drawing.new'Circle');ra.Radius=4;ra.Filled=true;ra.Thickness=1;ra.Visible=false;Oh.dotPool[Ia]={o=ra,vis=false,px=0,py=0,col=Color3 .new(1,1,1)}end local function fe()local Ii=g.Character local gi=Ii and Ii:FindFirstChild'HumanoidRootPart'if not gi then Oh.cache={}return end local bf=gi.Position local ml,fh,zd,Ge,Fe,Qd=bf.X,bf.Y,bf.Z,_G.ESP.MaxDistance^2,{},{}for kb,zb in ipairs(_G.ESP.SelectedItems)do Fe[zb]=true end for Wa,Ue in ipairs(_G.ESP.SelectedCrates)do Qd[Ue]=true end local Id={}local function a_(ma,hf,Il)if not ma then return end local Ki,ve=pcall(function()return ma:GetChildren()end)if not Ki or not ve then return end for Gc,Zb in ipairs(ve)do if#Id>=Oh.POOL_SIZE then break end if Il[Zb.Name]then local nm=Zb:FindFirstChildWhichIsA'BasePart'if nm and nm.Parent then local Ol=nm.Position local il,Ac,_k=Ol.X-ml,Ol.Y-fh,Ol.Z-zd local eh=il*il+Ac*Ac+_k*_k if eh<=Ge then Id[#Id+1]={root=nm,name=Zb.Name,color=hf[Zb.Name]or Color3 .new(1,1,1),dist=Eg(Pe(eh))}end end end end end a_(ik(),Ya,Fe);a_(Gb(),Gf,Qd);Oh.cache=Id end local V={POOL_SIZE=100,labelPool={},dotPool={},lastDrawn=0,stamp=0,cache={}}for cj=1,V.POOL_SIZE do local yk=Dk(Drawing.new'Text');yk.Center=true;yk.Outline=true;yk.Size=13;yk.Font=Qg;yk.Visible=false;V.labelPool[cj]={o=yk,vis=false,px=0,py=0,txt='',col=Color3 .new(1,1,1)}local nd=Dk(Drawing.new'Circle');nd.Radius=4;nd.Filled=true;nd.Thickness=1;nd.Visible=false;V.dotPool[cj]={o=nd,vis=false,px=0,py=0,col=Color3 .new(1,1,1)}end local function Ic()local ai=g.Character local fg=ai and ai:FindFirstChild'HumanoidRootPart'if not fg then V.cache={}return end local Ea=fg.Position local bc,_a,Aj,hb,fm=Ea.X,Ea.Y,Ea.Z,_G.WEAPON_ESP.MaxDistance^2,{}for em,Nf in ipairs(_G.WEAPON_ESP.SelectedWeapons)do fm[Nf]=true end local Nm,ie={},ik()if ie then local mb,ba=pcall(function()return ie:GetChildren()end)if mb and ba then for tm,Oe in ipairs(ba)do if#Nm>=V.POOL_SIZE then break end if fm[Oe.Name]then local wa=Oe:FindFirstChildWhichIsA'BasePart'if wa and wa.Parent then local B=wa.Position local Xj,tc,Hh=B.X-bc,B.Y-_a,B.Z-Aj local N=Xj*Xj+tc*tc+Hh*Hh if N<=hb then local Je=bj[Oe.Name]or'common_gun'local h=jj[Je]or Color3 .new(1,1,1);Nm[#Nm+1]={root=wa,name=Oe.Name,color=h,dist=Eg(Pe(N))}end end end end end end V.cache=Nm end local m={COL=Color3 .fromRGB(255,60,60),POOL_SIZE=50,TTL=2,labelPool={},dotPool={},lastDrawn=0,stamp=0,cache={},enabled=false,maxDist=1000}for o_=1,m.POOL_SIZE do local Aa=Dk(Drawing.new'Text');Aa.Center=true;Aa.Outline=true;Aa.Size=13;Aa.Font=Qg;Aa.Color=m.COL;Aa.Visible=false;m.labelPool[o_]={o=Aa,vis=false,px=0,py=0,txt=''}local li=Dk(Drawing.new'Circle');li.Radius=5;li.Filled=true;li.Thickness=1;li.Color=m.COL;li.Visible=false;m.dotPool[o_]={o=li,vis=false,px=0,py=0}end local function el_()local Oc=Pj()if not Oc then m.cache={}return end local df=g.Character local Vj=df and df:FindFirstChild'HumanoidRootPart'if not Vj then m.cache={}return end local zk=Vj.Position local lm,x,Rl,tj,vd=zk.X,zk.Y,zk.Z,m.maxDist^2,{}local ga,kk=pcall(function()return Oc:GetChildren()end)if not ga or not kk then m.cache={}return end for gb,Jh in ipairs(kk)do if#vd>=m.POOL_SIZE then break end local f_=Jh:FindFirstChild'Base'or Jh:FindFirstChild'Rotator'or Jh:FindFirstChildWhichIsA'BasePart'if f_ then local t_=f_.Position local Uc,Ih,De=t_.X-lm,t_.Y-x,t_.Z-Rl local Ua=Uc*Uc+Ih*Ih+De*De if Ua<=tj then vd[#vd+1]={anchor=f_,name=Jh.Name,dist=Eg(Pe(Ua))}end end end m.cache=vd end local Sj={COL=Color3 .fromRGB(255,255,255),POOL_SIZE=80,TTL=2,labelPool={},dotPool={},lastDrawn=0,stamp=0,cache={},enabled=false,maxDist=500}for Yj=1,Sj.POOL_SIZE do local af=Dk(Drawing.new'Text');af.Center=true;af.Outline=true;af.Size=13;af.Font=Qg;af.Color=Sj.COL;af.Visible=false;Sj.labelPool[Yj]={o=af,vis=false,px=0,py=0,txt=''}local Nd=Dk(Drawing.new'Circle');Nd.Radius=4;Nd.Filled=true;Nd.Thickness=1;Nd.Color=Sj.COL;Nd.Visible=false;Sj.dotPool[Yj]={o=Nd,vis=false,px=0,py=0}end local function jg()local Pa=Am()if not Pa then Sj.cache={}return end local Jd=g.Character local Th=Jd and Jd:FindFirstChild'HumanoidRootPart'if not Th then Sj.cache={}return end local Rf=Th.Position local ch,K,ed,Hf,ii=Rf.X,Rf.Y,Rf.Z,Sj.maxDist^2,{}local Dh,Nk=pcall(function()return Pa:GetChildren()end)if not Dh or not Nk then Sj.cache={}return end for na,Fh in ipairs(Nk)do if#ii>=Sj.POOL_SIZE then break end if Fh.ClassName=='Model'then local oc=Fh:FindFirstChild'HumanoidRootPart'or Fh:FindFirstChild'Torso'or Fh:FindFirstChild'Head'or Fh:FindFirstChildWhichIsA'BasePart'if oc then local Qm=oc.Position local ef,Me,Gi=Qm.X-ch,Qm.Y-K,Qm.Z-ed local Kh=ef*ef+Me*Me+Gi*Gi if Kh<=Hf then ii[#ii+1]={anchor=oc,name=Fh.Name,dist=Eg(Pe(Kh))}end end end end Sj.cache=ii end local qc={TIER_COLORS={[0]=Color3 .fromRGB(180,180,180),[1]=Color3 .fromRGB(100,220,100),[2]=Color3 .fromRGB(80,160,255),[3]=Color3 .fromRGB(180,100,255),[4]=Color3 .fromRGB(255,180,50),[5]=Color3 .fromRGB(255,60,60),[6]=Color3 .fromRGB(255,215,0)},FALLBACK=Color3 .fromRGB(255,215,0),POOL_SIZE=60,TTL=2,labelPool={},dotPool={},lastDrawn=0,stamp=0,cache={},enabled=false,maxDist=1000}for uk=1,qc.POOL_SIZE do local Hd=Dk(Drawing.new'Text');Hd.Center=true;Hd.Outline=true;Hd.Size=13;Hd.Font=Qg;Hd.Color=qc.FALLBACK;Hd.Visible=false;qc.labelPool[uk]={o=Hd,vis=false,px=0,py=0,txt='',col=qc.FALLBACK}local Rd=Dk(Drawing.new'Circle');Rd.Radius=5;Rd.Filled=true;Rd.Thickness=1;Rd.Color=qc.FALLBACK;Rd.Visible=false;qc.dotPool[uk]={o=Rd,vis=false,px=0,py=0,col=qc.FALLBACK}end local function If(Xb)local Yg=Xb:match'[Ll]evel[-% ]?(%d)'or Xb:match'(%d)'if Yg then local Ff=tonumber(Yg)if Ff and Ff>=0 and Ff<=6 then return Ff end end end local function Ke()local ca=Xl()if not ca then qc.cache={}return end local Wk=g.Character local th_=Wk and Wk:FindFirstChild'HumanoidRootPart'if not th_ then qc.cache={}return end local _l=th_.Position local tl,yb,Hk,_f,rj=_l.X,_l.Y,_l.Z,qc.maxDist^2,{}local Hl,Gh=pcall(function()return ca:GetChildren()end)if not Hl or not Gh then qc.cache={}return end for Zc,Jk in ipairs(Gh)do if#rj>=qc.POOL_SIZE then break end if Jk.ClassName=='Model'then local c=Jk.PrimaryPart or Jk:FindFirstChildWhichIsA'BasePart'if c then local l_=c.Position local ee,Ul,mf=l_.X-tl,l_.Y-yb,l_.Z-Hk local Lm=ee*ee+Ul*Ul+mf*mf if Lm<=_f then local db=If(Jk.Name)local Zj,Wd=(db and qc.TIER_COLORS[db])or qc.FALLBACK,db and('Slider T'..db)or'Keycard Slider';rj[#rj+1]={anchor=c,name=Wd,color=Zj,dist=Eg(Pe(Lm))}end end end end qc.cache=rj end local Yi={COL_MINE=Color3 .fromRGB(255,200,0),COL_TRIP=Color3 .fromRGB(255,80,80),POOL_SIZE=80,TTL=2,labelPool={},dotPool={},lastDrawn=0,stamp=0,cache={},enabled=false,maxDist=500}for ng=1,Yi.POOL_SIZE do local yj=Dk(Drawing.new'Text');yj.Center=true;yj.Outline=true;yj.Size=13;yj.Font=Qg;yj.Color=Yi.COL_MINE;yj.Visible=false;Yi.labelPool[ng]={o=yj,vis=false,px=0,py=0,txt='',col=Yi.COL_MINE}local Xc=Dk(Drawing.new'Circle');Xc.Radius=6;Xc.Filled=true;Xc.Thickness=1;Xc.Color=Yi.COL_MINE;Xc.Visible=false;Yi.dotPool[ng]={o=Xc,vis=false,px=0,py=0,col=Yi.COL_MINE}end local function Ae()local ya=g.Character local vh=ya and ya:FindFirstChild'HumanoidRootPart'if not vh then Yi.cache={}return end local Om=vh.Position local Vb,Sm,vb,k,zg=Om.X,Om.Y,Om.Z,Yi.maxDist^2,{}local function oh(Kj,cl,se_)if#zg>=Yi.POOL_SIZE then return end local wm=Kj.Position local Bi,Rh,Pg=wm.X-Vb,wm.Y-Sm,wm.Z-vb local yf=Bi*Bi+Rh*Rh+Pg*Pg if yf<=k then zg[#zg+1]={anchor=Kj,name=cl,color=se_,dist=Eg(Pe(yf))}end end local Cg=nb()if Cg then local Y,bm=pcall(function()return Cg:GetChildren()end)if Y and bm then for hc,Al in ipairs(bm)do local fl,ej=pcall(function()return Al:GetChildren()end)if fl and ej then for F,Di in ipairs(ej)do if Di.Name=='MineHitbox'and Di:IsA'BasePart'then oh(Di,'[MINE] Pressure Mine',Yi.COL_MINE)end end end end end end local Sk=Wg()if Sk then local Dl,oj=pcall(function()return Sk:GetChildren()end)if Dl and oj then for Gl,sb in ipairs(oj)do local ab,da=pcall(function()return sb:FindFirstChildWhichIsA'BasePart'end)if ab and da then oh(da,'[MINE] Tripwire',Yi.COL_TRIP)end end end end Yi.cache=zg end local Zh,Sa={enabled=false,fov=150,smooth=0.20000000000000001,bone='Head',showFOV=false,keyType='mouse2',keyCode=nil,keyName='MB2',listening=false,lockEnabled=false,lockSmooth=0.34999999999999998,stickyTarget=nil},{[8]='Backspace',[9]='Tab',[13]='Enter',[16]='Shift',[17]='Ctrl',[18]='Alt',[19]='Pause',[20]='CapsLock',[27]='Escape',[32]='Space',[33]='PgUp',[34]='PgDn',[35]='End',[36]='Home',[37]='Left',[38]='Up',[39]='Right',[40]='Down',[45]='Insert',[46]='Delete',[48]='0',[49]='1',[50]='2',[51]='3',[52]='4',[53]='5',[54]='6',[55]='7',[56]='8',[57]='9',[65]='A',[66]='B',[67]='C',[68]='D',[69]='E',[70]='F',[71]='G',[72]='H',[73]='I',[74]='J',[75]='K',[76]='L',[77]='M',[78]='N',[79]='O',[80]='P',[81]='Q',[82]='R',[83]='S',[84]='T',[85]='U',[86]='V',[87]='W',[88]='X',[89]='Y',[90]='Z',[96]='Num0',[97]='Num1',[98]='Num2',[99]='Num3',[100]='Num4',[101]='Num5',[102]='Num6',[103]='Num7',[104]='Num8',[105]='Num9',[106]='Num*',[107]='Num+',[109]='Num-',[110]='Num.',[111]='Num/',[112]='F1',[113]='F2',[114]='F3',[115]='F4',[116]='F5',[117]='F6',[118]='F7',[119]='F8',[120]='F9',[121]='F10',[122]='F11',[123]='F12',[144]='NumLock',[145]='ScrollLock',[160]='LShift',[161]='RShift',[162]='LCtrl',[163]='RCtrl',[164]='LAlt',[165]='RAlt',[4]='MB3',[5]='MB4',[6]='MB5'}local function si()if ismouse1pressed()then return'mouse1',nil,'MB1'end if ismouse2pressed()then return'mouse2',nil,'MB2'end for Mj=3,254 do if Mj~=1 and Mj~=2 then if iskeypressed(Mj)then return'key',Mj,(Sa[Mj]or string.format('0x%02X',Mj))end end end end local function Pl()if Zh.keyType=='mouse1'then return ismouse1pressed()elseif Zh.keyType=='mouse2'then return ismouse2pressed()elseif Zh.keyType=='key'and Zh.keyCode then return iskeypressed(Zh.keyCode)end return false end local Ld=Dk(Drawing.new'Circle');Ld.Radius=Zh.fov;Ld.Filled=false;Ld.Thickness=1;Ld.NumSides=64;Ld.Color=Color3 .fromRGB(255,255,255);Ld.Transparency=0.5;Ld.Visible=false local Ij=Dk(Drawing.new'Circle');Ij.Radius=6;Ij.Filled=true;Ij.Thickness=1;Ij.Color=Color3 .fromRGB(255,50,50);Ij.Visible=false local function _i()local _e=g and g.Character local Sl=_e and _e:FindFirstChild'HumanoidRootPart'if not Sl then return nil end local Jm=nk.ViewportSize local Mh,ye,Ml=Jm.X*0.5,Jm.Y*0.5,Zh.fov*Zh.fov if Zh.lockEnabled and Zh.stickyTarget then local Lg,Gm=Zh.stickyTarget,true;pcall(function()local wk=Lg.Parent and Lg.Parent:FindFirstChildOfClass'Humanoid'if not wk or wk.Health<=0 then Gm=false end end)if Gm and Lg.Parent then local Ka,wf=WorldToScreen(Lg.Position)if wf then local km,za=Ka.X-Mh,Ka.Y-ye if km*km+za*za<=Ml*4 then return Lg end end end Zh.stickyTarget=nil end local vl,ja=nil,Ck for kh,Ie in ipairs(tf())do if not(Ie.hp and Ie.hp<=0)then local Sh=Ie.model:FindFirstChild(Zh.bone)or Ie.model:FindFirstChild'HumanoidRootPart'or Ie.hrp if Sh then local an_,Sf=WorldToScreen(Sh.Position)if Sf then local jk,Oi=an_.X-Mh,an_.Y-ye local Cf=jk*jk+Oi*Oi if Cf<Ml and Cf<ja then ja=Cf;vl=Sh end end end end end if Zh.lockEnabled and vl then Zh.stickyTarget=vl end return vl end local function Ai()if not Zh.enabled then Ij.Visible=false return end if not Pl()then if Zh.lockEnabled then Zh.stickyTarget=nil end Ij.Visible=false return end local xl=_i()if not xl then Ij.Visible=false return end local Ce,z=WorldToScreen(xl.Position)if not z then Ij.Visible=false return end local rf=nk.ViewportSize local Cd,qj=Ce.X-(rf.X*0.5),Ce.Y-(rf.Y*0.5);Ij.Visible=false if td(Cd)<1 and td(qj)<1 then return end local ff=Zh.lockEnabled and Zh.lockSmooth or Zh.smooth local Qa,am=Eg(Cd*ff),Eg(qj*ff)if Qa==0 and td(Cd)>=1 then Qa=Cd>0 and 1 or-1 end if am==0 and td(qj)>=1 then am=qj>0 and 1 or-1 end mousemoverel(Qa,am)end local function Vc()if Zh.showFOV and Zh.enabled then local Vh=nk.ViewportSize;Ld.Position=Vector2 .new(Vh.X*0.5,Vh.Y*0.5);Ld.Radius=Zh.fov;Ld.Visible=true else Ld.Visible=false end end local Se=Jc:Tab('ESP','eye')local Nc,he,Ec=Se:Section('Loot Selection','Left'),Se:Section('Settings','Right'),Jc:Tab('Visuals','sun')local pb,zc=Ec:Section('Environment','Left'),Jc:Tab('Combat','crosshair')local Zi,_j=zc:Section('Weapon','Left'),Jc:Tab('AI ESP','users')local ui,hi,Ei=_j:Section('AI/Scav ESP','Left'),_j:Section('Aimbot','Right'),Jc:Tab('Players','user')local Ug,pj=Ei:Section('Player ESP','Left'),Jc:Tab('Danger','shield')local xd,Bk=pj:Section('Turrets','Left'),{}local function Ed()local bd={}for fi,Hi in pairs(Bk)do for bh,tk in ipairs(Hi)do bd[#bd+1]=tk end end _G.ESP.SelectedItems=bd end Nc:Toggle('Enable ESP',true,function(Vk)_G.ESP.Enabled=Vk end);Nc:Divider'Mythic';Nc:Dropdown('Mythic Items',{},Ze.mythic,true,function(of)Bk['mythic']=of;Ed()end,nil,true);Nc:Divider'Rare';Nc:Dropdown('Rare Items',{},Ze.rare,true,function(qm)Bk['rare']=qm;Ed()end,nil,true);Nc:Divider'Uncommon';Nc:Dropdown('Uncommon Items',{},Ze.uncommon,true,function(Rm)Bk['uncommon']=Rm;Ed()end,nil,true);Nc:Divider'Common';Nc:Dropdown('Common Items',{},Ze.common,true,function(Gg)Bk['common']=Gg;Ed()end,nil,true);Nc:Divider'Keys';Nc:Dropdown('Keys',{},Ze.keys,true,function(Fa)Bk['keys']=Fa;Ed()end,nil,true);Nc:Divider'Keycard Sliders';Nc:Toggle('Keycard Slider ESP',false,function(bl)qc.enabled=bl if not bl then for lb=1,qc.lastDrawn do rb(qc.labelPool[lb],false);rb(qc.dotPool[lb],false)end qc.lastDrawn=0;qc.cache={}end end);Nc:Slider('Slider Max Distance',1000,50,50,3000,'m',function(ti)qc.maxDist=ti end);Nc:Divider'Usable';Nc:Dropdown('Usable / Inhalers',{},Ze.usable,true,function(Pf)Bk['usable']=Pf;Ed()end,nil,true);Nc:Divider'Household';Nc:Dropdown('Household Items',{},Ze.household,true,function(Yc)Bk['household']=Yc;Ed()end,nil,true);Nc:Divider'Ammo';Nc:Dropdown('Ammo',{},Ze.ammo,true,function(Qf)Bk['ammo']=Qf;Ed()end,nil,true);Nc:Divider'Attachments';Nc:Dropdown('Attachments',{},Ze.attachments,true,function(if_)Bk['attachments']=if_;Ed()end,nil,true);Nc:Divider'Crates';Nc:Dropdown('Select Crates',{},fb,true,function(Fj)_G.ESP.SelectedCrates=Fj end,nil,true);Nc:Divider'Weapons';Nc:Toggle('Enable Weapon ESP',false,function(M)_G.WEAPON_ESP.Enabled=M end);Nc:Dropdown('Select Weapons',{},Ji,true,function(Tl)_G.WEAPON_ESP.SelectedWeapons=Tl end,nil,true);he:Slider('Max Distance',500,10,10,2000,'m',function(Dg)_G.ESP.MaxDistance=Dg;_G.WEAPON_ESP.MaxDistance=Dg end);he:Divider'Loot';he:Toggle('Instant Loot',false,function(kj)Em.enabled=kj if kj then Xh()else L()end end);pb:Toggle('No Fog',false,function(Dd)og.enabled=Dd end);Zi:Toggle('No Recoil',false,function(pg)Rg.enabled=pg;Rg.cache=pg and getgc(Rg.keys)or nil end)local Qi,kg={box=false,name=true,dist=true,health=true,weapon=true,tracer=false},{enabled=true,distMax=1500,updateRate=15,items={},timer=0,lastDrawn=0};ui:Toggle('Enabled',true,function(zi)kg.enabled=zi end);ui:Toggle('Name',true,function(Ib)Qi.name=Ib end);ui:Toggle('Distance',true,function(ad)Qi.dist=ad end);ui:Toggle('Health',true,function(ql)Qi.health=ql end);ui:Toggle('Weapon',true,function(Jb)Qi.weapon=Jb end);ui:Toggle('Box',false,function(Yd)Qi.box=Yd end);ui:Toggle('Tracers',false,function(ta)Qi.tracer=ta end);ui:Slider('Max Distance',1500,50,50,3000,'m',function(Lj)kg.distMax=Lj end);ui:Slider('Update Rate (fps)',15,5,5,60,'fps',function(Fd)kg.updateRate=Fd end);hi:Toggle('Enable Aimbot',false,function(Ja)Zh.enabled=Ja if not Ja then Ld.Visible=false;Ij.Visible=false;Zh.stickyTarget=nil end end);hi:Toggle('Show FOV Circle',false,function(fc)Zh.showFOV=fc if not fc then Ld.Visible=false end end);hi:Slider('FOV Radius',150,10,10,500,'px',function(Li)Zh.fov=Li;Ld.Radius=Li end);hi:Slider('Smoothing',20,1,1,100,'%',function(ck)Zh.smooth=ck/100 end);hi:Toggle('Aimlock (Sticky)',false,function(ze)Zh.lockEnabled=ze if not ze then Zh.stickyTarget=nil;Ij.Visible=false end end);hi:Slider('Aimlock Speed',35,5,5,100,'%',function(ki)Zh.lockSmooth=ki/100 end)local Mf;Mf=hi:Button('Aimbot Key: MB2',function()if Zh.listening then return end Zh.listening=true;Mf:SetText'Press any key...';spawn(function()wait(0.25)local _n=tick()+5 while tick()<_n do local Wm,eg,pf=si()if Wm then Zh.keyType=Wm;Zh.keyCode=eg;Zh.keyName=pf;Mf:SetText('Aimbot Key: '..pf);Zh.listening=false return end wait(0.02)end Mf:SetText('Aimbot Key: '..Zh.keyName);Zh.listening=false end)end);hi:Dropdown('Target Bone',{'Head','HumanoidRootPart'},{'Head','HumanoidRootPart'},false,function(qk)Zh.bone=(type(qk)=='table'and qk[1])or qk or'Head'end);Ug:Toggle('Enable Player ESP',false,function(Od)oa.enabled=Od if not Od then for hg=1,oa.lastDrawn do zl(oa.slots[hg])end oa.lastDrawn=0;oa.items={}end end);Ug:Toggle('Name',true,function(sl)oa.snap.name=sl end);Ug:Toggle('Distance',true,function(Da)oa.snap.dist=Da end);Ug:Toggle('Health',true,function(Zg)oa.snap.health=Zg end);Ug:Toggle('Weapon',true,function(qi)oa.snap.weapon=qi end);Ug:Toggle('Box',true,function(Cb)oa.snap.box=Cb end);Ug:Toggle('Tracers',false,function(w_)oa.snap.tracer=w_ end);Ug:Slider('Max Distance',1500,50,50,3000,'m',function(tb)oa.distMax=tb end);Ug:Slider('Update Rate (fps)',15,5,5,60,'fps',function(Gj)oa.updateRate=Gj end);xd:Toggle('Turret ESP',false,function(nc)m.enabled=nc if not nc then for Pb=1,m.lastDrawn do rb(m.labelPool[Pb],false);rb(m.dotPool[Pb],false)end m.lastDrawn=0;m.cache={}end end);xd:Slider('Turret Max Distance',1000,50,50,3000,'m',function(zj)m.maxDist=zj end);xd:Divider'Corpses';xd:Toggle('Corpse ESP',false,function(C)Sj.enabled=C if not C then for Cc=1,Sj.lastDrawn do rb(Sj.labelPool[Cc],false);rb(Sj.dotPool[Cc],false)end Sj.lastDrawn=0;Sj.cache={}end end);xd:Slider('Corpse Max Distance',500,50,50,2000,'m',function(ic)Sj.maxDist=ic end);xd:Divider'Landmines';xd:Toggle('Landmine ESP',false,function(im)Yi.enabled=im if not im then for Wf=1,Yi.lastDrawn do rb(Yi.labelPool[Wf],false);rb(Yi.dotPool[Wf],false)end Yi.lastDrawn=0;Yi.cache={}end end);xd:Slider('Mine Max Distance',500,50,50,2000,'m',function(Ak)Yi.maxDist=Ak end)local function Hm()local Hc=g and g.Character local Eh=Hc and Hc:FindFirstChild'HumanoidRootPart'local fa_=Eh and Eh.Position if not fa_ then kg.items={}return end local xc,D,Ah,jl,om=fa_.X,fa_.Y,fa_.Z,kg.distMax^2,{}for yh,je in ipairs(tf())do local od=je.hrp if od and od.Parent then local ka=od.Position local Wl,gf,Ub=xc-ka.X,D-ka.Y,Ah-ka.Z local ub=Wl*Wl+gf*gf+Ub*Ub if ub<=jl then local wb=Pe(ub)local Dc,mj if je.hp and je.maxhp and je.maxhp>0 then Dc=Vl(je.hp/je.maxhp,0,1);mj=Oa(Dc)end om[#om+1]={kind='ai',part=od,name=je.model.Name,distText=Eg(wb)..'m',healthRatio=Dc,healthColor=mj,weapon=je.weapon,_distSq=ub}end end end table.sort(om,function(Le,Zf)return Le._distSq<Zf._distSq end)local fd={}for xb,Pc in ipairs(om)do if#fd>=uf.MAX_SLOTS then break end fd[#fd+1]=Pc end kg.items=fd end local jf={cx=0,cy=0,timer=0}local function uc()local cg=nk.ViewportSize;jf.cx=cg.X*0.5;jf.cy=cg.Y end uc()local kf={phase=0,fogTimer=0};lg.Heartbeat:Connect(function()if not gg then return end pcall(Ai)end);vi=lg.RenderStepped:Connect(function(cb)if not gg then return end pcall(Vc);kf.fogTimer=kf.fogTimer+cb if kf.fogTimer>=0.10000000000000001 then kf.fogTimer=0 if og.enabled then we()elseif og.last then Bb()end og.last=og.enabled end if Rg.enabled and Rg.cache then applygc(Rg.cache,Rg.payload)end kg.timer=kg.timer+cb if kg.timer>=(1/fn(1,kg.updateRate))then kg.timer=0 if kg.enabled then pcall(Hm)end end oa.timer=oa.timer+cb if oa.timer>=(1/fn(1,oa.updateRate))then oa.timer=0 if oa.enabled then pcall(Ee)end end jf.timer=jf.timer+cb if jf.timer>=0.5 then jf.timer=0;uc()end local Ig=os.clock();kf.phase=(kf.phase+1)%6 if kf.phase==0 then if(Ig-Oh.stamp)>=Oh.TTL then Oh.stamp=Ig if _G.ESP.Enabled then pcall(fe)end end elseif kf.phase==1 then if(Ig-V.stamp)>=Oh.TTL then V.stamp=Ig if _G.WEAPON_ESP.Enabled then pcall(Ic)end end elseif kf.phase==2 then if(Ig-m.stamp)>=m.TTL then m.stamp=Ig if m.enabled then pcall(el_)end end elseif kf.phase==3 then if(Ig-Sj.stamp)>=Sj.TTL then Sj.stamp=Ig if Sj.enabled then pcall(jg)end end elseif kf.phase==4 then if(Ig-qc.stamp)>=qc.TTL then qc.stamp=Ig if qc.enabled then pcall(Ke)end end elseif kf.phase==5 then if(Ig-Yi.stamp)>=Yi.TTL then Yi.stamp=Ig if Yi.enabled then pcall(Ae)end end end local qb=g.Character local gm=qb and qb:FindFirstChild'HumanoidRootPart'local Ll=gm and gm.Position if _G.ESP.Enabled and Ll then local hm=0 for S=1,#Oh.cache do local _h=Oh.cache[S]local vc=_h.root if vc and vc.Parent then local lk,Qc=WorldToScreen(vc.Position)if Qc then hm=hm+1 local pe,ym,gc=Oh.labelPool[hm],Oh.dotPool[hm],vc.Position local b_,sf,Ek=gc.X-Ll.X,gc.Y-Ll.Y,gc.Z-Ll.Z local Ta=Eg(Pe(b_*b_+sf*sf+Ek*Ek));P(pe,_h.name..' ['..Ta..'m]');hl(pe,_h.color);yl(pe,lk.X,lk.Y-6);rb(pe,true);hl(ym,_h.color);yl(ym,lk.X,lk.Y+8);rb(ym,true)end end end for Pm=hm+1,Oh.lastDrawn do rb(Oh.labelPool[Pm],false);rb(Oh.dotPool[Pm],false)end Oh.lastDrawn=hm else for Si=1,Oh.lastDrawn do rb(Oh.labelPool[Si],false);rb(Oh.dotPool[Si],false)end Oh.lastDrawn=0 end if _G.WEAPON_ESP.Enabled and Ll then local p=0 for Kk=1,#V.cache do local Kc=V.cache[Kk]local rm=Kc.root if rm and rm.Parent then local ul,T=WorldToScreen(rm.Position)if T then p=p+1 local Bc,Rb,Ej=V.labelPool[p],V.dotPool[p],rm.Position local Tb,_m,ib=Ej.X-Ll.X,Ej.Y-Ll.Y,Ej.Z-Ll.Z local ci=Eg(Pe(Tb*Tb+_m*_m+ib*ib));P(Bc,Kc.name..' ['..ci..'m]');hl(Bc,Kc.color);yl(Bc,ul.X,ul.Y-6);rb(Bc,true);hl(Rb,Kc.color);yl(Rb,ul.X,ul.Y+8);rb(Rb,true)end end end for pm=p+1,V.lastDrawn do rb(V.labelPool[pm],false);rb(V.dotPool[pm],false)end V.lastDrawn=p else for Ad=1,V.lastDrawn do rb(V.labelPool[Ad],false);rb(V.dotPool[Ad],false)end V.lastDrawn=0 end if m.enabled and Ll then local ge=0 for mc=1,#m.cache do local ue=m.cache[mc]local ni_=ue.anchor if ni_ and ni_.Parent then local mk,Xa=WorldToScreen(ni_.Position)if Xa then ge=ge+1 local W,Ym,gl=m.labelPool[ge],m.dotPool[ge],ni_.Position local qg,Wb,ag=gl.X-Ll.X,gl.Y-Ll.Y,gl.Z-Ll.Z local mg=Eg(Pe(qg*qg+Wb*Wb+ag*ag));P(W,'[TURRET] '..ue.name..' ['..mg..'m]');yl(W,mk.X,mk.Y-8);rb(W,true);yl(Ym,mk.X,mk.Y+8);rb(Ym,true)end end end for Df=ge+1,m.lastDrawn do rb(m.labelPool[Df],false);rb(m.dotPool[Df],false)end m.lastDrawn=ge else for ac=1,m.lastDrawn do rb(m.labelPool[ac],false);rb(m.dotPool[ac],false)end m.lastDrawn=0 end if Sj.enabled and Ll then local Wc=0 for Lc=1,#Sj.cache do local Bh=Sj.cache[Lc]local xk=Bh.anchor if xk and xk.Parent then local wc,E=WorldToScreen(xk.Position)if E then Wc=Wc+1 local _c,Um,dd=Sj.labelPool[Wc],Sj.dotPool[Wc],xk.Position local ih,Sg,Tk=dd.X-Ll.X,dd.Y-Ll.Y,dd.Z-Ll.Z local ah=Eg(Pe(ih*ih+Sg*Sg+Tk*Tk));P(_c,'[CORPSE] '..Bh.name..' ['..ah..'m]');yl(_c,wc.X,wc.Y-8);rb(_c,true);yl(Um,wc.X,wc.Y+8);rb(Um,true)end end end for Xi=Wc+1,Sj.lastDrawn do rb(Sj.labelPool[Xi],false);rb(Sj.dotPool[Xi],false)end Sj.lastDrawn=Wc else for ok=1,Sj.lastDrawn do rb(Sj.labelPool[ok],false);rb(Sj.dotPool[ok],false)end Sj.lastDrawn=0 end if qc.enabled and Ll then local Fk=0 for Uf=1,#qc.cache do local ld=qc.cache[Uf]local O=ld.anchor if O and O.Parent then local qf,Ti=WorldToScreen(O.Position)if Ti then Fk=Fk+1 local I,pc,dk=qc.labelPool[Fk],qc.dotPool[Fk],O.Position local rg,xf,Uk=dk.X-Ll.X,dk.Y-Ll.Y,dk.Z-Ll.Z local Ne=Eg(Pe(rg*rg+xf*xf+Uk*Uk));P(I,ld.name..' ['..Ne..'m]');hl(I,ld.color);yl(I,qf.X,qf.Y-8);rb(I,true);hl(pc,ld.color);yl(pc,qf.X,qf.Y+8);rb(pc,true)end end end for Jl=Fk+1,qc.lastDrawn do rb(qc.labelPool[Jl],false);rb(qc.dotPool[Jl],false)end qc.lastDrawn=Fk else for di=1,qc.lastDrawn do rb(qc.labelPool[di],false);rb(qc.dotPool[di],false)end qc.lastDrawn=0 end if Yi.enabled and Ll then local Be=0 for sc=1,#Yi.cache do local Km=Yi.cache[sc]local Lb=Km.anchor if Lb and Lb.Parent then local El,rh=WorldToScreen(Lb.Position)if rh then Be=Be+1 local Qj,Wi,Qh=Yi.labelPool[Be],Yi.dotPool[Be],Lb.Position local Pi,Ni,wh_=Qh.X-Ll.X,Qh.Y-Ll.Y,Qh.Z-Ll.Z local Ik=Eg(Pe(Pi*Pi+Ni*Ni+wh_*wh_));P(Qj,Km.name..' ['..Ik..'m]');hl(Qj,Km.color);yl(Qj,El.X,El.Y-10);rb(Qj,true);hl(Wi,Km.color);yl(Wi,El.X,El.Y+8);rb(Wi,true)end end end for Kl=Be+1,Yi.lastDrawn do rb(Yi.labelPool[Kl],false);rb(Yi.dotPool[Kl],false)end Yi.lastDrawn=Be else for ug=1,Yi.lastDrawn do rb(Yi.labelPool[ug],false);rb(Yi.dotPool[ug],false)end Yi.lastDrawn=0 end if oa.enabled then local cd=0 for Te,J in ipairs(oa.items)do if cd>=oa.MAX_SLOTS then break end local sj=oa.slots[cd+1]local Uh=Xm(sj,J,oa.snap,uf.PLAYER_NAME,uf.PLAYER_BOX,uf.PLAYER_TRACER,jf.cx,jf.cy)if Uh then cd=cd+1 end end for cc=cd+1,oa.lastDrawn do zl(oa.slots[cc])end oa.lastDrawn=cd else for Sc=1,oa.lastDrawn do zl(oa.slots[Sc])end oa.lastDrawn=0 end if not kg.enabled then for Ng=1,kg.lastDrawn do zl(rc[Ng])end kg.lastDrawn=0 return end local ol=0 for dj,lf in ipairs(kg.items)do if ol>=uf.MAX_SLOTS then break end local Mk=rc[ol+1]local sd=Xm(Mk,lf,Qi,uf.NAME,uf.BOX,uf.TRACER,jf.cx,jf.cy)if sd then ol=ol+1 end end for Ql=ol+1,kg.lastDrawn do zl(rc[Ql])end kg.lastDrawn=ol end);ri:Notify('Seim Havoc V2','Loaded successfully!',4,'success');print'[Seim Havoc V2] loaded.'
+local Lib = loadstring(game:HttpGet(string.char(104, 116, 116, 112, 115, 58, 47, 47, 114, 97, 119, 46, 103, 105, 116, 104, 117, 98, 117, 115, 101, 114, 99, 111, 110, 116, 101, 110, 116, 46, 99, 111, 109, 47, 110, 101, 97, 120, 117, 115, 120, 103, 111, 100, 45, 112, 110, 103, 47, 73, 78, 83, 45, 117, 105, 47, 109, 97, 105, 110, 47, 117, 105, 108, 105, 98, 46, 109, 105, 110, 46, 108, 117, 97)))() or INSui
+local win = Lib:CreateWindow({
+title    = string.char(83, 101, 105, 109, 32, 72, 97, 118, 111, 99, 32, 86, 50),
+subtitle = string.char(118, 50, 46, 48),
+size     = Vector2.new(580, 460),
+})
+win:AddSettingsTab(string.char(99, 111, 103))
+local Lighting    = game:GetService(string.char(76, 105, 103, 104, 116, 105, 110, 103))
+local HttpService = game:GetService(string.char(72, 116, 116, 112, 83, 101, 114, 118, 105, 99, 101))
+local RunService  = game:GetService(string.char(82, 117, 110, 83, 101, 114, 118, 105, 99, 101))
+local Players     = game:GetService(string.char(80, 108, 97, 121, 101, 114, 115))
+local Camera      = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+local sqrt  = math.sqrt
+local floor = math.floor
+local clamp = math.clamp
+local abs   = math.abs
+local max   = math.max
+local huge  = math.huge
+_G.ESP = {
+SelectedItems  = {},
+SelectedCrates = {},
+MaxDistance    = 500,
+Enabled        = true,
+}
+_G.WEAPON_ESP = {
+Enabled         = false,
+SelectedWeapons = {},
+MaxDistance     = 500,
+}
+local ITEM_TIER = {
+[string.char(46, 51, 51, 56, 32, 76, 97, 112, 117, 97, 32, 77, 97, 103, 110, 117, 109)]                                   = string.char(109, 121, 116, 104, 105, 99),
+[string.char(46, 52, 48, 56, 32, 67, 104, 101, 121, 101, 110, 110, 101, 32, 84, 97, 99, 116, 105, 99, 97, 108)]                              = string.char(109, 121, 116, 104, 105, 99),
+[string.char(46, 52, 53, 32, 65, 67, 80)]                                             = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(46, 53, 48, 32, 65, 99, 116, 105, 111, 110, 32, 69, 120, 112, 114, 101, 115, 115)]                                  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(48, 46, 50, 32, 66, 84, 67)]                                             = string.char(114, 97, 114, 101),
+[string.char(49, 50, 32, 71, 97, 117, 103, 101, 32, 66, 117, 99, 107, 115, 104, 111, 116)]                                   = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(50, 51, 120, 55, 53, 109, 109, 32, 83, 104, 114, 97, 112, 110, 101, 108, 45, 49, 48)]                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(50, 51, 120, 55, 53, 109, 109, 32, 90, 118, 101, 122, 100, 97, 32, 102, 108, 97, 115, 104, 98, 97, 110, 103, 32, 114, 111, 117, 110, 100)]                      = string.char(109, 121, 116, 104, 105, 99),
+[string.char(52, 46, 54, 120, 51, 48, 109, 109)]                                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(52, 48, 120, 52, 54, 109, 109, 32, 77, 52, 48, 54, 32, 103, 114, 101, 110, 97, 100, 101)]                                = string.char(109, 121, 116, 104, 105, 99),
+[string.char(53, 46, 49, 49, 32, 72, 101, 120, 103, 114, 105, 100, 32, 80, 108, 97, 116, 101, 32, 67, 97, 114, 114, 105, 101, 114)]                          = string.char(109, 121, 116, 104, 105, 99),
+[string.char(53, 46, 52, 53, 120, 51, 57, 109, 109)]                                           = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 32, 66, 101, 116, 97, 32, 67, 45, 77, 97, 103, 32, 49, 48, 48, 45, 114, 111, 117, 110, 100, 32, 100, 114, 117, 109, 32, 109, 97, 103, 97, 122, 105, 110, 101)]          = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 32, 67, 111, 108, 116, 32, 65, 82, 45, 49, 53, 32, 83, 84, 65, 78, 65, 71, 32, 50, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]         = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 32, 67, 111, 108, 116, 32, 65, 82, 45, 49, 53, 32, 83, 84, 65, 78, 65, 71, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]         = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 32, 67, 111, 108, 116, 32, 65, 82, 45, 49, 53, 32, 83, 84, 65, 78, 65, 71, 32, 54, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]         = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 32, 80, 77, 65, 71, 32, 54, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                      = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 32, 84, 86, 32, 49, 48, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                       = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 53, 54, 120, 52, 53, 109, 109, 32, 78, 65, 84, 79)]                                      = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 55, 120, 50, 56, 109, 109)]                                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(53, 46, 56, 120, 52, 50, 109, 109)]                                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(55, 46, 54, 50, 120, 51, 57, 109, 109)]                                           = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(55, 46, 54, 50, 120, 53, 49, 109, 109, 32, 78, 65, 84, 79)]                                      = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(55, 46, 54, 50, 120, 53, 52, 109, 109, 82)]                                          = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(57, 120, 49, 56, 109, 109)]                                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(57, 120, 49, 57, 109, 109)]                                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(57, 120, 51, 57, 32, 50, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(57, 120, 51, 57, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(57, 120, 51, 57, 109, 109)]                                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 55, 32, 68, 101, 108, 116, 97, 32, 82, 105, 111, 116, 32, 72, 101, 108, 109, 101, 116)]                                = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(65, 65, 32, 66, 97, 116, 116, 101, 114, 121)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(65, 67, 79, 71, 32, 84, 65, 49, 49, 68, 32, 51, 46, 53, 120, 51, 53, 32, 114, 105, 102, 108, 101, 115, 99, 111, 112, 101)]                        = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 73, 45, 50)]                                                = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(65, 105, 114, 115, 116, 114, 105, 107, 101)]                                           = string.char(109, 121, 116, 104, 105, 99),
+[string.char(65, 75, 32, 55, 46, 54, 50, 120, 51, 57, 32, 52, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                        = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 75, 32, 55, 46, 54, 50, 120, 51, 57, 32, 77, 97, 103, 112, 117, 108, 32, 80, 77, 65, 71, 32, 51, 48, 32, 71, 69, 78, 32, 77, 51, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 75, 45, 55, 52, 32, 53, 46, 52, 53, 120, 51, 57, 32, 54, 76, 50, 48, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 75, 45, 55, 52, 32, 53, 46, 52, 53, 120, 51, 57, 32, 77, 97, 103, 112, 117, 108, 32, 80, 77, 65, 71, 32, 51, 48, 32, 71, 69, 78, 32, 77, 51, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)] = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 108, 116, 121, 110, 32, 98, 117, 108, 108, 101, 116, 112, 114, 111, 111, 102, 32, 72, 101, 108, 109, 101, 116)]                            = string.char(109, 121, 116, 104, 105, 99),
+[string.char(65, 108, 116, 121, 110, 32, 104, 101, 108, 109, 101, 116, 32, 102, 97, 99, 101, 32, 115, 104, 105, 101, 108, 100)]                            = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(65, 108, 117, 109, 105, 110, 105, 117, 109, 32, 78, 97, 105, 108, 115)]                                     = string.char(99, 111, 109, 109, 111, 110),
+[string.char(65, 109, 109, 117, 110, 105, 116, 105, 111, 110, 32, 99, 97, 115, 101)]                                     = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(65, 78, 47, 80, 69, 81, 45, 49, 53, 32, 116, 97, 99, 116, 105, 99, 97, 108, 32, 100, 101, 118, 105, 99, 101)]                           = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 110, 103, 108, 101, 100, 32, 102, 111, 114, 101, 103, 114, 105, 112)]                                     = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 110, 116, 105, 113, 117, 101, 32, 116, 101, 97, 112, 111, 116)]                                      = string.char(114, 97, 114, 101),
+[string.char(65, 83, 32, 86, 65, 76)]                                              = string.char(109, 121, 116, 104, 105, 99),
+[string.char(65, 87, 80)]                                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(65, 87, 80, 32, 46, 51, 51, 56, 32, 76, 97, 112, 117, 97, 32, 77, 97, 103, 110, 117, 109, 32, 53, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(65, 119, 108)]                                                 = string.char(99, 111, 109, 109, 111, 110),
+[string.char(66, 97, 110, 100, 97, 103, 101)]                                             = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(66, 97, 114, 98, 101, 100, 32, 87, 105, 114, 101, 32, 66, 97, 116)]                                     = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(66, 105, 109, 101, 116, 97, 108, 108, 105, 99, 32, 84, 104, 101, 114, 109, 111, 109, 101, 116, 101, 114)]                              = string.char(114, 97, 114, 101),
+[string.char(66, 111, 120, 32, 111, 102, 32, 83, 117, 103, 97, 114)]                                        = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(66, 114, 97, 109, 105, 116, 32, 55, 46, 54, 50, 120, 53, 52, 82, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                    = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(66, 114, 97, 115, 115, 107, 110, 117, 99, 107, 108, 101, 115)]                                       = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(67, 97, 98, 108, 101, 115)]                                              = string.char(99, 111, 109, 109, 111, 110),
+[string.char(67, 97, 110, 32, 111, 102, 32, 66, 101, 101, 102)]                                         = string.char(114, 97, 114, 101),
+[string.char(67, 97, 110, 32, 111, 102, 32, 77, 97, 99, 107, 101, 114, 101, 108)]                                     = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(67, 97, 110, 32, 111, 102, 32, 83, 97, 108, 116)]                                         = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(67, 97, 110, 32, 111, 102, 32, 84, 117, 110, 97)]                                         = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(67, 97, 112, 97, 99, 105, 116, 111, 114, 115)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(67, 97, 114, 32, 66, 97, 116, 116, 101, 114, 121)]                                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(67, 97, 115, 104)]                                                = string.char(99, 97, 115, 104),
+[string.char(67, 104, 101, 109, 105, 99, 97, 108, 32, 83, 111, 108, 117, 116, 105, 111, 110)]                                   = string.char(99, 111, 109, 109, 111, 110),
+[string.char(67, 77, 77, 71, 32, 77, 107, 52, 55, 32, 77, 117, 116, 97, 110, 116)]                                    = string.char(109, 121, 116, 104, 105, 99),
+[string.char(67, 77, 84, 32, 90, 67, 79, 77, 80, 32, 108, 105, 110, 101, 97, 114, 32, 99, 111, 109, 112, 101, 110, 115, 97, 116, 111, 114)]                        = string.char(109, 121, 116, 104, 105, 99),
+[string.char(67, 111, 108, 116, 32, 52, 120, 50, 48, 32, 114, 105, 102, 108, 101, 115, 99, 111, 112, 101)]                                = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(67, 111, 109, 112, 97, 99, 116, 32, 97, 110, 116, 101, 110, 110, 97)]                                     = string.char(114, 97, 114, 101),
+[string.char(67, 111, 110, 100, 117, 99, 116, 111, 114, 39, 115, 32, 71, 111, 108, 100, 32, 80, 111, 99, 107, 101, 116, 32, 87, 97, 116, 99, 104)]                       = string.char(114, 97, 114, 101),
+[string.char(67, 111, 110, 115, 116, 114, 117, 99, 116, 105, 111, 110, 32, 77, 101, 97, 115, 117, 114, 105, 110, 103, 32, 84, 97, 112, 101)]                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(67, 111, 114, 114, 117, 103, 97, 116, 101, 100, 32, 84, 117, 98, 101)]                                     = string.char(114, 97, 114, 101),
+[string.char(67, 111, 116, 116, 97, 103, 101, 32, 67, 97, 99, 104, 101, 32, 75, 101, 121)]                                   = string.char(107, 101, 121, 115),
+[string.char(68, 97, 119, 110, 115, 99, 114, 105, 112, 116, 32, 70, 114, 97, 103, 109, 101, 110, 116)]                                 = string.char(114, 97, 114, 101),
+[string.char(68, 67, 32, 56, 48, 48, 32, 72, 105, 103, 104, 32, 67, 117, 116, 32, 67, 111, 109, 98, 97, 116, 32, 72, 101, 108, 109, 101, 116)]                       = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(68, 101, 111, 100, 111, 114, 97, 110, 116)]                                           = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(68, 105, 97, 109, 111, 110, 100, 32, 114, 105, 110, 103)]                                        = string.char(109, 121, 116, 104, 105, 99),
+[string.char(68, 105, 97, 114, 121)]                                               = string.char(114, 97, 114, 101),
+[string.char(68, 111, 103, 116, 97, 103)]                                              = string.char(99, 111, 109, 109, 111, 110),
+[string.char(68, 111, 109, 105, 110, 111, 32, 67, 114, 111, 119, 110)]                                        = string.char(114, 97, 114, 101),
+[string.char(68, 80, 45, 50, 55)]                                               = string.char(109, 121, 116, 104, 105, 99),
+[string.char(68, 80, 45, 50, 55, 32, 55, 46, 54, 50, 120, 53, 52, 109, 109, 82, 32, 52, 55, 45, 114, 111, 117, 110, 100, 32, 112, 97, 110, 32, 109, 97, 103, 97, 122, 105, 110, 101)]              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(68, 117, 99, 116, 32, 116, 97, 112, 101)]                                           = string.char(99, 111, 109, 109, 111, 110),
+[string.char(69, 108, 101, 99, 116, 114, 105, 99, 32, 68, 114, 105, 108, 108)]                                      = string.char(99, 111, 109, 109, 111, 110),
+[string.char(69, 109, 112, 116, 121, 32, 100, 105, 115, 104)]                                          = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(69, 79, 84, 101, 99, 104, 32, 53, 53, 51, 32, 104, 111, 108, 111, 103, 114, 97, 112, 104, 105, 99, 32, 115, 105, 103, 104, 116)]                        = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(70, 45, 49)]                                                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(70, 65, 83, 84, 32, 77, 84, 32, 72, 101, 108, 109, 101, 116)]                                      = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(70, 65, 83, 84, 32, 109, 117, 108, 116, 105, 45, 104, 105, 116, 32, 98, 97, 108, 108, 105, 115, 116, 105, 99, 32, 102, 97, 99, 101, 32, 115, 104, 105, 101, 108, 100)]                = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(70, 105, 101, 108, 100, 32, 114, 101, 112, 97, 105, 114, 32, 107, 105, 116)]                                    = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(70, 108, 97, 115, 104, 32, 68, 114, 105, 118, 101)]                                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(70, 108, 111, 117, 114)]                                               = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(70, 78, 32, 80, 57, 48, 32, 53, 46, 55, 120, 50, 56, 32, 53, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                     = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(70, 78, 32, 83, 67, 65, 82, 45, 72, 32, 55, 46, 54, 50, 120, 53, 49, 32, 50, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(70, 78, 32, 83, 67, 65, 82, 45, 72, 32, 55, 46, 54, 50, 120, 53, 49, 32, 53, 48, 45, 114, 111, 117, 110, 100, 32, 100, 114, 117, 109, 32, 109, 97, 103, 97, 122, 105, 110, 101)]            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(70, 111, 114, 101, 115, 116, 32, 71, 114, 101, 101, 110, 32, 71, 104, 105, 108, 108, 105, 101, 32, 83, 117, 105, 116)]                           = string.char(109, 121, 116, 104, 105, 99),
+[string.char(70, 79, 82, 84, 45, 57, 32, 72, 101, 97, 118, 121, 32, 65, 115, 115, 97, 117, 108, 116, 32, 82, 105, 103)]                            = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(70, 79, 82, 84, 73, 83, 32, 67, 111, 97, 115, 116, 97, 108, 32, 79, 117, 116, 112, 111, 115, 116, 32, 67, 97, 99, 104, 101, 32, 75, 101, 121)]                    = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 48, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 49, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 50, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 51, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 52, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 53, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 76, 101, 118, 101, 108, 45, 54, 32, 107, 101, 121, 99, 97, 114, 100)]                              = string.char(107, 101, 121, 115),
+[string.char(70, 79, 82, 84, 73, 83, 32, 77, 75, 46, 73, 73, 32, 71, 108, 111, 118, 101, 115)]                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(71, 101, 97, 114, 115)]                                               = string.char(99, 111, 109, 109, 111, 110),
+[string.char(71, 101, 109, 116, 101, 99, 104, 32, 83, 70, 78, 45, 53, 55, 32, 53, 46, 55, 120, 50, 56, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(71, 101, 111, 108, 111, 99, 97, 116, 111, 114)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(71, 108, 117, 101)]                                                = string.char(99, 111, 109, 109, 111, 110),
+[string.char(71, 111, 108, 100, 32, 98, 97, 114)]                                            = string.char(109, 121, 116, 104, 105, 99),
+[string.char(71, 111, 108, 100, 32, 84, 114, 111, 112, 104, 121)]                                         = string.char(114, 97, 114, 101),
+[string.char(71, 111, 108, 100, 101, 110, 32, 67, 117, 98, 101)]                                         = string.char(114, 97, 114, 101),
+[string.char(71, 111, 108, 100, 101, 110, 32, 83, 107, 117, 108, 108)]                                        = string.char(114, 97, 114, 101),
+[string.char(71, 111, 108, 100, 101, 110, 32, 83, 109, 97, 114, 116, 112, 104, 111, 110, 101)]                                   = string.char(114, 97, 114, 101),
+[string.char(71, 111, 108, 100, 101, 110, 32, 87, 97, 116, 99, 104)]                                        = string.char(114, 97, 114, 101),
+[string.char(71, 114, 97, 112, 104, 105, 99, 115, 32, 99, 97, 114, 100)]                                       = string.char(114, 97, 114, 101),
+[string.char(71, 117, 110, 112, 111, 119, 100, 101, 114)]                                           = string.char(114, 97, 114, 101),
+[string.char(71, 122, 104, 101, 108, 45, 75, 32, 66, 111, 100, 121, 32, 65, 114, 109, 111, 114)]                                  = string.char(109, 121, 116, 104, 105, 99),
+[string.char(72, 97, 110, 100, 32, 87, 114, 97, 112, 115)]                                          = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(72, 97, 118, 111, 99, 111, 108, 97, 32, 67, 104, 101, 114, 114, 121, 32, 66, 117, 114, 110)]                                = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(72, 97, 118, 111, 99, 111, 108, 97, 32, 67, 108, 97, 115, 115, 105, 99)]                                    = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(72, 75, 32, 77, 80, 53, 32, 57, 120, 49, 57, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                       = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(72, 75, 32, 77, 80, 53, 32, 57, 120, 49, 57, 32, 53, 48, 45, 114, 111, 117, 110, 100, 32, 100, 114, 117, 109, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(72, 75, 32, 77, 80, 55, 32, 52, 46, 54, 120, 51, 48, 32, 52, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                     = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(72, 75, 32, 77, 80, 55, 32, 83, 68, 32, 50, 32, 52, 46, 54, 120, 51, 48, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(72, 75, 32, 85, 77, 80, 32, 46, 52, 53, 32, 65, 67, 80, 32, 50, 53, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                    = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(72, 75, 52, 49, 54)]                                               = string.char(109, 121, 116, 104, 105, 99),
+[string.char(72, 77, 54, 58, 32, 72, 101, 109, 111, 115, 116, 97, 116, 105, 99, 32, 73, 110, 104, 97, 108, 101, 114)]                             = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109, 95, 105, 110, 104, 97, 108, 101, 114),
+[string.char(72, 111, 109, 101, 109, 97, 100, 101, 32, 83, 111, 97, 112)]                                       = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(72, 86, 67, 32, 71, 101, 110, 52, 32, 66, 111, 100, 121, 32, 65, 114, 109, 111, 114)]                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(72, 86, 67, 32, 71, 101, 110, 52, 32, 66, 111, 100, 121, 32, 65, 114, 109, 111, 114, 32, 40, 72, 77, 75, 41)]                           = string.char(109, 121, 116, 104, 105, 99),
+[string.char(72, 86, 67, 32, 80, 108, 97, 116, 101, 32, 67, 97, 114, 114, 105, 101, 114)]                                   = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(72, 86, 67, 45, 49, 48, 84, 32, 78, 105, 103, 104, 116, 32, 86, 105, 115, 105, 111, 110, 32, 71, 111, 103, 103, 108, 101, 115)]                        = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(73, 109, 112, 114, 111, 118, 105, 115, 101, 100, 32, 112, 108, 97, 115, 116, 105, 99, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(73, 110, 115, 101, 99, 116, 105, 99, 105, 100, 101, 32, 115, 112, 114, 97, 121)]                                   = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(73, 110, 115, 101, 99, 116, 115, 32, 83, 112, 114, 97, 121)]                                       = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(73, 110, 115, 117, 108, 105, 110, 32, 112, 117, 109, 112)]                                        = string.char(99, 111, 109, 109, 111, 110),
+[string.char(73, 110, 116, 101, 103, 114, 97, 116, 101, 100, 32, 84, 97, 99, 116, 105, 99, 97, 108, 32, 80, 108, 97, 116, 101, 32, 67, 97, 114, 114, 105, 101, 114)]                   = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(73, 110, 116, 101, 108, 108, 105, 103, 101, 110, 99, 101, 32, 102, 111, 108, 100, 101, 114)]                                 = string.char(114, 97, 114, 101),
+[string.char(73, 110, 116, 101, 114, 118, 101, 110, 116, 105, 111, 110, 32, 77, 50, 48, 48)]                                   = string.char(109, 121, 116, 104, 105, 99),
+[string.char(75, 97, 114, 97, 109, 98, 105, 116)]                                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(75, 97, 116, 97, 110, 97)]                                              = string.char(109, 121, 116, 104, 105, 99),
+[string.char(75, 101, 116, 99, 104, 117, 112)]                                             = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(75, 101, 121, 99, 97, 114, 100, 32, 104, 111, 108, 100, 101, 114, 32, 99, 97, 115, 101)]                                 = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(75, 111, 114, 117, 110, 100, 45, 86, 77, 32, 66, 111, 100, 121, 32, 65, 114, 109, 111, 114)]                                = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(75, 83, 45, 50, 51, 77)]                                             = string.char(109, 121, 116, 104, 105, 99),
+[string.char(76, 101, 117, 112, 111, 108, 100, 32, 77, 97, 114, 107, 32, 56, 32, 56, 120, 50, 52, 32, 114, 105, 102, 108, 101, 115, 99, 111, 112, 101)]                      = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(76, 111, 99, 107, 112, 105, 99, 107)]                                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(76, 111, 110, 103, 32, 83, 99, 114, 101, 119, 100, 114, 105, 118, 101, 114)]                                    = string.char(99, 111, 109, 109, 111, 110),
+[string.char(76, 86, 80, 79, 32, 49, 48, 120, 50, 56, 32, 114, 105, 102, 108, 101, 115, 99, 111, 112, 101)]                               = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 49, 56, 32, 40, 87, 104, 105, 116, 101, 41)]                                         = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 50, 48, 48, 32, 46, 52, 48, 56, 32, 67, 104, 101, 121, 101, 110, 110, 101, 32, 84, 97, 99, 116, 105, 99, 97, 108, 32, 53, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]        = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 50, 52, 57)]                                                = string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 52, 32, 66, 101, 110, 101, 108, 108, 105)]                                          = string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 52, 48, 32, 71, 97, 115, 32, 77, 97, 115, 107, 32, 70, 105, 108, 116, 101, 114)]                                 = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(77, 52, 48, 45, 49, 32, 71, 97, 115, 32, 77, 97, 115, 107)]                                      = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(77, 52, 48, 45, 50, 32, 71, 97, 115, 32, 77, 97, 115, 107)]                                      = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(77, 52, 65, 49)]                                                = string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 54, 55)]                                                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 55, 57)]                                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 56, 52)]                                                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 97, 103, 105, 99, 32, 76, 97, 109, 112)]                                          = string.char(114, 97, 114, 101),
+[string.char(77, 97, 103, 110, 101, 116)]                                              = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 97, 115, 107)]                                                = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(77, 66, 67, 32, 80, 108, 97, 116, 101, 32, 67, 97, 114, 114, 105, 101, 114)]                                   = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(77, 101, 97, 115, 117, 114, 105, 110, 103, 32, 116, 97, 112, 101)]                                      = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 101, 97, 116, 32, 103, 114, 105, 110, 100, 101, 114)]                                        = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(77, 101, 100, 105, 99, 97, 108, 32, 98, 108, 111, 111, 100, 115, 101, 116)]                                    = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 101, 100, 105, 99, 97, 108, 32, 75, 105, 116)]                                         = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(77, 101, 100, 105, 99, 97, 108, 32, 115, 101, 116)]                                         = string.char(114, 97, 114, 101),
+[string.char(77, 101, 116, 97, 108, 32, 65, 119, 108)]                                           = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 101, 116, 97, 108, 32, 67, 117, 116, 116, 105, 110, 103, 32, 83, 99, 105, 115, 115, 111, 114, 115)]                              = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 101, 116, 97, 108, 32, 102, 117, 101, 108, 32, 116, 97, 110, 107)]                                     = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(77, 105, 99, 114, 111, 99, 105, 114, 99, 117, 105, 116, 115)]                                       = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 66, 97, 99, 107, 112, 97, 99, 107)]                                   = string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 72, 101, 108, 109, 101, 116)]                                     = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(77, 107, 49, 52, 32, 55, 46, 54, 50, 120, 53, 49, 32, 49, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                      = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 107, 49, 52, 32, 69, 66, 82)]                                            = string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 111, 108, 111, 116, 111, 118)]                                             = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 79, 84, 82, 32, 67, 111, 110, 99, 101, 97, 108, 97, 98, 108, 101, 32, 82, 101, 105, 110, 102, 111, 114, 99, 101, 100, 32, 86, 101, 115, 116)]                    = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(77, 111, 117, 110, 116, 105, 110, 103, 32, 70, 111, 97, 109)]                                       = string.char(99, 111, 109, 109, 111, 110),
+[string.char(77, 80, 57, 32, 57, 120, 49, 57, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                           = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(77, 83, 65, 32, 80, 97, 114, 97, 99, 108, 101, 116, 101, 32, 80, 108, 97, 116, 101, 32, 67, 97, 114, 114, 105, 101, 114)]                         = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(77, 117, 103)]                                                 = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(78, 97, 105, 108, 115)]                                               = string.char(99, 111, 109, 109, 111, 110),
+[string.char(78, 67, 83, 116, 97, 114, 32, 65, 81, 80, 84, 76, 77, 71, 32, 67, 111, 109, 112, 97, 99, 116, 32, 71, 114, 101, 101, 110, 32, 76, 97, 115, 101, 114)]                  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(78, 105, 103, 104, 116, 102, 111, 114, 99, 101, 32, 65, 84, 65, 67, 82, 32, 55, 45, 51, 53, 120, 53, 54)]                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(78, 111, 109, 97, 100, 32, 82, 111, 117, 116, 101, 32, 78, 111, 116, 101, 115)]                                   = string.char(114, 97, 114, 101),
+[string.char(78, 111, 114, 116, 104, 32, 68, 111, 108, 112, 104, 105, 110, 32, 72, 111, 115, 112, 105, 116, 97, 108, 32, 83, 97, 102, 101, 32, 75, 101, 121)]                     = string.char(107, 101, 121, 115),
+[string.char(78, 111, 114, 116, 104, 109, 111, 110, 116, 32, 83, 112, 97, 114, 107, 108, 105, 110, 103, 32, 67, 105, 100, 101, 114)]                           = string.char(114, 97, 114, 101),
+[string.char(78, 111, 118, 97, 84, 101, 99, 32, 114, 101, 102, 108, 101, 120, 32, 115, 105, 103, 104, 116)]                                = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(78, 111, 118, 97, 84, 101, 99, 32, 82, 77, 82, 32, 114, 101, 102, 108, 101, 120, 32, 115, 105, 103, 104, 116)]                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(79, 68, 87, 97, 118, 101, 32, 53, 53, 54, 32, 53, 46, 53, 54, 120, 52, 53, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(79, 105, 108, 32, 70, 105, 108, 116, 101, 114, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                         = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(79, 75, 80, 45, 55, 32, 114, 101, 102, 108, 101, 120, 32, 115, 105, 103, 104, 116)]                                  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(79, 114, 97, 110, 103, 101, 32, 106, 117, 105, 99, 101, 32, 99, 97, 114, 116, 111, 110)]                                 = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(80, 65, 51, 58, 32, 82, 101, 108, 105, 101, 102, 32, 73, 110, 104, 97, 108, 101, 114)]                                 = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109, 95, 105, 110, 104, 97, 108, 101, 114),
+[string.char(80, 97, 99, 107, 32, 111, 102, 32, 109, 97, 116, 99, 104, 101, 115)]                                     = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(80, 97, 108, 109, 111, 108, 105, 118, 101, 32, 104, 97, 110, 100, 119, 97, 115, 104)]                                  = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(80, 66, 83, 45, 49, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(80, 101, 114, 102, 117, 109, 101)]                                             = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(80, 71, 45, 55, 86, 32, 72, 69, 65, 84, 32, 103, 114, 101, 110, 97, 100, 101)]                                  = string.char(109, 121, 116, 104, 105, 99),
+[string.char(80, 105, 99, 107, 97, 120, 101)]                                             = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(80, 73, 67, 79, 45, 65, 49, 32, 76, 105, 103, 104, 116, 32, 76, 111, 119, 101, 114, 32, 66, 111, 100, 121, 32, 65, 114, 109, 111, 114)]                      = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(80, 73, 67, 79, 45, 65, 50, 32, 72, 101, 97, 118, 121, 32, 76, 111, 119, 101, 114, 32, 66, 111, 100, 121, 32, 65, 114, 109, 111, 114)]                      = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(80, 105, 108, 101, 32, 111, 102, 32, 109, 101, 100, 115)]                                        = string.char(99, 111, 109, 109, 111, 110),
+[string.char(80, 105, 112, 101, 32, 119, 114, 101, 110, 99, 104)]                                         = string.char(114, 97, 114, 101),
+[string.char(80, 105, 112, 101, 99, 108, 101, 97, 110, 101, 114)]                                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(80, 111, 114, 99, 101, 108, 97, 105, 110)]                                           = string.char(114, 97, 114, 101),
+[string.char(80, 111, 119, 101, 114, 32, 117, 110, 105, 116)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(80, 111, 119, 101, 114, 98, 97, 110, 107)]                                           = string.char(99, 111, 109, 109, 111, 110),
+[string.char(80, 114, 101, 99, 105, 115, 105, 118, 101, 32, 71, 114, 105, 112, 115)]                                     = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(80, 114, 105, 110, 116, 101, 114, 32, 80, 97, 112, 101, 114)]                                       = string.char(99, 111, 109, 109, 111, 110),
+[string.char(80, 83, 79, 45, 49, 32, 52, 120, 50, 52, 32, 115, 99, 111, 112, 101)]                                    = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(80, 85, 45, 49, 32, 51, 46, 53, 120, 32, 114, 105, 102, 108, 101, 115, 99, 111, 112, 101)]                                = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(80, 117, 114, 101, 70, 105, 114, 101, 32, 88, 51, 48, 48, 32, 85, 108, 116, 114, 97)]                                 = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(80, 88, 50, 55, 32, 72, 101, 97, 100, 108, 97, 109, 112)]                                       = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(81, 68, 83, 83, 45, 78, 84, 52, 32, 53, 46, 53, 54, 120, 52, 53, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                   = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(82, 65, 77)]                                                 = string.char(114, 97, 114, 101),
+[string.char(82, 97, 112, 105, 100, 32, 69, 109, 101, 114, 103, 101, 110, 99, 121, 32, 65, 69, 68, 32, 67, 111, 109, 112, 97, 99, 116, 32, 84, 111, 111, 108)]                    = string.char(109, 121, 116, 104, 105, 99),
+[string.char(82, 97, 116, 32, 80, 111, 105, 115, 111, 110)]                                          = string.char(114, 97, 114, 101),
+[string.char(82, 71, 45, 57, 58, 32, 82, 101, 103, 101, 110, 101, 114, 97, 116, 105, 118, 101, 32, 73, 110, 104, 97, 108, 101, 114)]                          = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109, 95, 105, 110, 104, 97, 108, 101, 114),
+[string.char(82, 71, 79)]                                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(82, 75, 45, 49, 32, 116, 97, 99, 116, 105, 99, 97, 108, 32, 102, 111, 114, 101, 103, 114, 105, 112)]                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(82, 79, 86, 69, 82, 32, 77, 111, 116, 111, 114, 99, 121, 99, 108, 101, 32, 72, 101, 108, 109, 101, 116)]                             = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(82, 80, 71, 45, 55)]                                               = string.char(109, 121, 116, 104, 105, 99),
+[string.char(82, 80, 75, 45, 49, 54, 32, 53, 46, 52, 53, 120, 51, 57, 32, 57, 53, 45, 114, 111, 117, 110, 100, 32, 100, 114, 117, 109, 32, 109, 97, 103, 97, 122, 105, 110, 101)]               = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(82, 86, 49, 49, 58, 32, 69, 109, 101, 114, 103, 101, 110, 99, 121, 32, 82, 101, 115, 117, 115, 99, 105, 116, 97, 116, 111, 114, 32, 73, 110, 104, 97, 108, 101, 114)]                = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109, 95, 105, 110, 104, 97, 108, 101, 114),
+[string.char(83, 38, 77, 32, 66, 97, 99, 107, 112, 97, 99, 107)]                                        = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(83, 55, 58, 32, 83, 116, 105, 109, 117, 108, 97, 110, 116, 32, 73, 110, 104, 97, 108, 101, 114)]                               = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109, 95, 105, 110, 104, 97, 108, 101, 114),
+[string.char(83, 65, 45, 53, 56)]                                               = string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 65, 53, 56, 47, 70, 65, 76, 32, 55, 46, 54, 50, 120, 53, 49, 32, 50, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 65, 53, 56, 47, 70, 65, 76, 32, 55, 46, 54, 50, 120, 53, 49, 32, 53, 48, 45, 114, 111, 117, 110, 100, 32, 100, 114, 117, 109, 32, 109, 97, 103, 97, 122, 105, 110, 101)]             = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 97, 105, 103, 97, 32, 49, 50)]                                            = string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 65, 73, 80, 72, 32, 115, 105, 103, 110, 97, 108, 32, 112, 105, 115, 116, 111, 108)]                                 = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(83, 65, 83, 32, 100, 114, 105, 118, 101)]                                           = string.char(114, 97, 114, 101),
+[string.char(83, 67, 65, 82, 45, 72)]                                              = string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 99, 105, 115, 115, 111, 114, 115)]                                            = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(83, 99, 114, 97, 112, 32, 77, 101, 116, 97, 108)]                                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 99, 114, 101, 119, 100, 114, 105, 118, 101, 114)]                                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 99, 117, 98, 97, 32, 71, 101, 97, 114)]                                          = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(83, 101, 97, 108, 101, 100, 32, 98, 108, 97, 99, 107, 32, 102, 105, 108, 101)]                                   = string.char(114, 97, 114, 101),
+[string.char(83, 101, 97, 108, 105, 110, 103, 32, 70, 111, 97, 109)]                                        = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 101, 119, 105, 110, 103, 32, 75, 105, 116)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 104, 97, 109, 112, 111, 111)]                                             = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(83, 104, 97, 114, 100, 115, 32, 105, 110, 32, 116, 104, 101, 32, 67, 111, 100, 101, 58, 32, 83, 101, 97, 115, 111, 110, 32, 79, 110, 101)]                      = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 72, 65, 82, 75, 32, 109, 117, 122, 122, 108, 101, 32, 98, 114, 97, 107, 101)]                                  = string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 105, 108, 75, 111, 32, 79, 115, 112, 114, 101, 121, 32, 57, 32, 57, 120, 49, 57, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 105, 108, 75, 111, 32, 83, 97, 108, 118, 111, 32, 49, 50, 32, 49, 50, 103, 97, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 108, 105, 99, 107, 32, 80, 108, 97, 116, 101, 32, 67, 97, 114, 114, 105, 101, 114)]                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 108, 105, 110, 103, 32, 66, 97, 103)]                                           = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(83, 109, 97, 114, 116, 112, 104, 111, 110, 101)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 111, 100, 105, 117, 109, 32, 66, 105, 99, 97, 114, 98, 111, 110, 97, 116, 101)]                                  = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 111, 100, 105, 117, 109, 32, 67, 104, 108, 111, 114, 105, 100, 101)]                                     = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 112, 108, 105, 110, 116)]                                              = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(83, 112, 111, 111, 110)]                                               = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(83, 82, 49, 54)]                                                = string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 83, 68)]                                                 = string.char(114, 97, 114, 101),
+[string.char(83, 116, 105, 99, 107, 121, 32, 84, 97, 112, 101)]                                         = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 116, 114, 105, 110, 103)]                                              = string.char(99, 111, 109, 109, 111, 110),
+[string.char(83, 117, 112, 101, 114, 112, 117, 110, 99, 104)]                                          = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 117, 114, 101, 70, 105, 114, 101, 32, 51, 45, 112, 114, 111, 110, 103, 32, 102, 108, 97, 115, 104, 32, 104, 105, 100, 101, 114)]                        = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 117, 114, 101, 70, 105, 114, 101, 32, 52, 45, 112, 114, 111, 110, 103, 32, 102, 108, 97, 115, 104, 32, 104, 105, 100, 101, 114)]                        = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(83, 117, 114, 103, 105, 99, 97, 108, 32, 107, 105, 116)]                                        = string.char(114, 97, 114, 101),
+[string.char(83, 86, 45, 57, 56, 32, 55, 46, 54, 50, 120, 53, 52, 82, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                     = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(84, 45, 55, 32, 84, 104, 101, 114, 109, 97, 108, 32, 71, 111, 103, 103, 108, 101, 115)]                                 = string.char(109, 121, 116, 104, 105, 99),
+[string.char(84, 49, 55, 56, 32, 82, 97, 105, 100, 32, 66, 97, 99, 107, 112, 97, 99, 107)]                                  = string.char(109, 121, 116, 104, 105, 99),
+[string.char(84, 97, 99, 116, 105, 99, 97, 108, 32, 83, 119, 111, 114, 100)]                                      = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(84, 97, 110, 107, 32, 66, 97, 116, 116, 101, 114, 121)]                                        = string.char(114, 97, 114, 101),
+[string.char(84, 104, 101, 32, 53, 116, 104, 32, 65, 110, 110, 117, 97, 108, 32, 66, 108, 111, 120, 121, 32, 65, 119, 97, 114, 100)]                          = string.char(114, 97, 114, 101),
+[string.char(84, 104, 101, 32, 67, 114, 117, 99, 105, 98, 108, 101)]                                        = string.char(99, 111, 110, 116, 114, 97, 98, 97, 110, 100),
+[string.char(84, 104, 101, 32, 71, 114, 101, 97, 116, 101, 115, 116, 32, 65, 100, 109, 105, 110, 32, 112, 108, 117, 115, 104, 105, 101)]                          = string.char(114, 97, 114, 101),
+[string.char(84, 105, 116, 97, 110, 105, 117, 109, 32, 65, 108, 108, 111, 121, 32, 80, 108, 97, 116, 101)]                                = string.char(114, 97, 114, 101),
+[string.char(84, 111, 105, 108, 101, 116, 32, 112, 97, 112, 101, 114)]                                        = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(84, 111, 109, 97, 104, 97, 119, 107)]                                            = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(84, 111, 111, 116, 104, 112, 97, 115, 116, 101)]                                          = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(84, 111, 117, 114, 110, 105, 113, 117, 101, 116)]                                          = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(84, 117, 98, 101, 32, 111, 102, 32, 99, 111, 108, 100, 32, 119, 101, 108, 100, 105, 110, 103)]                                = string.char(99, 111, 109, 109, 111, 110),
+[string.char(84, 121, 112, 101, 32, 48, 52, 45, 49, 32, 104, 111, 108, 111, 103, 114, 97, 112, 104, 105, 99, 32, 115, 105, 103, 104, 116)]                         = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(84, 121, 112, 101, 32, 57, 53, 32, 53, 46, 56, 120, 52, 50, 109, 109, 32, 51, 48, 45, 114, 111, 117, 110, 100, 32, 109, 97, 103, 97, 122, 105, 110, 101)]                  = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(85, 72, 45, 49, 32, 104, 111, 108, 111, 103, 114, 97, 112, 104, 105, 99, 32, 115, 105, 103, 104, 116)]                              = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(85, 76, 65, 67, 72, 32, 73, 73, 73, 65, 32, 72, 101, 108, 109, 101, 116)]                                   = string.char(103, 101, 97, 114, 95, 114, 97, 114, 101),
+[string.char(85, 83, 66, 32, 101, 120, 116, 101, 110, 115, 105, 111, 110, 32, 99, 97, 98, 108, 101)]                                 = string.char(99, 111, 109, 109, 111, 110),
+[string.char(86, 97, 110, 105, 115, 104, 32, 51, 48, 32, 53, 46, 53, 54, 120, 52, 53, 32, 115, 111, 117, 110, 100, 32, 115, 117, 112, 112, 114, 101, 115, 115, 111, 114)]                  = string.char(109, 121, 116, 104, 105, 99),
+[string.char(86, 101, 103, 101, 116, 97, 98, 108, 101, 32, 111, 105, 108)]                                       = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(86, 101, 114, 116, 105, 99, 97, 108, 32, 102, 111, 114, 101, 103, 114, 105, 112)]                                   = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+[string.char(86, 105, 110, 116, 97, 103, 101, 32, 71, 111, 108, 100, 32, 67, 114, 111, 119, 110)]                                  = string.char(114, 97, 114, 101),
+[string.char(86, 105, 116, 97, 109, 105, 110, 115)]                                            = string.char(99, 111, 109, 109, 111, 110),
+[string.char(86, 83, 83, 32, 109, 111, 100, 101, 114, 110, 32, 115, 116, 111, 99, 107)]                                    = string.char(109, 121, 116, 104, 105, 99),
+[string.char(86, 83, 83, 32, 86, 105, 110, 116, 111, 114, 101, 122)]                                        = string.char(109, 121, 116, 104, 105, 99),
+[string.char(87, 97, 116, 99, 104)]                                               = string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115),
+[string.char(87, 101, 97, 112, 111, 110, 32, 99, 97, 115, 101)]                                         = string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109),
+[string.char(87, 101, 97, 112, 111, 110, 32, 112, 97, 114, 116, 115)]                                        = string.char(114, 97, 114, 101),
+[string.char(87, 104, 105, 116, 101, 32, 116, 117, 98, 101)]                                          = string.char(99, 111, 109, 109, 111, 110),
+[string.char(87, 114, 101, 110, 99, 104)]                                              = string.char(99, 111, 109, 109, 111, 110),
+[string.char(88, 76, 97, 115, 101, 114, 32, 112, 111, 105, 110, 116, 101, 114, 32, 109, 111, 100, 117, 108, 101)]                               = string.char(109, 121, 116, 104, 105, 99),
+[string.char(88, 116, 114, 101, 109, 101, 32, 77, 111, 116, 111, 114, 99, 121, 99, 108, 101, 32, 72, 101, 108, 109, 101, 116)]                            = string.char(103, 101, 97, 114, 95, 99, 111, 109, 109, 111, 110),
+[string.char(89, 77, 65, 57, 53, 45, 49, 32, 51, 46, 53, 120, 32, 114, 105, 102, 108, 101, 115, 99, 111, 112, 101)]                             = string.char(117, 110, 99, 111, 109, 109, 111, 110),
+}
+local TIER_COLORS = {
+common              = Color3.fromRGB(200, 200, 200),
+common_gun          = Color3.fromRGB(180, 220, 180),
+common_households   = Color3.fromRGB(210, 210, 210),
+uncommon            = Color3.fromRGB( 80, 200,  80),
+rare                = Color3.fromRGB(180,  60, 255),
+mythic              = Color3.fromRGB(255,  40,  40),
+keys                = Color3.fromRGB(255, 230,  50),
+usable_item         = Color3.fromRGB( 60, 210, 210),
+usable_item_inhaler = Color3.fromRGB( 60, 210, 210),
+gear_common         = Color3.fromRGB(180, 130, 255),
+gear_rare           = Color3.fromRGB(220,  80, 255),
+contraband          = Color3.fromRGB(255,  30,  30),
+cash                = Color3.fromRGB(100, 255, 100),
+}
+local function tierColor(name)
+local tier = ITEM_TIER[name]
+return (tier and TIER_COLORS[tier]) or Color3.fromRGB(255, 255, 255)
+end
+local itemColors = {}
+for name in pairs(ITEM_TIER) do itemColors[name] = tierColor(name) end
+local function isAmmo(name)
+local n = name:lower()
+return n:find(string.char(120, 49, 56, 109, 109)) or n:find(string.char(120, 49, 57, 109, 109)) or n:find(string.char(120, 51, 57, 109, 109))
+or n:find(string.char(120, 53, 49, 109, 109)) or n:find(string.char(120, 53, 52, 109, 109)) or n:find(string.char(120, 50, 56, 109, 109))
+or n:find(string.char(120, 52, 50, 109, 109)) or n:find(string.char(120, 51, 48, 109, 109)) or n:find(string.char(120, 52, 53))
+or n:find(string.char(120, 55, 53, 109, 109)) or n:find(string.char(103, 97, 117, 103, 101, 32, 98, 117, 99, 107, 115, 104, 111, 116))
+or n:find(string.char(37, 46, 51, 51, 56)) or n:find(string.char(37, 46, 52, 48, 56)) or n:find(string.char(37, 46, 52, 53, 32, 97, 99, 112))
+or n:find(string.char(37, 46, 53, 48, 32, 97, 99, 116, 105, 111, 110)) or n:find(string.char(52, 37, 46, 54, 120)) or n:find(string.char(53, 37, 46, 52, 53, 120))
+or n:find(string.char(53, 37, 46, 53, 54, 120)) or n:find(string.char(53, 37, 46, 55, 120)) or n:find(string.char(53, 37, 46, 56, 120))
+or n:find(string.char(55, 37, 46, 54, 50, 120)) or n:find(string.char(57, 120, 51, 57, 109, 109)) or n:find(string.char(50, 51, 120, 55, 53, 109, 109))
+or n:find(string.char(52, 48, 120, 52, 54, 109, 109))
+end
+local function isAttachment(name)
+local n = name:lower()
+return n:find(string.char(109, 97, 103, 97, 122, 105, 110, 101)) or n:find(string.char(37, 45, 114, 111, 117, 110, 100, 32))
+or n:find(string.char(115, 117, 112, 112, 114, 101, 115, 115, 111, 114)) or n:find(string.char(115, 105, 108, 101, 110, 99, 101, 114))
+or n:find(string.char(102, 111, 114, 101, 103, 114, 105, 112)) or n:find(string.char(103, 114, 105, 112))
+or n:find(string.char(114, 105, 102, 108, 101, 115, 99, 111, 112, 101)) or n:find(string.char(115, 99, 111, 112, 101))
+or n:find(string.char(104, 111, 108, 111, 103, 114, 97, 112, 104, 105, 99)) or n:find(string.char(114, 101, 102, 108, 101, 120, 32, 115, 105, 103, 104, 116))
+or n:find(string.char(102, 108, 97, 115, 104, 32, 104, 105, 100, 101, 114)) or n:find(string.char(109, 117, 122, 122, 108, 101, 32, 98, 114, 97, 107, 101))
+or n:find(string.char(99, 111, 109, 112, 101, 110, 115, 97, 116, 111, 114)) or n:find(string.char(108, 97, 115, 101, 114))
+or n:find(string.char(116, 97, 99, 116, 105, 99, 97, 108, 32, 100, 101, 118, 105, 99, 101)) or n:find(string.char(104, 101, 97, 100, 108, 97, 109, 112))
+end
+local tierLists = {
+mythic={}; rare={}; uncommon={}; common={}; keys={};
+usable={}; household={}; ammo={}; attachments={};
+}
+for name, tier in pairs(ITEM_TIER) do
+if isAmmo(name) then
+tierLists.ammo[#tierLists.ammo+1] = name
+elseif isAttachment(name) then
+tierLists.attachments[#tierLists.attachments+1] = name
+elseif tier == string.char(109, 121, 116, 104, 105, 99) then
+tierLists.mythic[#tierLists.mythic+1] = name
+elseif tier == string.char(114, 97, 114, 101) then
+tierLists.rare[#tierLists.rare+1] = name
+elseif tier == string.char(117, 110, 99, 111, 109, 109, 111, 110) then
+tierLists.uncommon[#tierLists.uncommon+1] = name
+elseif tier == string.char(99, 111, 109, 109, 111, 110) then
+tierLists.common[#tierLists.common+1] = name
+elseif tier == string.char(107, 101, 121, 115) then
+tierLists.keys[#tierLists.keys+1] = name
+elseif tier == string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109) or tier == string.char(117, 115, 97, 98, 108, 101, 95, 105, 116, 101, 109, 95, 105, 110, 104, 97, 108, 101, 114) then
+tierLists.usable[#tierLists.usable+1] = name
+elseif tier == string.char(99, 111, 109, 109, 111, 110, 95, 104, 111, 117, 115, 101, 104, 111, 108, 100, 115) then
+tierLists.household[#tierLists.household+1] = name
+end
+end
+for _, list in pairs(tierLists) do table.sort(list) end
+local crateNames = {
+string.char(65, 109, 109, 117, 110, 105, 116, 105, 111, 110, 32, 66, 111, 120),string.char(67, 97, 98, 105, 110, 101, 116),string.char(67, 97, 115, 104, 32, 82, 101, 103, 105, 115, 116, 101, 114),string.char(67, 108, 111, 115, 101, 116),string.char(67, 111, 109, 112, 108, 101, 120, 32, 67, 114, 97, 116, 101),
+string.char(67, 111, 109, 112, 117, 116, 101, 114),string.char(68, 105, 115, 104, 119, 97, 115, 104, 101, 114),string.char(68, 111, 117, 98, 108, 101, 32, 87, 97, 115, 104, 105, 110, 103, 32, 77, 97, 99, 104, 105, 110, 101),string.char(68, 117, 102, 102, 101, 108, 32, 66, 97, 103),
+string.char(69, 110, 118, 101, 108, 111, 112, 101),string.char(70, 105, 108, 101, 32, 67, 97, 98, 105, 110, 101, 116),string.char(70, 114, 105, 100, 103, 101),string.char(72, 111, 115, 112, 105, 116, 97, 108, 67, 97, 98, 105, 110, 101, 116),string.char(72, 111, 115, 112, 105, 116, 97, 108, 67, 108, 111, 115, 101, 116),
+string.char(72, 111, 115, 112, 105, 116, 97, 108, 84, 97, 98, 108, 101),string.char(76, 111, 99, 107, 101, 114),string.char(77, 101, 100, 105, 99, 97, 108, 32, 66, 111, 120),string.char(77, 101, 100, 105, 117, 109, 32, 87, 111, 111, 100, 101, 110, 32, 67, 114, 97, 116, 101),
+string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 67, 114, 97, 116, 101),string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 70, 105, 108, 101, 32, 67, 97, 98, 105, 110, 101, 116),string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 82, 97, 100, 105, 111),
+string.char(77, 105, 108, 116, 97, 114, 121, 32, 83, 101, 114, 118, 101, 114, 32, 85, 110, 105, 116),string.char(80, 105, 115, 116, 111, 108, 32, 67, 97, 115, 101),string.char(82, 97, 105, 100, 101, 114, 32, 67, 97, 99, 104, 101),string.char(82, 105, 102, 108, 101, 32, 67, 97, 115, 101),
+string.char(82, 117, 105, 110, 101, 100, 32, 76, 111, 99, 107, 101, 114),string.char(82, 117, 105, 110, 101, 100, 32, 83, 109, 97, 108, 108, 32, 67, 97, 115, 101),string.char(83, 97, 102, 101),string.char(83, 101, 114, 118, 101, 114, 32, 85, 110, 105, 116),string.char(83, 109, 97, 108, 108, 32, 67, 97, 115, 101),
+string.char(83, 116, 97, 110, 100, 105, 110, 103, 65, 84, 77),string.char(83, 116, 111, 118, 101),string.char(83, 117, 114, 103, 101, 111, 110, 39, 115, 32, 84, 111, 111, 108, 32, 83, 104, 101, 108, 102),string.char(84, 97, 108, 108, 70, 114, 105, 100, 103, 101),
+string.char(84, 101, 99, 104, 110, 105, 99, 97, 108, 32, 83, 104, 101, 108, 102),string.char(84, 111, 111, 108, 32, 83, 104, 101, 108, 102),string.char(84, 111, 111, 108, 98, 111, 120),string.char(87, 97, 108, 108, 65, 84, 77),string.char(87, 97, 115, 104, 105, 110, 103, 32, 77, 97, 99, 104, 105, 110, 101),
+string.char(87, 101, 97, 112, 111, 110, 32, 66, 111, 120),string.char(87, 101, 97, 112, 111, 110, 32, 76, 111, 99, 107, 101, 114),string.char(87, 111, 111, 100, 101, 110, 32, 67, 114, 97, 116, 101),
+}
+local crateColors = {
+[string.char(65, 109, 109, 117, 110, 105, 116, 105, 111, 110, 32, 66, 111, 120)]         = Color3.fromRGB(255, 80,  40),
+[string.char(67, 97, 98, 105, 110, 101, 116)]                = Color3.fromRGB(160, 120, 80),
+[string.char(67, 97, 115, 104, 32, 82, 101, 103, 105, 115, 116, 101, 114)]          = Color3.fromRGB(80,  200, 80),
+[string.char(67, 108, 111, 115, 101, 116)]                 = Color3.fromRGB(200, 160, 255),
+[string.char(67, 111, 109, 112, 108, 101, 120, 32, 67, 114, 97, 116, 101)]          = Color3.fromRGB(255, 160, 40),
+[string.char(67, 111, 109, 112, 117, 116, 101, 114)]               = Color3.fromRGB(60,  180, 255),
+[string.char(68, 105, 115, 104, 119, 97, 115, 104, 101, 114)]             = Color3.fromRGB(120, 220, 240),
+[string.char(68, 111, 117, 98, 108, 101, 32, 87, 97, 115, 104, 105, 110, 103, 32, 77, 97, 99, 104, 105, 110, 101)] = Color3.fromRGB(100, 200, 255),
+[string.char(68, 117, 102, 102, 101, 108, 32, 66, 97, 103)]             = Color3.fromRGB(180, 140, 80),
+[string.char(69, 110, 118, 101, 108, 111, 112, 101)]               = Color3.fromRGB(255, 240, 140),
+[string.char(70, 105, 108, 101, 32, 67, 97, 98, 105, 110, 101, 116)]           = Color3.fromRGB(160, 160, 160),
+[string.char(70, 114, 105, 100, 103, 101)]                 = Color3.fromRGB(180, 240, 255),
+[string.char(72, 111, 115, 112, 105, 116, 97, 108, 67, 97, 98, 105, 110, 101, 116)]        = Color3.fromRGB(200, 255, 220),
+[string.char(72, 111, 115, 112, 105, 116, 97, 108, 67, 108, 111, 115, 101, 116)]         = Color3.fromRGB(160, 240, 200),
+[string.char(72, 111, 115, 112, 105, 116, 97, 108, 84, 97, 98, 108, 101)]          = Color3.fromRGB(120, 220, 180),
+[string.char(76, 111, 99, 107, 101, 114)]                 = Color3.fromRGB(100, 140, 200),
+[string.char(77, 101, 100, 105, 99, 97, 108, 32, 66, 111, 120)]            = Color3.fromRGB(255, 60,  100),
+[string.char(77, 101, 100, 105, 117, 109, 32, 87, 111, 111, 100, 101, 110, 32, 67, 114, 97, 116, 101)]    = Color3.fromRGB(200, 140, 60),
+[string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 67, 114, 97, 116, 101)]         = Color3.fromRGB(100, 160, 60),
+[string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 70, 105, 108, 101, 32, 67, 97, 98, 105, 110, 101, 116)]  = Color3.fromRGB(80,  140, 80),
+[string.char(77, 105, 108, 105, 116, 97, 114, 121, 32, 82, 97, 100, 105, 111)]         = Color3.fromRGB(60,  200, 120),
+[string.char(77, 105, 108, 116, 97, 114, 121, 32, 83, 101, 114, 118, 101, 114, 32, 85, 110, 105, 116)]    = Color3.fromRGB(40,  180, 100),
+[string.char(80, 105, 115, 116, 111, 108, 32, 67, 97, 115, 101)]            = Color3.fromRGB(255, 100, 60),
+[string.char(82, 97, 105, 100, 101, 114, 32, 67, 97, 99, 104, 101)]           = Color3.fromRGB(200, 60,  60),
+[string.char(82, 105, 102, 108, 101, 32, 67, 97, 115, 101)]             = Color3.fromRGB(220, 80,  40),
+[string.char(82, 117, 105, 110, 101, 100, 32, 76, 111, 99, 107, 101, 114)]          = Color3.fromRGB(140, 100, 80),
+[string.char(82, 117, 105, 110, 101, 100, 32, 83, 109, 97, 108, 108, 32, 67, 97, 115, 101)]      = Color3.fromRGB(160, 110, 90),
+[string.char(83, 97, 102, 101)]                   = Color3.fromRGB(80,  80,  200),
+[string.char(83, 101, 114, 118, 101, 114, 32, 85, 110, 105, 116)]            = Color3.fromRGB(60,  140, 255),
+[string.char(83, 109, 97, 108, 108, 32, 67, 97, 115, 101)]             = Color3.fromRGB(255, 180, 80),
+[string.char(83, 116, 97, 110, 100, 105, 110, 103, 65, 84, 77)]            = Color3.fromRGB(40,  200, 200),
+[string.char(83, 116, 111, 118, 101)]                  = Color3.fromRGB(220, 120, 60),
+[string.char(83, 117, 114, 103, 101, 111, 110, 39, 115, 32, 84, 111, 111, 108, 32, 83, 104, 101, 108, 102)]   = Color3.fromRGB(100, 255, 200),
+[string.char(84, 97, 108, 108, 70, 114, 105, 100, 103, 101)]             = Color3.fromRGB(160, 220, 255),
+[string.char(84, 101, 99, 104, 110, 105, 99, 97, 108, 32, 83, 104, 101, 108, 102)]        = Color3.fromRGB(120, 160, 220),
+[string.char(84, 111, 111, 108, 32, 83, 104, 101, 108, 102)]             = Color3.fromRGB(200, 160, 80),
+[string.char(84, 111, 111, 108, 98, 111, 120)]                = Color3.fromRGB(255, 140, 20),
+[string.char(87, 97, 108, 108, 65, 84, 77)]                = Color3.fromRGB(20,  180, 180),
+[string.char(87, 97, 115, 104, 105, 110, 103, 32, 77, 97, 99, 104, 105, 110, 101)]        = Color3.fromRGB(140, 200, 255),
+[string.char(87, 101, 97, 112, 111, 110, 32, 66, 111, 120)]             = Color3.fromRGB(255, 60,  60),
+[string.char(87, 101, 97, 112, 111, 110, 32, 76, 111, 99, 107, 101, 114)]          = Color3.fromRGB(220, 40,  40),
+[string.char(87, 111, 111, 100, 101, 110, 32, 67, 114, 97, 116, 101)]           = Color3.fromRGB(180, 120, 40),
+}
+local weaponTiers = {
+[string.char(51, 49, 49, 32, 68, 111, 117, 98, 108, 101, 32, 66, 97, 114, 114, 101, 108)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110), [string.char(56, 55, 48, 32, 77, 67, 83)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(65, 75, 45, 55, 52, 77)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),           [string.char(65, 75, 83, 45, 55, 52, 85)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(65, 83, 32, 86, 65, 76)]=string.char(109, 121, 116, 104, 105, 99),               [string.char(65, 87, 80)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(66, 101, 114, 101, 116, 116, 97, 32, 57, 50, 88)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),      [string.char(67, 105, 116, 111, 114, 105, 32, 55, 50, 53)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(67, 77, 77, 71, 32, 77, 107, 52, 55, 32, 77, 117, 116, 97, 110, 116)]=string.char(109, 121, 116, 104, 105, 99),     [string.char(67, 111, 108, 116, 32, 80, 121, 116, 104, 111, 110)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(68, 101, 97, 103, 108, 101)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),           [string.char(68, 73, 89, 32, 70, 108, 97, 109, 101, 116, 104, 114, 111, 119, 101, 114)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(68, 80, 45, 50, 55)]=string.char(109, 121, 116, 104, 105, 99),                [string.char(71, 76, 32, 49, 57, 32, 71, 101, 110, 52)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(72, 75, 52, 49, 54)]=string.char(109, 121, 116, 104, 105, 99),                [string.char(73, 110, 116, 101, 114, 118, 101, 110, 116, 105, 111, 110, 32, 77, 50, 48, 48)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(75, 83, 45, 50, 51, 77)]=string.char(109, 121, 116, 104, 105, 99),               [string.char(75, 82, 73, 83, 83, 32, 86, 101, 99, 116, 111, 114)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(77, 49, 54, 65, 49)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),            [string.char(77, 49, 57, 49, 49)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(77, 50, 52, 57)]=string.char(109, 121, 116, 104, 105, 99),                 [string.char(77, 52, 32, 66, 101, 110, 101, 108, 108, 105)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 52, 65, 49)]=string.char(109, 121, 116, 104, 105, 99),                 [string.char(77, 55, 57)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(77, 65, 67, 45, 49, 48)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),           [string.char(77, 97, 107, 97, 114, 111, 118)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(77, 107, 49, 52, 32, 69, 66, 82)]=string.char(109, 121, 116, 104, 105, 99),             [string.char(77, 80, 51, 52)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(77, 80, 53, 65, 53)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),            [string.char(77, 80, 55)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(77, 80, 57)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),              [string.char(80, 57, 48)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(81, 66, 90, 45, 57, 53)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),           [string.char(82, 80, 71, 45, 55)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(82, 80, 75)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),              [string.char(83, 65, 45, 53, 56)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 97, 105, 103, 97, 32, 49, 50)]=string.char(109, 121, 116, 104, 105, 99),             [string.char(83, 67, 65, 82, 45, 72)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 75, 83)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),              [string.char(83, 82, 49, 54)]=string.char(109, 121, 116, 104, 105, 99),
+[string.char(83, 86, 45, 57, 56)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),            [string.char(83, 86, 68)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),
+[string.char(85, 77, 80, 52, 53)]=string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110),            [string.char(86, 83, 83, 32, 86, 105, 110, 116, 111, 114, 101, 122)]=string.char(109, 121, 116, 104, 105, 99),
+}
+local weaponNames = {}
+for k in pairs(weaponTiers) do weaponNames[#weaponNames+1] = k end
+table.sort(weaponNames)
+local OFF = {}
+do
+local _raw = {}
+pcall(function()
+local res = game:HttpGet(string.char(104, 116, 116, 112, 115, 58, 47, 47, 111, 102, 102, 115, 101, 116, 115, 46, 105, 109, 116, 104, 101, 111, 46, 108, 111, 108, 47, 79, 102, 102, 115, 101, 116, 115, 46, 106, 115, 111, 110))
+_raw = (HttpService:JSONDecode(res) or {}).Offsets or {}
+end)
+local function o(sec, key, fb)
+local s = _raw[sec]; return (s and s[key]) or fb
+end
+OFF.FOG_END      = o(string.char(76, 105, 103, 104, 116, 105, 110, 103),   string.char(70, 111, 103, 69, 110, 100),   0x13C)
+OFF.FOG_START    = o(string.char(76, 105, 103, 104, 116, 105, 110, 103),   string.char(70, 111, 103, 83, 116, 97, 114, 116), 0x140)
+OFF.ATMO_DENSITY = o(string.char(65, 116, 109, 111, 115, 112, 104, 101, 114, 101), string.char(68, 101, 110, 115, 105, 116, 121),  0x0E8)
+OFF.ATMO_GLARE   = o(string.char(65, 116, 109, 111, 115, 112, 104, 101, 114, 101), string.char(71, 108, 97, 114, 101),    0x0EC)
+OFF.ATMO_HAZE    = o(string.char(65, 116, 109, 111, 115, 112, 104, 101, 114, 101), string.char(72, 97, 122, 101),     0x0F0)
+OFF.ATMO_OFFSET  = o(string.char(65, 116, 109, 111, 115, 112, 104, 101, 114, 101), string.char(79, 102, 102, 115, 101, 116),   0x0F4)
+end
+local FOG = {
+lightingAddr=0, atmoAddr=0,
+origEnd=100000, origStart=0,
+origDensity=0.3, origGlare=0, origHaze=0, origOffset=0.25,
+captured=false, enabled=false, last=false,
+}
+local function captureFog()
+FOG.captured = true
+pcall(function() FOG.lightingAddr = Lighting.Address or 0 end)
+pcall(function() FOG.origEnd = Lighting.FogEnd; FOG.origStart = Lighting.FogStart end)
+local atmo = Lighting:FindFirstChildOfClass(string.char(65, 116, 109, 111, 115, 112, 104, 101, 114, 101))
+if atmo then
+pcall(function() FOG.atmoAddr = atmo.Address or 0 end)
+pcall(function()
+FOG.origDensity = atmo.Density; FOG.origGlare  = atmo.Glare
+FOG.origHaze    = atmo.Haze;    FOG.origOffset = atmo.Offset
+end)
+end
+end
+local function applyNoFog()
+if not FOG.captured then captureFog() end
+if not memory_write then return end
+if FOG.lightingAddr ~= 0 then
+memory_write(string.char(102, 108, 111, 97, 116), FOG.lightingAddr + OFF.FOG_END,   9e8)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.lightingAddr + OFF.FOG_START, 9e8)
+end
+if FOG.atmoAddr ~= 0 then
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_DENSITY, 0)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_GLARE,   0)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_HAZE,    0)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_OFFSET,  0)
+end
+end
+local function restoreFog()
+if not FOG.captured or not memory_write then return end
+if FOG.lightingAddr ~= 0 then
+memory_write(string.char(102, 108, 111, 97, 116), FOG.lightingAddr + OFF.FOG_END,   FOG.origEnd)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.lightingAddr + OFF.FOG_START, FOG.origStart)
+end
+if FOG.atmoAddr ~= 0 then
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_DENSITY, FOG.origDensity)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_GLARE,   FOG.origGlare)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_HAZE,    FOG.origHaze)
+memory_write(string.char(102, 108, 111, 97, 116), FOG.atmoAddr + OFF.ATMO_OFFSET,  FOG.origOffset)
+end
+end
+local RECOIL = {
+enabled = false,
+cache   = nil,
+keys    = {string.char(118, 80, 117, 110, 99, 104, 66, 97, 115, 101),string.char(104, 80, 117, 110, 99, 104, 66, 97, 115, 101),string.char(118, 101, 108),string.char(115, 112, 114, 101, 97, 100, 82, 101, 100, 117, 99, 101),string.char(115, 112, 114, 101, 97, 100),string.char(119, 101, 105, 103, 104, 116),string.char(117, 110, 65, 105, 109, 87, 101, 105, 103, 104, 116),string.char(97, 105, 109, 87, 101, 105, 103, 104, 116)},
+payload = {
+vPunchBase=0, hPunchBase=0, spreadReduce=100,
+spread={y={[1]=0,[2]=0,[3]=0},x={[1]=0,[2]=0,[3]=0},z={[1]=0,[2]=0,[3]=0}},
+vel=100000, weight=0, aimWeight=0, unAimWeight=0,
+},
+}
+local COMBAT = {
+active      = false,
+keyType     = string.char(107, 101, 121),
+keyCode     = 0x71,
+keyName     = string.char(70, 50),
+listening   = false,
+wasDown     = false,
+}
+local function combatKeyDown()
+if COMBAT.keyType == string.char(109, 111, 117, 115, 101, 49) then return ismouse1pressed()
+elseif COMBAT.keyType == string.char(109, 111, 117, 115, 101, 50) then return ismouse2pressed()
+elseif COMBAT.keyType == string.char(107, 101, 121) and COMBAT.keyCode then
+return iskeypressed(COMBAT.keyCode)
+end
+return false
+end
+local function combatHideLoot()
+end
+local INSTANT_LOOT = { enabled=false, loopThread=nil }
+local IL_GC_KEYS = {
+string.char(115, 101, 97, 114, 99, 104, 95, 115, 112, 101, 101, 100),string.char(115, 101, 97, 114, 99, 104, 83, 112, 101, 101, 100),string.char(83, 101, 97, 114, 99, 104, 83, 112, 101, 101, 100),
+string.char(115, 101, 97, 114, 99, 104, 84, 105, 109, 101),string.char(83, 101, 97, 114, 99, 104, 84, 105, 109, 101),string.char(115, 101, 97, 114, 99, 104, 68, 117, 114, 97, 116, 105, 111, 110),
+string.char(108, 111, 111, 116, 83, 101, 97, 114, 99, 104, 84, 105, 109, 101),string.char(99, 111, 110, 116, 97, 105, 110, 101, 114, 83, 101, 97, 114, 99, 104, 84, 105, 109, 101),
+string.char(108, 101, 118, 101, 108),string.char(114, 101, 113, 117, 105, 114, 101, 100, 95, 108, 101, 118, 101, 108),
+}
+local IL_GC_VALUES = {
+search_speed=999999, searchSpeed=999999, SearchSpeed=999999,
+searchTime=0, SearchTime=0, searchDuration=0,
+lootSearchTime=0, containerSearchTime=0,
+level=50, required_level=0,
+}
+local IL_CACHE = nil
+local function il_applyGC()
+pcall(function()
+if not IL_CACHE or #IL_CACHE == 0 then
+IL_CACHE = getgc(IL_GC_KEYS)
+end
+if IL_CACHE and #IL_CACHE > 0 then
+applygc(IL_CACHE, IL_GC_VALUES)
+end
+end)
+end
+local function il_patchSkillsOn(model)
+if not model then return end
+local playerData = model:FindFirstChild(string.char(112, 108, 97, 121, 101, 114, 68, 97, 116, 97))
+local skills     = playerData and playerData:FindFirstChild(string.char(115, 107, 105, 108, 108, 115))
+if not skills then return end
+local scavenger  = skills:FindFirstChild(string.char(83, 99, 97, 118, 101, 110, 103, 101, 114))
+local level      = scavenger and scavenger:FindFirstChild(string.char(108, 101, 118, 101, 108))
+if level then pcall(function() level.Value = 50 end) end
+end
+local function il_patchLocal()
+local lp = Players.LocalPlayer
+if not lp then return end
+local char = lp.Character
+il_patchSkillsOn(char)
+if char then
+local ok, raidFolder = pcall(function() return char.Parent end)
+if ok and raidFolder and raidFolder ~= workspace then
+il_patchSkillsOn(raidFolder:FindFirstChild(lp.Name))
+end
+end
+end
+local function startInstantLoot()
+IL_CACHE = nil
+il_applyGC()
+il_patchLocal()
+INSTANT_LOOT.loopThread = task.spawn(function()
+while INSTANT_LOOT.enabled do
+task.wait(2)
+if not INSTANT_LOOT.enabled then break end
+il_applyGC()
+il_patchLocal()
+end
+end)
+end
+local function stopInstantLoot()
+INSTANT_LOOT.enabled    = false
+INSTANT_LOOT.loopThread = nil
+IL_CACHE = nil
+end
+local FONT = Drawing.Fonts.Monospace
+local function poolVis(w,v) if w.vis~=v then w.o.Visible=v; w.vis=v end end
+local function poolPos(w,x,y) if w.px~=x or w.py~=y then w.o.Position=Vector2.new(x,y); w.px=x; w.py=y end end
+local function poolTxt(w,s) if w.txt~=s then w.o.Text=s; w.txt=s end end
+local function poolCol(w,c) if w.col~=c then w.o.Color=c; w.col=c end end
+local function wVis(w,v)   if w.vis~=v then w.o.Visible=v; w.vis=v end end
+local function wCol(w,v)   if w.col~=v then w.o.Color=v; w.col=v end end
+local function wPos(w,x,y) if w.px~=x or w.py~=y then w.o.Position=Vector2.new(x,y); w.px=x; w.py=y end end
+local function wText(w,s)  if w.txt~=s then w.o.Text=s; w.txt=s end end
+local function wSeg(w,fx,fy,tx,ty)
+if w.fx~=fx or w.fy~=fy then w.o.From=Vector2.new(fx,fy); w.fx=fx; w.fy=fy end
+if w.gx~=tx or w.gy~=ty then w.o.To=Vector2.new(tx,ty); w.gx=tx; w.gy=ty end
+end
+if _G.HAVOC_ESP_CLEANUP then pcall(_G.HAVOC_ESP_CLEANUP) end
+local running    = true
+local drawings   = {}
+local renderConn = nil
+local function track(obj) drawings[obj]=true; return obj end
+_G.HAVOC_ESP_CLEANUP = function()
+running = false
+if renderConn then pcall(function() renderConn:Disconnect() end); renderConn=nil end
+for obj in pairs(drawings) do pcall(function() obj:Remove() end) end
+drawings = {}
+pcall(restoreFog)
+stopInstantLoot()
+end
+local AIC = {
+NAME    = Color3.fromRGB(238, 238, 238),
+DIST    = Color3.fromRGB(205, 205, 205),
+WPN     = Color3.fromRGB(205, 205, 205),
+HP      = Color3.fromRGB(120, 235, 120),
+HP_BG   = Color3.fromRGB(40,  40,  40),
+BOX     = Color3.fromRGB(255, 80,  80),
+TRACER  = Color3.fromRGB(255, 80,  80),
+CORPSE  = Color3.fromRGB(180, 180, 180),
+PLAYER_NAME   = Color3.fromRGB(80,  220, 255),
+PLAYER_BOX    = Color3.fromRGB(80,  220, 255),
+PLAYER_TRACER = Color3.fromRGB(80,  220, 255),
+PLAYER_HP     = Color3.fromRGB(80,  220, 255),
+MAX_SLOTS  = 128,
+HEAD_OFF   = Vector3.new(0, 2.8, 0),
+FOOT_OFF   = Vector3.new(0, 3.2, 0),
+TEXT_SIZE  = 13,
+CHARW      = 7,
+GAP        = 6,
+}
+local PLAYER_ESP = {
+enabled  = false,
+distMax  = 1500,
+snap = { box=true, name=true, dist=true, health=true, weapon=true, tracer=false },
+MAX_SLOTS = 64,
+slots     = {},
+lastDrawn = 0,
+items     = {},
+timer     = 0,
+updateRate= 15,
+}
+local function newLine(color)
+local l=track(Drawing.new(string.char(76, 105, 110, 101)))
+l.Thickness=1; l.Color=color or Color3.new(1,1,1); l.Visible=false; return l
+end
+local function newText(color)
+local t=track(Drawing.new(string.char(84, 101, 120, 116)))
+t.Size=AIC.TEXT_SIZE; t.Center=true; t.Outline=true
+t.Font=FONT; t.Color=color or AIC.NAME; t.Visible=false; return t
+end
+local function newDot(color)
+local d=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+d.Radius=4; d.Filled=true; d.Thickness=1
+d.Color=color or Color3.new(1,1,1); d.Visible=false; return d
+end
+local function wrap(o) return {o=o} end
+local function hpColor(ratio)
+ratio=clamp(ratio,0,1)
+return Color3.fromRGB(floor(255*(1-ratio)),floor(235*ratio),60)
+end
+local function newSlot(boxColor, tracerColor, nameColor)
+boxColor    = boxColor    or AIC.BOX
+tracerColor = tracerColor or AIC.TRACER
+nameColor   = nameColor   or AIC.NAME
+local hpBg=track(Drawing.new(string.char(76, 105, 110, 101))); hpBg.Thickness=3; hpBg.Color=AIC.HP_BG; hpBg.Visible=false
+local hpFg=track(Drawing.new(string.char(76, 105, 110, 101))); hpFg.Thickness=3; hpFg.Color=AIC.HP;    hpFg.Visible=false
+return {
+box    = {wrap(newLine(boxColor)),wrap(newLine(boxColor)),wrap(newLine(boxColor)),wrap(newLine(boxColor))},
+hpBg   = wrap(hpBg), hpFg=wrap(hpFg),
+name   = wrap(newText(nameColor)), dist=wrap(newText(AIC.DIST)),
+wpn    = wrap(newText(AIC.WPN)),  tracer=wrap(newLine(tracerColor)),
+dot    = wrap(newDot(AIC.CORPSE)),
+}
+end
+local slots = {}
+for i=1,AIC.MAX_SLOTS do slots[i]=newSlot(AIC.BOX, AIC.TRACER, AIC.NAME) end
+for i=1,PLAYER_ESP.MAX_SLOTS do PLAYER_ESP.slots[i]=newSlot(AIC.PLAYER_BOX, AIC.PLAYER_TRACER, AIC.PLAYER_NAME) end
+local function hideSlot(s)
+for i=1,4 do wVis(s.box[i],false) end
+wVis(s.hpBg,false); wVis(s.hpFg,false)
+wVis(s.name,false); wVis(s.dist,false)
+wVis(s.wpn,false);  wVis(s.tracer,false)
+wVis(s.dot,false)
+end
+local function textW(t) return #t*AIC.CHARW end
+local function drawTextRow(w,cx,y,text,color)
+wText(w,text); wPos(w,cx,y); wCol(w,color); wVis(w,true)
+end
+local function drawBox(s,x,y,w,h,col)
+wSeg(s.box[1],x,y,x+w,y);   wSeg(s.box[2],x,y+h,x+w,y+h)
+wSeg(s.box[3],x,y,x,y+h);   wSeg(s.box[4],x+w,y,x+w,y+h)
+for i=1,4 do wCol(s.box[i],col); wVis(s.box[i],true) end
+end
+local function rebuildPlayerESP()
+local char   = LocalPlayer and LocalPlayer.Character
+local myHRP  = char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+local myPos  = myHRP and myHRP.Position
+if not myPos then PLAYER_ESP.items={}; return end
+local myX,myY,myZ = myPos.X,myPos.Y,myPos.Z
+local distSqMax    = PLAYER_ESP.distMax^2
+local raw={}
+for _,plr in ipairs(Players:GetPlayers()) do
+if plr ~= LocalPlayer then
+local pchar = plr.Character
+local hrp   = pchar and pchar:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if hrp and hrp.Parent then
+local rp = hrp.Position
+local dx,dy,dz = rp.X-myX, rp.Y-myY, rp.Z-myZ
+local dSq = dx*dx+dy*dy+dz*dz
+if dSq <= distSqMax then
+local hp, maxhp, hRatio, hColor
+local hum = pchar:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
+if hum then
+pcall(function() hp=hum.Health; maxhp=hum.MaxHealth end)
+if hp and maxhp and maxhp>0 then
+hRatio = clamp(hp/maxhp,0,1)
+hColor = hpColor(hRatio)
+end
+end
+local wpnName
+local tool = pchar:FindFirstChildOfClass(string.char(84, 111, 111, 108))
+if tool then wpnName = tool.Name end
+raw[#raw+1] = {
+part=hrp, name=string.char(91, 80, 76, 65, 89, 69, 82, 93, 32)..plr.Name,
+distText=floor(sqrt(dSq))..string.char(109),
+healthRatio=hRatio, healthColor=hColor,
+weapon=wpnName, _distSq=dSq,
+}
+end
+end
+end
+end
+table.sort(raw, function(a,b) return a._distSq < b._distSq end)
+local out={}
+for _,v in ipairs(raw) do
+if #out >= PLAYER_ESP.MAX_SLOTS then break end
+out[#out+1]=v
+end
+PLAYER_ESP.items=out
+end
+local function drawSlot(s, it, snap, nameColor, boxColor, tracerColor, vpCX, vpCY)
+local part=it.part
+if not (part and part.Parent) then return false end
+local rp=part.Position
+local topPos,topOn=WorldToScreen(rp+AIC.HEAD_OFF)
+if not topOn then return false end
+local botPos,botOn=WorldToScreen(rp-AIC.FOOT_OFF)
+local hx=topPos.X; local rowY=topPos.Y-AIC.TEXT_SIZE-2
+if snap.box and botOn then
+local h=max(abs(botPos.Y-topPos.Y),1); local w=h*0.5
+drawBox(s, hx-w*0.5, topPos.Y, w, h, boxColor)
+else for i=1,4 do wVis(s.box[i],false) end end
+if snap.health and it.healthRatio and botOn then
+local charH=max(abs(botPos.Y-topPos.Y),10)
+local barX=hx-charH*0.25-5; local fillH=max(charH*it.healthRatio,1)
+wSeg(s.hpBg,barX,topPos.Y,barX,topPos.Y+charH)
+wCol(s.hpBg,AIC.HP_BG); wVis(s.hpBg,true)
+wSeg(s.hpFg,barX,topPos.Y+charH,barX,topPos.Y+charH-fillH)
+wCol(s.hpFg,it.healthColor or AIC.HP); wVis(s.hpFg,true)
+else wVis(s.hpBg,false); wVis(s.hpFg,false) end
+local nmTxt=snap.name and it.name or nil
+local dsTxt=snap.dist and it.distText or nil
+local nmW=nmTxt and textW(nmTxt) or 0
+local dsW=dsTxt and textW(dsTxt) or 0
+local total,cnt=0,0
+if nmTxt then total=total+nmW; cnt=cnt+1 end
+if dsTxt then total=total+dsW; cnt=cnt+1 end
+if cnt>1 then total=total+AIC.GAP*(cnt-1) end
+local x=hx-total*0.5
+if nmTxt then drawTextRow(s.name,x+nmW*0.5,rowY,nmTxt,nameColor); x=x+nmW+AIC.GAP
+else wVis(s.name,false) end
+if dsTxt then drawTextRow(s.dist,x+dsW*0.5,rowY,dsTxt,AIC.DIST)
+else wVis(s.dist,false) end
+if snap.weapon and it.weapon and botOn then
+drawTextRow(s.wpn, hx, botPos.Y+2, it.weapon, AIC.WPN)
+else wVis(s.wpn,false) end
+wVis(s.dot,false)
+if snap.tracer then
+wSeg(s.tracer, vpCX, vpCY, hx, topPos.Y)
+wCol(s.tracer, tracerColor); wVis(s.tracer, true)
+else wVis(s.tracer,false) end
+return true
+end
+local function readWeapon(model)
+local tool=model:FindFirstChildOfClass(string.char(84, 111, 111, 108))
+if tool then return tool.Name end
+end
+local function buildPlayerCharSet()
+local set={}
+for _,plr in ipairs(Players:GetPlayers()) do
+local c=plr.Character; if c then set[c]=true end
+end
+return set
+end
+local function collectFrom(inst,myChar,playerCharSet,out,depth)
+if depth>8 then return end
+local ok,kids=pcall(function() return inst:GetChildren() end)
+if not ok or not kids then return end
+for _,child in ipairs(kids) do
+if child~=myChar and not playerCharSet[child] then
+local hum
+pcall(function() hum=child:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100)) end)
+if hum then
+local hrp=child:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+or child:FindFirstChild(string.char(84, 111, 114, 115, 111)) or child:FindFirstChild(string.char(72, 101, 97, 100))
+if not hrp then pcall(function() hrp=child:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116)) end) end
+if hrp then
+local hp,maxhp
+pcall(function() hp=hum.Health; maxhp=hum.MaxHealth end)
+out[#out+1]={model=child,hrp=hrp,hp=hp,maxhp=maxhp,weapon=readWeapon(child)}
+end
+else
+local cn=child.ClassName
+if cn==string.char(77, 111, 100, 101, 108) or cn==string.char(70, 111, 108, 100, 101, 114) then collectFrom(child,myChar,playerCharSet,out,depth+1) end
+end
+end
+end
+end
+local CHARS = { folder=nil, cache={}, stamp=0 }
+local function countRigs(container)
+local ok,kids=pcall(function() return container:GetChildren() end)
+if not ok or not kids then return 0 end
+local n=0
+for _,c in ipairs(kids) do
+if c.ClassName==string.char(77, 111, 100, 101, 108) then
+local ok2,hum=pcall(function() return c:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100)) end)
+if ok2 and hum then n=n+1 end
+end
+end
+return n
+end
+local function resolveCharFolder()
+local ch=LocalPlayer and LocalPlayer.Character
+if ch then
+local ok,par=pcall(function() return ch.Parent end)
+if ok and par and par~=workspace and countRigs(par)>=1 then return par end
+end
+local best,bestN=nil,0
+local ok,kids=pcall(function() return workspace:GetChildren() end)
+if ok and kids then
+for _,c in ipairs(kids) do
+local cn=c.ClassName
+if cn==string.char(77, 111, 100, 101, 108) or cn==string.char(70, 111, 108, 100, 101, 114) then
+local n=countRigs(c); if n>bestN then bestN=n; best=c end
+end
+end
+end
+if bestN>=1 then return best end
+end
+local function getCharFolder()
+if CHARS.folder then
+local ok,par=pcall(function() return CHARS.folder.Parent end)
+if ok and par then return CHARS.folder end; CHARS.folder=nil
+end
+CHARS.folder=resolveCharFolder(); return CHARS.folder
+end
+local function getCharacters()
+local now=os.clock()
+if (now-CHARS.stamp)<0.5 then return CHARS.cache end
+CHARS.stamp=now; local out={}
+local folder=getCharFolder()
+local myChar=LocalPlayer and LocalPlayer.Character
+local playerCharSet=buildPlayerCharSet()
+if folder then pcall(collectFrom, folder, myChar, playerCharSet, out, 0) end
+CHARS.cache=out; return out
+end
+local FOLDERS = { item=nil, crate=nil, sentry=nil, corpse=nil, slider=nil, mine=nil, tripmine=nil }
+local function getItemFolder()
+if FOLDERS.item then local ok,par=pcall(function() return FOLDERS.item.Parent end)
+if ok and par then return FOLDERS.item end; FOLDERS.item=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots:FindFirstChild(string.char(73, 116, 101, 109, 115)) end)
+FOLDERS.item=ok and f or nil; return FOLDERS.item
+end
+local function getCrateFolder()
+if FOLDERS.crate then local ok,par=pcall(function() return FOLDERS.crate.Parent end)
+if ok and par then return FOLDERS.crate end; FOLDERS.crate=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots.Loots:FindFirstChild(string.char(67, 114, 97, 116, 101, 115)) end)
+FOLDERS.crate=ok and f or nil; return FOLDERS.crate
+end
+local function getSentryFolder()
+if FOLDERS.sentry then local ok,par=pcall(function() return FOLDERS.sentry.Parent end)
+if ok and par then return FOLDERS.sentry end; FOLDERS.sentry=nil end
+local ok,f=pcall(function() return workspace.Buildings.EventObjects.Sentries end)
+FOLDERS.sentry=ok and f or nil; return FOLDERS.sentry
+end
+local function getCorpseFolder()
+if FOLDERS.corpse then local ok,par=pcall(function() return FOLDERS.corpse.Parent end)
+if ok and par then return FOLDERS.corpse end; FOLDERS.corpse=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots.Loots:FindFirstChild(string.char(67, 104, 97, 114, 97, 99, 116, 101, 114, 115)) end)
+FOLDERS.corpse=ok and f or nil; return FOLDERS.corpse
+end
+local function getSliderFolder()
+if FOLDERS.slider then local ok,par=pcall(function() return FOLDERS.slider.Parent end)
+if ok and par then return FOLDERS.slider end; FOLDERS.slider=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots.Interactable:FindFirstChild(string.char(75, 101, 121, 99, 97, 114, 100, 83, 108, 105, 100, 101, 114, 115)) end)
+FOLDERS.slider=ok and f or nil; return FOLDERS.slider
+end
+local function getMineFolder()
+if FOLDERS.mine then local ok,par=pcall(function() return FOLDERS.mine.Parent end)
+if ok and par then return FOLDERS.mine end; FOLDERS.mine=nil end
+local ok,f=pcall(function() return workspace.Buildings.EventObjects.Minefields end)
+FOLDERS.mine=ok and f or nil; return FOLDERS.mine
+end
+local function getTripmineFolder()
+if FOLDERS.tripmine then local ok,par=pcall(function() return FOLDERS.tripmine.Parent end)
+if ok and par then return FOLDERS.tripmine end; FOLDERS.tripmine=nil end
+local ok,f=pcall(function() return workspace.Buildings.EnvInteractable.Mines:FindFirstChild(string.char(84, 114, 105, 112, 109, 105, 110, 101, 115)) end)
+FOLDERS.tripmine=ok and f or nil; return FOLDERS.tripmine
+end
+local LOOT = { POOL_SIZE=200, TTL=1.0, labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={} }
+for i=1,LOOT.POOL_SIZE do
+local lbl=track(Drawing.new(string.char(84, 101, 120, 116)))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Visible=false
+LOOT.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=Color3.new(1,1,1)}
+local dot=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Visible=false
+LOOT.dotPool[i]={o=dot,vis=false,px=0,py=0,col=Color3.new(1,1,1)}
+end
+local function flushLootPool()
+for i=1,LOOT.lastDrawn do poolVis(LOOT.labelPool[i],false); poolVis(LOOT.dotPool[i],false) end
+LOOT.lastDrawn=0; LOOT.cache={}
+end
+local function rebuildLootCache()
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not hrp then LOOT.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=_G.ESP.MaxDistance^2
+local itemSet,crateSet={},{}
+for _,v in ipairs(_G.ESP.SelectedItems)  do itemSet[v]=true end
+for _,v in ipairs(_G.ESP.SelectedCrates) do crateSet[v]=true end
+local out={}
+local function collect(folder,colorTable,setTable)
+if not folder then return end
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then return end
+for _,obj in ipairs(kids) do
+if #out>=LOOT.POOL_SIZE then break end
+if setTable[obj.Name] then
+local root=obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+if root and root.Parent then
+local rp=root.Position
+local dx,dy,dz=rp.X-myX,rp.Y-myY,rp.Z-myZ
+if dx*dx+dy*dy+dz*dz<=maxDistSq then
+out[#out+1]={root=root,name=obj.Name,color=colorTable[obj.Name] or Color3.new(1,1,1),dist=floor(sqrt(dx*dx+dy*dy+dz*dz))}
+end
+end
+end
+end
+end
+collect(getItemFolder(),itemColors,itemSet)
+collect(getCrateFolder(),crateColors,crateSet)
+LOOT.cache=out
+end
+local WPN = { POOL_SIZE=100, labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={} }
+for i=1,WPN.POOL_SIZE do
+local lbl=track(Drawing.new(string.char(84, 101, 120, 116)))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Visible=false
+WPN.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=Color3.new(1,1,1)}
+local dot=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Visible=false
+WPN.dotPool[i]={o=dot,vis=false,px=0,py=0,col=Color3.new(1,1,1)}
+end
+local function flushWeaponPool()
+for i=1,WPN.lastDrawn do poolVis(WPN.labelPool[i],false); poolVis(WPN.dotPool[i],false) end
+WPN.lastDrawn=0; WPN.cache={}
+end
+local function rebuildWeaponCache()
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not hrp then WPN.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=_G.WEAPON_ESP.MaxDistance^2
+local selSet={}
+for _,v in ipairs(_G.WEAPON_ESP.SelectedWeapons) do selSet[v]=true end
+local out={}
+local itemFolder=getItemFolder()
+if itemFolder then
+local ok,kids=pcall(function() return itemFolder:GetChildren() end)
+if ok and kids then
+for _,obj in ipairs(kids) do
+if #out>=WPN.POOL_SIZE then break end
+if selSet[obj.Name] then
+local root=obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+if root and root.Parent then
+local rp=root.Position
+local dx,dy,dz=rp.X-myX,rp.Y-myY,rp.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then
+local tier=weaponTiers[obj.Name] or string.char(99, 111, 109, 109, 111, 110, 95, 103, 117, 110)
+local color=TIER_COLORS[tier] or Color3.new(1,1,1)
+out[#out+1]={root=root,name=obj.Name,color=color,dist=floor(sqrt(dSq))}
+end
+end
+end
+end
+end
+end
+WPN.cache=out
+end
+local TURRET = {
+COL=Color3.fromRGB(255,60,60), POOL_SIZE=50, TTL=2.0,
+labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
+enabled=false, maxDist=1000,
+}
+for i=1,TURRET.POOL_SIZE do
+local lbl=track(Drawing.new(string.char(84, 101, 120, 116)))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=TURRET.COL; lbl.Visible=false
+TURRET.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt=""}
+local dot=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+dot.Radius=5; dot.Filled=true; dot.Thickness=1; dot.Color=TURRET.COL; dot.Visible=false
+TURRET.dotPool[i]={o=dot,vis=false,px=0,py=0}
+end
+local function rebuildTurretCache()
+local folder=getSentryFolder(); if not folder then TURRET.cache={}; return end
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)); if not hrp then TURRET.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=TURRET.maxDist^2; local out={}
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then TURRET.cache={}; return end
+for _,obj in ipairs(kids) do
+if #out>=TURRET.POOL_SIZE then break end
+local anchor=obj:FindFirstChild(string.char(66, 97, 115, 101)) or obj:FindFirstChild(string.char(82, 111, 116, 97, 116, 111, 114)) or obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+if anchor then
+local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=obj.Name,dist=floor(sqrt(dSq))} end
+end
+end
+TURRET.cache=out
+end
+local CORPSE = {
+COL=Color3.fromRGB(255,255,255), POOL_SIZE=80, TTL=2.0,
+labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
+enabled=false, maxDist=500,
+}
+for i=1,CORPSE.POOL_SIZE do
+local lbl=track(Drawing.new(string.char(84, 101, 120, 116)))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=CORPSE.COL; lbl.Visible=false
+CORPSE.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt=""}
+local dot=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Color=CORPSE.COL; dot.Visible=false
+CORPSE.dotPool[i]={o=dot,vis=false,px=0,py=0}
+end
+local function rebuildCorpseCache()
+local folder=getCorpseFolder(); if not folder then CORPSE.cache={}; return end
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)); if not hrp then CORPSE.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=CORPSE.maxDist^2; local out={}
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then CORPSE.cache={}; return end
+for _,m in ipairs(kids) do
+if #out>=CORPSE.POOL_SIZE then break end
+if m.ClassName==string.char(77, 111, 100, 101, 108) then
+local anchor=m:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)) or m:FindFirstChild(string.char(84, 111, 114, 115, 111))
+or m:FindFirstChild(string.char(72, 101, 97, 100)) or m:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+if anchor then
+local ap=anchor.Position; local dx,dy,dz=ap.X-myX,ap.Y-myY,ap.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=m.Name,dist=floor(sqrt(dSq))} end
+end
+end
+end
+CORPSE.cache=out
+end
+local SLIDER = {
+TIER_COLORS = {
+[0]=Color3.fromRGB(180,180,180),[1]=Color3.fromRGB(100,220,100),
+[2]=Color3.fromRGB(80,160,255), [3]=Color3.fromRGB(180,100,255),
+[4]=Color3.fromRGB(255,180,50), [5]=Color3.fromRGB(255,60,60),
+[6]=Color3.fromRGB(255,215,0),
+},
+FALLBACK=Color3.fromRGB(255,215,0), POOL_SIZE=60, TTL=2.0,
+labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
+enabled=false, maxDist=1000,
+}
+for i=1,SLIDER.POOL_SIZE do
+local lbl=track(Drawing.new(string.char(84, 101, 120, 116)))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=SLIDER.FALLBACK; lbl.Visible=false
+SLIDER.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=SLIDER.FALLBACK}
+local dot=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+dot.Radius=5; dot.Filled=true; dot.Thickness=1; dot.Color=SLIDER.FALLBACK; dot.Visible=false
+SLIDER.dotPool[i]={o=dot,vis=false,px=0,py=0,col=SLIDER.FALLBACK}
+end
+local function getSliderTier(name)
+local tier=name:match(string.char(91, 76, 108, 93, 101, 118, 101, 108, 91, 45, 37, 32, 93, 63, 40, 37, 100, 41)) or name:match(string.char(40, 37, 100, 41))
+if tier then local t=tonumber(tier); if t and t>=0 and t<=6 then return t end end
+end
+local function rebuildSliderCache()
+local folder=getSliderFolder(); if not folder then SLIDER.cache={}; return end
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)); if not hrp then SLIDER.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=SLIDER.maxDist^2; local out={}
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then SLIDER.cache={}; return end
+for _,obj in ipairs(kids) do
+if #out>=SLIDER.POOL_SIZE then break end
+if obj.ClassName==string.char(77, 111, 100, 101, 108) then
+local anchor=obj.PrimaryPart or obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+if anchor then
+local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then
+local tier=getSliderTier(obj.Name)
+local color=(tier and SLIDER.TIER_COLORS[tier]) or SLIDER.FALLBACK
+local label=tier and (string.char(83, 108, 105, 100, 101, 114, 32, 84)..tier) or string.char(75, 101, 121, 99, 97, 114, 100, 32, 83, 108, 105, 100, 101, 114)
+out[#out+1]={anchor=anchor,name=label,color=color,dist=floor(sqrt(dSq))}
+end
+end
+end
+end
+SLIDER.cache=out
+end
+local MINE = {
+COL_MINE=Color3.fromRGB(255,200,0), COL_TRIP=Color3.fromRGB(255,80,80),
+POOL_SIZE=80, TTL=2.0, labelPool={}, dotPool={},
+lastDrawn=0, stamp=0, cache={}, enabled=false, maxDist=500,
+}
+for i=1,MINE.POOL_SIZE do
+local lbl=track(Drawing.new(string.char(84, 101, 120, 116)))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=MINE.COL_MINE; lbl.Visible=false
+MINE.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=MINE.COL_MINE}
+local dot=track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+dot.Radius=6; dot.Filled=true; dot.Thickness=1; dot.Color=MINE.COL_MINE; dot.Visible=false
+MINE.dotPool[i]={o=dot,vis=false,px=0,py=0,col=MINE.COL_MINE}
+end
+local function rebuildMineCache()
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)); if not hrp then MINE.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=MINE.maxDist^2; local out={}
+local function addAnchor(anchor,label,color)
+if #out>=MINE.POOL_SIZE then return end
+local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=label,color=color,dist=floor(sqrt(dSq))} end
+end
+local mineFolder=getMineFolder()
+if mineFolder then
+local ok,zones=pcall(function() return mineFolder:GetChildren() end)
+if ok and zones then
+for _,zone in ipairs(zones) do
+local ok2,hitboxes=pcall(function() return zone:GetChildren() end)
+if ok2 and hitboxes then
+for _,hitbox in ipairs(hitboxes) do
+if hitbox.Name==string.char(77, 105, 110, 101, 72, 105, 116, 98, 111, 120) and hitbox:IsA(string.char(66, 97, 115, 101, 80, 97, 114, 116)) then
+addAnchor(hitbox,string.char(91, 77, 73, 78, 69, 93, 32, 80, 114, 101, 115, 115, 117, 114, 101, 32, 77, 105, 110, 101),MINE.COL_MINE)
+end
+end
+end
+end
+end
+end
+local tripFolder=getTripmineFolder()
+if tripFolder then
+local ok,trips=pcall(function() return tripFolder:GetChildren() end)
+if ok and trips then
+for _,tripmine in ipairs(trips) do
+local ok2,anchor=pcall(function() return tripmine:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116)) end)
+if ok2 and anchor then addAnchor(anchor,string.char(91, 77, 73, 78, 69, 93, 32, 84, 114, 105, 112, 119, 105, 114, 101),MINE.COL_TRIP) end
+end
+end
+end
+MINE.cache=out
+end
+local AIM = {
+enabled=false, fov=150, smooth=0.2, bone=string.char(72, 101, 97, 100),
+showFOV=false, keyType=string.char(109, 111, 117, 115, 101, 50), keyCode=nil, keyName=string.char(77, 66, 50),
+listening=false, lockEnabled=false, lockSmooth=0.35, stickyTarget=nil,
+}
+local VK_NAMES = {
+[0x08]=string.char(66, 97, 99, 107, 115, 112, 97, 99, 101),[0x09]=string.char(84, 97, 98),[0x0D]=string.char(69, 110, 116, 101, 114),
+[0x10]=string.char(83, 104, 105, 102, 116),[0x11]=string.char(67, 116, 114, 108),[0x12]=string.char(65, 108, 116),
+[0x13]=string.char(80, 97, 117, 115, 101),[0x14]=string.char(67, 97, 112, 115, 76, 111, 99, 107),[0x1B]=string.char(69, 115, 99, 97, 112, 101),
+[0x20]=string.char(83, 112, 97, 99, 101),[0x21]=string.char(80, 103, 85, 112),[0x22]=string.char(80, 103, 68, 110),
+[0x23]=string.char(69, 110, 100),[0x24]=string.char(72, 111, 109, 101),
+[0x25]=string.char(76, 101, 102, 116),[0x26]=string.char(85, 112),[0x27]=string.char(82, 105, 103, 104, 116),[0x28]=string.char(68, 111, 119, 110),
+[0x2D]=string.char(73, 110, 115, 101, 114, 116),[0x2E]=string.char(68, 101, 108, 101, 116, 101),
+[0x30]=string.char(48),[0x31]=string.char(49),[0x32]=string.char(50),[0x33]=string.char(51),[0x34]=string.char(52),
+[0x35]=string.char(53),[0x36]=string.char(54),[0x37]=string.char(55),[0x38]=string.char(56),[0x39]=string.char(57),
+[0x41]=string.char(65),[0x42]=string.char(66),[0x43]=string.char(67),[0x44]=string.char(68),[0x45]=string.char(69),
+[0x46]=string.char(70),[0x47]=string.char(71),[0x48]=string.char(72),[0x49]=string.char(73),[0x4A]=string.char(74),
+[0x4B]=string.char(75),[0x4C]=string.char(76),[0x4D]=string.char(77),[0x4E]=string.char(78),[0x4F]=string.char(79),
+[0x50]=string.char(80),[0x51]=string.char(81),[0x52]=string.char(82),[0x53]=string.char(83),[0x54]=string.char(84),
+[0x55]=string.char(85),[0x56]=string.char(86),[0x57]=string.char(87),[0x58]=string.char(88),[0x59]=string.char(89),
+[0x5A]=string.char(90),
+[0x60]=string.char(78, 117, 109, 48),[0x61]=string.char(78, 117, 109, 49),[0x62]=string.char(78, 117, 109, 50),[0x63]=string.char(78, 117, 109, 51),
+[0x64]=string.char(78, 117, 109, 52),[0x65]=string.char(78, 117, 109, 53),[0x66]=string.char(78, 117, 109, 54),[0x67]=string.char(78, 117, 109, 55),
+[0x68]=string.char(78, 117, 109, 56),[0x69]=string.char(78, 117, 109, 57),
+[0x6A]=string.char(78, 117, 109, 42),[0x6B]=string.char(78, 117, 109, 43),[0x6D]=string.char(78, 117, 109, 45),[0x6E]=string.char(78, 117, 109, 46),[0x6F]=string.char(78, 117, 109, 47),
+[0x70]=string.char(70, 49),[0x71]=string.char(70, 50),[0x72]=string.char(70, 51),[0x73]=string.char(70, 52),
+[0x74]=string.char(70, 53),[0x75]=string.char(70, 54),[0x76]=string.char(70, 55),[0x77]=string.char(70, 56),
+[0x78]=string.char(70, 57),[0x79]=string.char(70, 49, 48),[0x7A]=string.char(70, 49, 49),[0x7B]=string.char(70, 49, 50),
+[0x90]=string.char(78, 117, 109, 76, 111, 99, 107),[0x91]=string.char(83, 99, 114, 111, 108, 108, 76, 111, 99, 107),
+[0xA0]=string.char(76, 83, 104, 105, 102, 116),[0xA1]=string.char(82, 83, 104, 105, 102, 116),[0xA2]=string.char(76, 67, 116, 114, 108),[0xA3]=string.char(82, 67, 116, 114, 108),
+[0xA4]=string.char(76, 65, 108, 116),[0xA5]=string.char(82, 65, 108, 116),
+[0x04]=string.char(77, 66, 51),[0x05]=string.char(77, 66, 52),[0x06]=string.char(77, 66, 53),
+}
+local function detectPressedKey()
+if ismouse1pressed() then return string.char(109, 111, 117, 115, 101, 49),nil,string.char(77, 66, 49) end
+if ismouse2pressed() then return string.char(109, 111, 117, 115, 101, 50),nil,string.char(77, 66, 50) end
+for vk=0x03,0xFE do
+if vk~=0x01 and vk~=0x02 then
+if iskeypressed(vk) then
+return string.char(107, 101, 121),vk,(VK_NAMES[vk] or string.format(string.char(48, 120, 37, 48, 50, 88),vk))
+end
+end
+end
+end
+local function isAimbotKeyDown()
+if AIM.keyType==string.char(109, 111, 117, 115, 101, 49) then return ismouse1pressed()
+elseif AIM.keyType==string.char(109, 111, 117, 115, 101, 50) then return ismouse2pressed()
+elseif AIM.keyType==string.char(107, 101, 121) and AIM.keyCode then return iskeypressed(AIM.keyCode)
+end
+return false
+end
+local fovCircle        = track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+fovCircle.Radius       = AIM.fov
+fovCircle.Filled       = false
+fovCircle.Thickness    = 1
+fovCircle.NumSides     = 64
+fovCircle.Color        = Color3.fromRGB(255,255,255)
+fovCircle.Transparency = 0.5
+fovCircle.Visible      = false
+local lockDot          = track(Drawing.new(string.char(67, 105, 114, 99, 108, 101)))
+lockDot.Radius         = 6
+lockDot.Filled         = true
+lockDot.Thickness      = 1
+lockDot.Color          = Color3.fromRGB(255,50,50)
+lockDot.Visible        = false
+local function getNearestNPC()
+local char=LocalPlayer and LocalPlayer.Character
+local myHRP=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not myHRP then return nil end
+local vp=Camera.ViewportSize; local cx,cy=vp.X*0.5,vp.Y*0.5
+local fovSq=AIM.fov*AIM.fov
+if AIM.lockEnabled and AIM.stickyTarget then
+local t=AIM.stickyTarget; local stillAlive=true
+pcall(function()
+local hum=t.Parent and t.Parent:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
+if not hum or hum.Health<=0 then stillAlive=false end
+end)
+if stillAlive and t.Parent then
+local pos,onScreen=WorldToScreen(t.Position)
+if onScreen then
+local dx=pos.X-cx; local dy=pos.Y-cy
+if dx*dx+dy*dy<=fovSq*4 then return t end
+end
+end
+AIM.stickyTarget=nil
+end
+local best,bestDSq=nil,huge
+for _,e in ipairs(getCharacters()) do
+if not (e.hp and e.hp<=0) then
+local bone=e.model:FindFirstChild(AIM.bone)
+or e.model:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)) or e.hrp
+if bone then
+local pos,onScreen=WorldToScreen(bone.Position)
+if onScreen then
+local dx=pos.X-cx; local dy=pos.Y-cy; local dSq=dx*dx+dy*dy
+if dSq<fovSq and dSq<bestDSq then bestDSq=dSq; best=bone end
+end
+end
+end
+end
+if AIM.lockEnabled and best then AIM.stickyTarget=best end
+return best
+end
+local function doAimbot()
+if not AIM.enabled then lockDot.Visible=false; return end
+if not isAimbotKeyDown() then
+if AIM.lockEnabled then AIM.stickyTarget=nil end
+lockDot.Visible=false; return
+end
+local target=getNearestNPC()
+if not target then lockDot.Visible=false; return end
+local pos,onScreen=WorldToScreen(target.Position)
+if not onScreen then lockDot.Visible=false; return end
+local vp=Camera.ViewportSize
+local dx=pos.X-(vp.X*0.5); local dy=pos.Y-(vp.Y*0.5)
+if AIM.lockEnabled and AIM.stickyTarget then
+lockDot.Position=Vector2.new(pos.X,pos.Y); lockDot.Visible=false
+else lockDot.Visible=false end
+if abs(dx)<1 and abs(dy)<1 then return end
+local smooth=AIM.lockEnabled and AIM.lockSmooth or AIM.smooth
+local moveX=floor(dx*smooth); local moveY=floor(dy*smooth)
+if moveX==0 and abs(dx)>=1 then moveX=dx>0 and 1 or -1 end
+if moveY==0 and abs(dy)>=1 then moveY=dy>0 and 1 or -1 end
+mousemoverel(moveX,moveY)
+end
+local function updateFOVCircle()
+if AIM.showFOV and AIM.enabled then
+local vp=Camera.ViewportSize
+fovCircle.Position=Vector2.new(vp.X*0.5,vp.Y*0.5)
+fovCircle.Radius=AIM.fov; fovCircle.Visible=true
+else fovCircle.Visible=false end
+end
+local espTab     = win:Tab(string.char(69, 83, 80),     string.char(101, 121, 101))
+local secLeft    = espTab:Section(string.char(76, 111, 111, 116, 32, 83, 101, 108, 101, 99, 116, 105, 111, 110),string.char(76, 101, 102, 116))
+local secRight   = espTab:Section(string.char(83, 101, 116, 116, 105, 110, 103, 115),string.char(82, 105, 103, 104, 116))
+local visualsTab = win:Tab(string.char(86, 105, 115, 117, 97, 108, 115), string.char(115, 117, 110))
+local visLeft    = visualsTab:Section(string.char(69, 110, 118, 105, 114, 111, 110, 109, 101, 110, 116),string.char(76, 101, 102, 116))
+local combatTab  = win:Tab(string.char(67, 111, 109, 98, 97, 116),  string.char(99, 114, 111, 115, 115, 104, 97, 105, 114))
+local combatLeft = combatTab:Section(string.char(87, 101, 97, 112, 111, 110),string.char(76, 101, 102, 116))
+local combatRight= combatTab:Section(string.char(67, 111, 109, 98, 97, 116, 32, 77, 111, 100, 101),string.char(82, 105, 103, 104, 116))
+local aiTab      = win:Tab(string.char(65, 73, 32, 69, 83, 80),  string.char(117, 115, 101, 114, 115))
+local aiLeft     = aiTab:Section(string.char(65, 73, 47, 83, 99, 97, 118, 32, 69, 83, 80),string.char(76, 101, 102, 116))
+local aiRight    = aiTab:Section(string.char(65, 105, 109, 98, 111, 116),string.char(82, 105, 103, 104, 116))
+local playerTab  = win:Tab(string.char(80, 108, 97, 121, 101, 114, 115), string.char(117, 115, 101, 114))
+local playerLeft = playerTab:Section(string.char(80, 108, 97, 121, 101, 114, 32, 69, 83, 80),string.char(76, 101, 102, 116))
+local dangerTab  = win:Tab(string.char(68, 97, 110, 103, 101, 114),  string.char(115, 104, 105, 101, 108, 100))
+local dangerLeft = dangerTab:Section(string.char(84, 117, 114, 114, 101, 116, 115),string.char(76, 101, 102, 116))
+local _selectedByTier = {}
+local function rebuildSelected()
+local out={}
+for _,bucket in pairs(_selectedByTier) do
+for _,name in ipairs(bucket) do out[#out+1]=name end
+end
+_G.ESP.SelectedItems=out
+end
+secLeft:Toggle(string.char(69, 110, 97, 98, 108, 101, 32, 69, 83, 80),true,function(v) _G.ESP.Enabled=v end)
+secLeft:Divider(string.char(77, 121, 116, 104, 105, 99))
+secLeft:Dropdown(string.char(77, 121, 116, 104, 105, 99, 32, 73, 116, 101, 109, 115),{},tierLists.mythic,true,function(s) _selectedByTier[string.char(109, 121, 116, 104, 105, 99)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(82, 97, 114, 101))
+secLeft:Dropdown(string.char(82, 97, 114, 101, 32, 73, 116, 101, 109, 115),{},tierLists.rare,true,function(s) _selectedByTier[string.char(114, 97, 114, 101)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(85, 110, 99, 111, 109, 109, 111, 110))
+secLeft:Dropdown(string.char(85, 110, 99, 111, 109, 109, 111, 110, 32, 73, 116, 101, 109, 115),{},tierLists.uncommon,true,function(s) _selectedByTier[string.char(117, 110, 99, 111, 109, 109, 111, 110)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(67, 111, 109, 109, 111, 110))
+secLeft:Dropdown(string.char(67, 111, 109, 109, 111, 110, 32, 73, 116, 101, 109, 115),{},tierLists.common,true,function(s) _selectedByTier[string.char(99, 111, 109, 109, 111, 110)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(75, 101, 121, 115))
+secLeft:Dropdown(string.char(75, 101, 121, 115),{},tierLists.keys,true,function(s) _selectedByTier[string.char(107, 101, 121, 115)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(75, 101, 121, 99, 97, 114, 100, 32, 83, 108, 105, 100, 101, 114, 115))
+secLeft:Toggle(string.char(75, 101, 121, 99, 97, 114, 100, 32, 83, 108, 105, 100, 101, 114, 32, 69, 83, 80),false,function(v)
+SLIDER.enabled=v
+if not v then
+for i=1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[i],false); poolVis(SLIDER.dotPool[i],false) end
+SLIDER.lastDrawn=0; SLIDER.cache={}
+end
+end)
+secLeft:Slider(string.char(83, 108, 105, 100, 101, 114, 32, 77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),1000,50,50,3000,string.char(109),function(v) SLIDER.maxDist=v end)
+secLeft:Divider(string.char(85, 115, 97, 98, 108, 101))
+secLeft:Dropdown(string.char(85, 115, 97, 98, 108, 101, 32, 47, 32, 73, 110, 104, 97, 108, 101, 114, 115),{},tierLists.usable,true,function(s) _selectedByTier[string.char(117, 115, 97, 98, 108, 101)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(72, 111, 117, 115, 101, 104, 111, 108, 100))
+secLeft:Dropdown(string.char(72, 111, 117, 115, 101, 104, 111, 108, 100, 32, 73, 116, 101, 109, 115),{},tierLists.household,true,function(s) _selectedByTier[string.char(104, 111, 117, 115, 101, 104, 111, 108, 100)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(65, 109, 109, 111))
+secLeft:Dropdown(string.char(65, 109, 109, 111),{},tierLists.ammo,true,function(s) _selectedByTier[string.char(97, 109, 109, 111)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(65, 116, 116, 97, 99, 104, 109, 101, 110, 116, 115))
+secLeft:Dropdown(string.char(65, 116, 116, 97, 99, 104, 109, 101, 110, 116, 115),{},tierLists.attachments,true,function(s) _selectedByTier[string.char(97, 116, 116, 97, 99, 104, 109, 101, 110, 116, 115)]=s; rebuildSelected() end,nil,true)
+secLeft:Divider(string.char(67, 114, 97, 116, 101, 115))
+secLeft:Dropdown(string.char(83, 101, 108, 101, 99, 116, 32, 67, 114, 97, 116, 101, 115),{},crateNames,true,function(s) _G.ESP.SelectedCrates=s end,nil,true)
+secLeft:Divider(string.char(87, 101, 97, 112, 111, 110, 115))
+secLeft:Toggle(string.char(69, 110, 97, 98, 108, 101, 32, 87, 101, 97, 112, 111, 110, 32, 69, 83, 80),false,function(v) _G.WEAPON_ESP.Enabled=v end)
+secLeft:Dropdown(string.char(83, 101, 108, 101, 99, 116, 32, 87, 101, 97, 112, 111, 110, 115),{},weaponNames,true,function(s) _G.WEAPON_ESP.SelectedWeapons=s end,nil,true)
+secRight:Slider(string.char(77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),500,10,10,2000,string.char(109),function(v)
+_G.ESP.MaxDistance=v; _G.WEAPON_ESP.MaxDistance=v
+end)
+secRight:Divider(string.char(76, 111, 111, 116))
+secRight:Toggle(string.char(73, 110, 115, 116, 97, 110, 116, 32, 76, 111, 111, 116),false,function(v)
+INSTANT_LOOT.enabled=v
+if v then startInstantLoot() else stopInstantLoot() end
+end)
+visLeft:Toggle(string.char(78, 111, 32, 70, 111, 103),false,function(v) FOG.enabled=v end)
+combatLeft:Toggle(string.char(78, 111, 32, 82, 101, 99, 111, 105, 108),false,function(v)
+RECOIL.enabled=v
+RECOIL.cache=v and getgc(RECOIL.keys) or nil
+end)
+combatRight:Toggle(string.char(69, 110, 97, 98, 108, 101, 32, 67, 111, 109, 98, 97, 116, 32, 77, 111, 100, 101),false,function(v)
+COMBAT.active=v
+if v then
+flushLootPool()
+flushWeaponPool()
+Lib:Notify(string.char(67, 111, 109, 98, 97, 116, 32, 77, 111, 100, 101),string.char(65, 67, 84, 73, 86, 69, 32, 8212, 32, 76, 111, 111, 116, 32, 69, 83, 80, 32, 115, 117, 115, 112, 101, 110, 100, 101, 100),2,string.char(105, 110, 102, 111))
+else
+Lib:Notify(string.char(67, 111, 109, 98, 97, 116, 32, 77, 111, 100, 101),string.char(79, 70, 70, 32, 8212, 32, 76, 111, 111, 116, 32, 69, 83, 80, 32, 114, 101, 115, 117, 109, 101, 100),2,string.char(105, 110, 102, 111))
+end
+end)
+local combatKeyBtn
+combatKeyBtn = combatRight:Button(string.char(72, 111, 116, 107, 101, 121, 58, 32, 70, 50), function()
+if COMBAT.listening then return end
+COMBAT.listening = true
+combatKeyBtn:SetText(string.char(80, 114, 101, 115, 115, 32, 97, 110, 121, 32, 107, 101, 121, 46, 46, 46))
+spawn(function()
+wait(0.25)
+local deadline = tick() + 5
+while tick() < deadline do
+local ktype, kcode, kname = detectPressedKey()
+if ktype then
+COMBAT.keyType = ktype
+COMBAT.keyCode = kcode
+COMBAT.keyName = kname
+combatKeyBtn:SetText(string.char(72, 111, 116, 107, 101, 121, 58, 32) .. kname)
+COMBAT.listening = false
+return
+end
+wait(0.02)
+end
+combatKeyBtn:SetText(string.char(72, 111, 116, 107, 101, 121, 58, 32) .. COMBAT.keyName)
+COMBAT.listening = false
+end)
+end)
+combatRight:Divider(string.char(87, 104, 105, 108, 101, 32, 65, 99, 116, 105, 118, 101))
+combatRight:Toggle(string.char(75, 101, 101, 112, 32, 65, 73, 47, 83, 99, 97, 118, 32, 69, 83, 80),true,function(v)
+COMBAT.keepAI = v
+end)
+combatRight:Toggle(string.char(75, 101, 101, 112, 32, 80, 108, 97, 121, 101, 114, 32, 69, 83, 80),true,function(v)
+COMBAT.keepPlayer = v
+end)
+combatRight:Toggle(string.char(75, 101, 101, 112, 32, 77, 105, 110, 101, 32, 69, 83, 80),false,function(v)
+COMBAT.keepMines = v
+end)
+COMBAT.keepAI     = true
+COMBAT.keepPlayer = true
+COMBAT.keepMines  = false
+local snapAI = { box=false, name=true, dist=true, health=true, weapon=true, tracer=false }
+local AI_STATE = { enabled=true, distMax=1500, updateRate=15, items={}, timer=0, lastDrawn=0 }
+aiLeft:Toggle(string.char(69, 110, 97, 98, 108, 101, 100),true,function(v) AI_STATE.enabled=v end)
+aiLeft:Toggle(string.char(78, 97, 109, 101),true,function(v) snapAI.name=v end)
+aiLeft:Toggle(string.char(68, 105, 115, 116, 97, 110, 99, 101),true,function(v) snapAI.dist=v end)
+aiLeft:Toggle(string.char(72, 101, 97, 108, 116, 104),true,function(v) snapAI.health=v end)
+aiLeft:Toggle(string.char(87, 101, 97, 112, 111, 110),true,function(v) snapAI.weapon=v end)
+aiLeft:Toggle(string.char(66, 111, 120),false,function(v) snapAI.box=v end)
+aiLeft:Toggle(string.char(84, 114, 97, 99, 101, 114, 115),false,function(v) snapAI.tracer=v end)
+aiLeft:Slider(string.char(77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),1500,50,50,3000,string.char(109),function(v) AI_STATE.distMax=v end)
+aiLeft:Slider(string.char(85, 112, 100, 97, 116, 101, 32, 82, 97, 116, 101, 32, 40, 102, 112, 115, 41),15,5,5,60,string.char(102, 112, 115),function(v) AI_STATE.updateRate=v end)
+aiRight:Toggle(string.char(69, 110, 97, 98, 108, 101, 32, 65, 105, 109, 98, 111, 116),false,function(v)
+AIM.enabled=v
+if not v then fovCircle.Visible=false; lockDot.Visible=false; AIM.stickyTarget=nil end
+end)
+aiRight:Toggle(string.char(83, 104, 111, 119, 32, 70, 79, 86, 32, 67, 105, 114, 99, 108, 101),false,function(v)
+AIM.showFOV=v; if not v then fovCircle.Visible=false end
+end)
+aiRight:Slider(string.char(70, 79, 86, 32, 82, 97, 100, 105, 117, 115),150,10,10,500,string.char(112, 120),function(v)
+AIM.fov=v; fovCircle.Radius=v
+end)
+aiRight:Slider(string.char(83, 109, 111, 111, 116, 104, 105, 110, 103),20,1,1,100,string.char(37),function(v) AIM.smooth=v/100 end)
+aiRight:Toggle(string.char(65, 105, 109, 108, 111, 99, 107, 32, 40, 83, 116, 105, 99, 107, 121, 41),false,function(v)
+AIM.lockEnabled=v; if not v then AIM.stickyTarget=nil; lockDot.Visible=false end
+end)
+aiRight:Slider(string.char(65, 105, 109, 108, 111, 99, 107, 32, 83, 112, 101, 101, 100),35,5,5,100,string.char(37),function(v) AIM.lockSmooth=v/100 end)
+local keybindBtn
+keybindBtn = aiRight:Button(string.char(65, 105, 109, 98, 111, 116, 32, 75, 101, 121, 58, 32, 77, 66, 50), function()
+if AIM.listening then return end
+AIM.listening=true; keybindBtn:SetText(string.char(80, 114, 101, 115, 115, 32, 97, 110, 121, 32, 107, 101, 121, 46, 46, 46))
+spawn(function()
+wait(0.25); local deadline=tick()+5
+while tick()<deadline do
+local ktype,kcode,kname=detectPressedKey()
+if ktype then
+AIM.keyType=ktype; AIM.keyCode=kcode; AIM.keyName=kname
+keybindBtn:SetText(string.char(65, 105, 109, 98, 111, 116, 32, 75, 101, 121, 58, 32)..kname)
+AIM.listening=false; return
+end
+wait(0.02)
+end
+keybindBtn:SetText(string.char(65, 105, 109, 98, 111, 116, 32, 75, 101, 121, 58, 32)..AIM.keyName)
+AIM.listening=false
+end)
+end)
+aiRight:Dropdown(string.char(84, 97, 114, 103, 101, 116, 32, 66, 111, 110, 101),{string.char(72, 101, 97, 100),string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)},{string.char(72, 101, 97, 100),string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)},false,function(v)
+AIM.bone=(type(v)==string.char(116, 97, 98, 108, 101) and v[1]) or v or string.char(72, 101, 97, 100)
+end)
+playerLeft:Toggle(string.char(69, 110, 97, 98, 108, 101, 32, 80, 108, 97, 121, 101, 114, 32, 69, 83, 80),false,function(v)
+PLAYER_ESP.enabled=v
+if not v then
+for i=1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
+PLAYER_ESP.lastDrawn=0; PLAYER_ESP.items={}
+end
+end)
+playerLeft:Toggle(string.char(78, 97, 109, 101),true,function(v) PLAYER_ESP.snap.name=v end)
+playerLeft:Toggle(string.char(68, 105, 115, 116, 97, 110, 99, 101),true,function(v) PLAYER_ESP.snap.dist=v end)
+playerLeft:Toggle(string.char(72, 101, 97, 108, 116, 104),true,function(v) PLAYER_ESP.snap.health=v end)
+playerLeft:Toggle(string.char(87, 101, 97, 112, 111, 110),true,function(v) PLAYER_ESP.snap.weapon=v end)
+playerLeft:Toggle(string.char(66, 111, 120),true,function(v) PLAYER_ESP.snap.box=v end)
+playerLeft:Toggle(string.char(84, 114, 97, 99, 101, 114, 115),false,function(v) PLAYER_ESP.snap.tracer=v end)
+playerLeft:Slider(string.char(77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),1500,50,50,3000,string.char(109),function(v) PLAYER_ESP.distMax=v end)
+playerLeft:Slider(string.char(85, 112, 100, 97, 116, 101, 32, 82, 97, 116, 101, 32, 40, 102, 112, 115, 41),15,5,5,60,string.char(102, 112, 115),function(v) PLAYER_ESP.updateRate=v end)
+dangerLeft:Toggle(string.char(84, 117, 114, 114, 101, 116, 32, 69, 83, 80),false,function(v)
+TURRET.enabled=v
+if not v then
+for i=1,TURRET.lastDrawn do poolVis(TURRET.labelPool[i],false); poolVis(TURRET.dotPool[i],false) end
+TURRET.lastDrawn=0; TURRET.cache={}
+end
+end)
+dangerLeft:Slider(string.char(84, 117, 114, 114, 101, 116, 32, 77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),1000,50,50,3000,string.char(109),function(v) TURRET.maxDist=v end)
+dangerLeft:Divider(string.char(67, 111, 114, 112, 115, 101, 115))
+dangerLeft:Toggle(string.char(67, 111, 114, 112, 115, 101, 32, 69, 83, 80),false,function(v)
+CORPSE.enabled=v
+if not v then
+for i=1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[i],false); poolVis(CORPSE.dotPool[i],false) end
+CORPSE.lastDrawn=0; CORPSE.cache={}
+end
+end)
+dangerLeft:Slider(string.char(67, 111, 114, 112, 115, 101, 32, 77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),500,50,50,2000,string.char(109),function(v) CORPSE.maxDist=v end)
+dangerLeft:Divider(string.char(76, 97, 110, 100, 109, 105, 110, 101, 115))
+dangerLeft:Toggle(string.char(76, 97, 110, 100, 109, 105, 110, 101, 32, 69, 83, 80),false,function(v)
+MINE.enabled=v
+if not v then
+for i=1,MINE.lastDrawn do poolVis(MINE.labelPool[i],false); poolVis(MINE.dotPool[i],false) end
+MINE.lastDrawn=0; MINE.cache={}
+end
+end)
+dangerLeft:Slider(string.char(77, 105, 110, 101, 32, 77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101),500,50,50,2000,string.char(109),function(v) MINE.maxDist=v end)
+local function rebuildAI()
+local char=LocalPlayer and LocalPlayer.Character
+local myHRP=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+local myPos=myHRP and myHRP.Position; if not myPos then AI_STATE.items={}; return end
+local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local distSqMax=AI_STATE.distMax^2; local raw={}
+for _,e in ipairs(getCharacters()) do
+local hrp=e.hrp
+if hrp and hrp.Parent then
+local rootPos=hrp.Position
+local dx=myX-rootPos.X; local dy=myY-rootPos.Y; local dz=myZ-rootPos.Z
+local distSq=dx*dx+dy*dy+dz*dz
+if distSq<=distSqMax then
+local d=sqrt(distSq)
+local healthRatio,healthColor
+if e.hp and e.maxhp and e.maxhp>0 then
+healthRatio=clamp(e.hp/e.maxhp,0,1); healthColor=hpColor(healthRatio)
+end
+raw[#raw+1]={
+kind=string.char(97, 105), part=hrp, name=e.model.Name,
+distText=floor(d)..string.char(109),
+healthRatio=healthRatio, healthColor=healthColor,
+weapon=e.weapon, _distSq=distSq,
+}
+end
+end
+end
+table.sort(raw,function(a,b) return a._distSq<b._distSq end)
+local out={}
+for _,v in ipairs(raw) do
+if #out>=AIC.MAX_SLOTS then break end; out[#out+1]=v
+end
+AI_STATE.items=out
+end
+local VP = { cx=0, cy=0, timer=0 }
+local function updateVP()
+local vp=Camera.ViewportSize; VP.cx=vp.X*0.5; VP.cy=vp.Y
+end
+updateVP()
+local FRAME = { phase=0, fogTimer=0 }
+RunService.Heartbeat:Connect(function()
+if not running then return end
+pcall(doAimbot)
+if not COMBAT.listening then
+local down = combatKeyDown()
+if down and not COMBAT.wasDown then
+COMBAT.active = not COMBAT.active
+if COMBAT.active then
+flushLootPool()
+flushWeaponPool()
+Lib:Notify(string.char(67, 111, 109, 98, 97, 116, 32, 77, 111, 100, 101),string.char(65, 67, 84, 73, 86, 69, 32, 8212, 32, 76, 111, 111, 116, 32, 69, 83, 80, 32, 115, 117, 115, 112, 101, 110, 100, 101, 100),2,string.char(105, 110, 102, 111))
+else
+Lib:Notify(string.char(67, 111, 109, 98, 97, 116, 32, 77, 111, 100, 101),string.char(79, 70, 70, 32, 8212, 32, 76, 111, 111, 116, 32, 69, 83, 80, 32, 114, 101, 115, 117, 109, 101, 100),2,string.char(105, 110, 102, 111))
+end
+end
+COMBAT.wasDown = down
+end
+end)
+renderConn = RunService.RenderStepped:Connect(function(dt)
+if not running then return end
+pcall(updateFOVCircle)
+FRAME.fogTimer=FRAME.fogTimer+dt
+if FRAME.fogTimer>=0.1 then
+FRAME.fogTimer=0
+if FOG.enabled then applyNoFog() elseif FOG.last then restoreFog() end
+FOG.last=FOG.enabled
+end
+if RECOIL.enabled and RECOIL.cache then applygc(RECOIL.cache,RECOIL.payload) end
+AI_STATE.timer=AI_STATE.timer+dt
+if AI_STATE.timer>=(1/max(1,AI_STATE.updateRate)) then
+AI_STATE.timer=0
+if AI_STATE.enabled then pcall(rebuildAI) end
+end
+PLAYER_ESP.timer=PLAYER_ESP.timer+dt
+if PLAYER_ESP.timer>=(1/max(1,PLAYER_ESP.updateRate)) then
+PLAYER_ESP.timer=0
+if PLAYER_ESP.enabled then pcall(rebuildPlayerESP) end
+end
+VP.timer=VP.timer+dt
+if VP.timer>=0.5 then VP.timer=0; updateVP() end
+local now=os.clock()
+if not COMBAT.active then
+FRAME.phase=(FRAME.phase+1)%6
+if FRAME.phase==0 then
+if (now-LOOT.stamp)>=LOOT.TTL then LOOT.stamp=now; if _G.ESP.Enabled then pcall(rebuildLootCache) end end
+elseif FRAME.phase==1 then
+if (now-WPN.stamp)>=LOOT.TTL then WPN.stamp=now; if _G.WEAPON_ESP.Enabled then pcall(rebuildWeaponCache) end end
+elseif FRAME.phase==2 then
+if (now-TURRET.stamp)>=TURRET.TTL then TURRET.stamp=now; if TURRET.enabled then pcall(rebuildTurretCache) end end
+elseif FRAME.phase==3 then
+if (now-CORPSE.stamp)>=CORPSE.TTL then CORPSE.stamp=now; if CORPSE.enabled then pcall(rebuildCorpseCache) end end
+elseif FRAME.phase==4 then
+if (now-SLIDER.stamp)>=SLIDER.TTL then SLIDER.stamp=now; if SLIDER.enabled then pcall(rebuildSliderCache) end end
+elseif FRAME.phase==5 then
+if (now-MINE.stamp)>=MINE.TTL then MINE.stamp=now; if MINE.enabled then pcall(rebuildMineCache) end end
+end
+else
+if COMBAT.keepMines then
+FRAME.phase=(FRAME.phase+1)%2
+if FRAME.phase==0 then
+if (now-MINE.stamp)>=MINE.TTL then MINE.stamp=now; if MINE.enabled then pcall(rebuildMineCache) end end
+end
+end
+end
+local char  = LocalPlayer.Character
+local hrp   = char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+local myPos = hrp and hrp.Position
+if not COMBAT.active and _G.ESP.Enabled and myPos then
+local slot=0
+for i=1,#LOOT.cache do
+local entry=LOOT.cache[i]; local root=entry.root
+if root and root.Parent then
+local pos,onScreen=WorldToScreen(root.Position)
+if onScreen then
+slot=slot+1
+local lbl=LOOT.labelPool[slot]; local dot=LOOT.dotPool[slot]
+local rp=entry.root.Position
+local dx,dy,dz=rp.X-myPos.X,rp.Y-myPos.Y,rp.Z-myPos.Z
+local dist=floor(sqrt(dx*dx+dy*dy+dz*dz))
+poolTxt(lbl,entry.name..string.char(32, 91)..dist..string.char(109, 93)); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-6); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=slot+1,LOOT.lastDrawn do poolVis(LOOT.labelPool[j],false); poolVis(LOOT.dotPool[j],false) end
+LOOT.lastDrawn=slot
+else
+for i=1,LOOT.lastDrawn do poolVis(LOOT.labelPool[i],false); poolVis(LOOT.dotPool[i],false) end
+LOOT.lastDrawn=0
+end
+if not COMBAT.active and _G.WEAPON_ESP.Enabled and myPos then
+local wslot=0
+for i=1,#WPN.cache do
+local entry=WPN.cache[i]; local root=entry.root
+if root and root.Parent then
+local pos,onScreen=WorldToScreen(root.Position)
+if onScreen then
+wslot=wslot+1
+local lbl=WPN.labelPool[wslot]; local dot=WPN.dotPool[wslot]
+local rp=entry.root.Position
+local dx,dy,dz=rp.X-myPos.X,rp.Y-myPos.Y,rp.Z-myPos.Z
+local dist=floor(sqrt(dx*dx+dy*dy+dz*dz))
+poolTxt(lbl,entry.name..string.char(32, 91)..dist..string.char(109, 93)); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-6); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=wslot+1,WPN.lastDrawn do poolVis(WPN.labelPool[j],false); poolVis(WPN.dotPool[j],false) end
+WPN.lastDrawn=wslot
+else
+for i=1,WPN.lastDrawn do poolVis(WPN.labelPool[i],false); poolVis(WPN.dotPool[i],false) end
+WPN.lastDrawn=0
+end
+if TURRET.enabled and myPos then
+local tslot=0
+for i=1,#TURRET.cache do
+local entry=TURRET.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+tslot=tslot+1
+local lbl=TURRET.labelPool[tslot]; local dot=TURRET.dotPool[tslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,string.char(91, 84, 85, 82, 82, 69, 84, 93, 32)..entry.name..string.char(32, 91)..floor(sqrt(dx*dx+dy*dy+dz*dz))..string.char(109, 93))
+poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
+poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=tslot+1,TURRET.lastDrawn do poolVis(TURRET.labelPool[j],false); poolVis(TURRET.dotPool[j],false) end
+TURRET.lastDrawn=tslot
+else
+for i=1,TURRET.lastDrawn do poolVis(TURRET.labelPool[i],false); poolVis(TURRET.dotPool[i],false) end
+TURRET.lastDrawn=0
+end
+if CORPSE.enabled and myPos then
+local cslot=0
+for i=1,#CORPSE.cache do
+local entry=CORPSE.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+cslot=cslot+1
+local lbl=CORPSE.labelPool[cslot]; local dot=CORPSE.dotPool[cslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,string.char(91, 67, 79, 82, 80, 83, 69, 93, 32)..entry.name..string.char(32, 91)..floor(sqrt(dx*dx+dy*dy+dz*dz))..string.char(109, 93))
+poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
+poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=cslot+1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[j],false); poolVis(CORPSE.dotPool[j],false) end
+CORPSE.lastDrawn=cslot
+else
+for i=1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[i],false); poolVis(CORPSE.dotPool[i],false) end
+CORPSE.lastDrawn=0
+end
+if SLIDER.enabled and myPos then
+local sslot=0
+for i=1,#SLIDER.cache do
+local entry=SLIDER.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+sslot=sslot+1
+local lbl=SLIDER.labelPool[sslot]; local dot=SLIDER.dotPool[sslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,entry.name..string.char(32, 91)..floor(sqrt(dx*dx+dy*dy+dz*dz))..string.char(109, 93)); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=sslot+1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[j],false); poolVis(SLIDER.dotPool[j],false) end
+SLIDER.lastDrawn=sslot
+else
+for i=1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[i],false); poolVis(SLIDER.dotPool[i],false) end
+SLIDER.lastDrawn=0
+end
+if MINE.enabled and myPos and (not COMBAT.active or COMBAT.keepMines) then
+local mslot=0
+for i=1,#MINE.cache do
+local entry=MINE.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+mslot=mslot+1
+local lbl=MINE.labelPool[mslot]; local dot=MINE.dotPool[mslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,entry.name..string.char(32, 91)..floor(sqrt(dx*dx+dy*dy+dz*dz))..string.char(109, 93)); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-10); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=mslot+1,MINE.lastDrawn do poolVis(MINE.labelPool[j],false); poolVis(MINE.dotPool[j],false) end
+MINE.lastDrawn=mslot
+else
+for i=1,MINE.lastDrawn do poolVis(MINE.labelPool[i],false); poolVis(MINE.dotPool[i],false) end
+MINE.lastDrawn=0
+end
+if PLAYER_ESP.enabled and (not COMBAT.active or COMBAT.keepPlayer) then
+local pslot=0
+for _,it in ipairs(PLAYER_ESP.items) do
+if pslot>=PLAYER_ESP.MAX_SLOTS then break end
+local s=PLAYER_ESP.slots[pslot+1]
+local drawn=drawSlot(s,it,PLAYER_ESP.snap,AIC.PLAYER_NAME,AIC.PLAYER_BOX,AIC.PLAYER_TRACER,VP.cx,VP.cy)
+if drawn then pslot=pslot+1 end
+end
+for i=pslot+1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
+PLAYER_ESP.lastDrawn=pslot
+else
+for i=1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
+PLAYER_ESP.lastDrawn=0
+end
+if not AI_STATE.enabled or (COMBAT.active and not COMBAT.keepAI) then
+for i=1,AI_STATE.lastDrawn do hideSlot(slots[i]) end
+AI_STATE.lastDrawn=0
+return
+end
+local slot=0
+for _,it in ipairs(AI_STATE.items) do
+if slot>=AIC.MAX_SLOTS then break end
+local s=slots[slot+1]
+local drawn=drawSlot(s,it,snapAI,AIC.NAME,AIC.BOX,AIC.TRACER,VP.cx,VP.cy)
+if drawn then slot=slot+1 end
+end
+for i=slot+1,AI_STATE.lastDrawn do hideSlot(slots[i]) end
+AI_STATE.lastDrawn=slot
+end)
+Lib:Notify(string.char(83, 101, 105, 109, 32, 72, 97, 118, 111, 99, 32, 86, 50),string.char(76, 111, 97, 100, 101, 100, 32, 115, 117, 99, 99, 101, 115, 115, 102, 117, 108, 108, 121, 33),4,string.char(115, 117, 99, 99, 101, 115, 115))
+print(string.char(91, 83, 101, 105, 109, 32, 72, 97, 118, 111, 99, 32, 86, 50, 93, 32, 108, 111, 97, 100, 101, 100, 46))
