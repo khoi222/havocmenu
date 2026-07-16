@@ -1,719 +1,640 @@
--- ============================================================
---  Seim Havoc V2 - Combined Script (OPTIMIZED + PLAYER ESP)
---  Loot ESP + Player ESP + AI/NPC ESP + Visuals + Danger + Aimbot + Landmine ESP
--- ============================================================
-
 local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/neaxusxgod-png/INS-ui/main/uilib.min.lua"))() or INSui
-
 local win = Lib:CreateWindow({
-    title    = "Seim Havoc V2",
-    subtitle = "v2.0",
-    size     = Vector2.new(580, 460),
+title    = "Seim Havoc V2",
+subtitle = "v2.0",
+size     = Vector2.new(580, 460),
 })
-
 win:AddSettingsTab("cog")
-
--- ============================================================
---  Services
--- ============================================================
 local Lighting    = game:GetService("Lighting")
 local HttpService = game:GetService("HttpService")
 local RunService  = game:GetService("RunService")
 local Players     = game:GetService("Players")
 local Camera      = workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
-
 local sqrt  = math.sqrt
 local floor = math.floor
 local clamp = math.clamp
 local abs   = math.abs
 local max   = math.max
 local huge  = math.huge
-
--- ============================================================
---  Global ESP State
--- ============================================================
 _G.ESP = {
-    SelectedItems  = {},
-    SelectedCrates = {},
-    MaxDistance    = 500,
-    Enabled        = true,
+SelectedItems  = {},
+SelectedCrates = {},
+MaxDistance    = 500,
+Enabled        = true,
 }
-
 _G.WEAPON_ESP = {
-    Enabled         = false,
-    SelectedWeapons = {},
-    MaxDistance     = 500,
+Enabled         = false,
+SelectedWeapons = {},
+MaxDistance     = 500,
 }
-
--- ============================================================
---  Item Tier Data
--- ============================================================
 local ITEM_TIER = {
-    [".338 Lapua Magnum"]                                   = "mythic",
-    [".408 Cheyenne Tactical"]                              = "mythic",
-    [".45 ACP"]                                             = "uncommon",
-    [".50 Action Express"]                                  = "uncommon",
-    ["0.2 BTC"]                                             = "rare",
-    ["12 Gauge Buckshot"]                                   = "uncommon",
-    ["23x75mm Shrapnel-10"]                                 = "mythic",
-    ["23x75mm Zvezda flashbang round"]                      = "mythic",
-    ["4.6x30mm"]                                            = "uncommon",
-    ["40x46mm M406 grenade"]                                = "mythic",
-    ["5.11 Hexgrid Plate Carrier"]                          = "mythic",
-    ["5.45x39mm"]                                           = "uncommon",
-    ["5.56x45 Beta C-Mag 100-round drum magazine"]          = "uncommon",
-    ["5.56x45 Colt AR-15 STANAG 20-round magazine"]         = "uncommon",
-    ["5.56x45 Colt AR-15 STANAG 30-round magazine"]         = "uncommon",
-    ["5.56x45 Colt AR-15 STANAG 60-round magazine"]         = "uncommon",
-    ["5.56x45 PMAG 60-round magazine"]                      = "uncommon",
-    ["5.56x45 TV 100-round magazine"]                       = "uncommon",
-    ["5.56x45mm NATO"]                                      = "uncommon",
-    ["5.7x28mm"]                                            = "uncommon",
-    ["5.8x42mm"]                                            = "uncommon",
-    ["7.62x39mm"]                                           = "uncommon",
-    ["7.62x51mm NATO"]                                      = "uncommon",
-    ["7.62x54mmR"]                                          = "uncommon",
-    ["9x18mm"]                                              = "uncommon",
-    ["9x19mm"]                                              = "uncommon",
-    ["9x39 20-round magazine"]                              = "uncommon",
-    ["9x39 30-round magazine"]                              = "uncommon",
-    ["9x39mm"]                                              = "uncommon",
-    ["A7 Delta Riot Helmet"]                                = "gear_common",
-    ["AA Battery"]                                          = "common",
-    ["ACOG TA11D 3.5x35 riflescope"]                        = "uncommon",
-    ["AI-2"]                                                = "usable_item",
-    ["Airstrike"]                                           = "mythic",
-    ["AK 7.62x39 40-round magazine"]                        = "uncommon",
-    ["AK 7.62x39 Magpul PMAG 30 GEN M3 30-round magazine"]  = "uncommon",
-    ["AK-74 5.45x39 6L20 30-round magazine"]                = "uncommon",
-    ["AK-74 5.45x39 Magpul PMAG 30 GEN M3 30-round magazine"] = "uncommon",
-    ["Altyn bulletproof Helmet"]                            = "mythic",
-    ["Altyn helmet face shield"]                            = "gear_rare",
-    ["Aluminium Nails"]                                     = "common",
-    ["Ammunition case"]                                     = "usable_item",
-    ["AN/PEQ-15 tactical device"]                           = "uncommon",
-    ["Angled foregrip"]                                     = "uncommon",
-    ["Antique teapot"]                                      = "rare",
-    ["AS VAL"]                                              = "mythic",
-    ["AWP"]                                                 = "mythic",
-    ["AWP .338 Lapua Magnum 5-round magazine"]              = "uncommon",
-    ["Awl"]                                                 = "common",
-    ["Bandage"]                                             = "usable_item",
-    ["Barbed Wire Bat"]                                     = "uncommon",
-    ["Bimetallic Thermometer"]                              = "rare",
-    ["Box of Sugar"]                                        = "common_households",
-    ["Bramit 7.62x54R sound suppressor"]                    = "uncommon",
-    ["Brassknuckles"]                                       = "uncommon",
-    ["Cables"]                                              = "common",
-    ["Can of Beef"]                                         = "rare",
-    ["Can of Mackerel"]                                     = "common_households",
-    ["Can of Salt"]                                         = "common_households",
-    ["Can of Tuna"]                                         = "common_households",
-    ["Capacitors"]                                          = "common",
-    ["Car Battery"]                                         = "common",
-    ["Cash"]                                                = "cash",
-    ["Chemical Solution"]                                   = "common",
-    ["CMMG Mk47 Mutant"]                                    = "mythic",
-    ["CMT ZCOMP linear compensator"]                        = "mythic",
-    ["Colt 4x20 riflescope"]                                = "uncommon",
-    ["Compact antenna"]                                     = "rare",
-    ["Conductor's Gold Pocket Watch"]                       = "rare",
-    ["Construction Measuring Tape"]                         = "common",
-    ["Corrugated Tube"]                                     = "rare",
-    ["Cottage Cache Key"]                                   = "keys",
-    ["Dawnscript Fragment"]                                 = "rare",
-    ["DC 800 High Cut Combat Helmet"]                       = "gear_rare",
-    ["Deodorant"]                                           = "common_households",
-    ["Diamond ring"]                                        = "mythic",
-    ["Diary"]                                               = "rare",
-    ["Dogtag"]                                              = "common",
-    ["Domino Crown"]                                        = "rare",
-    ["DP-27"]                                               = "mythic",
-    ["DP-27 7.62x54mmR 47-round pan magazine"]              = "uncommon",
-    ["Duct tape"]                                           = "common",
-    ["Electric Drill"]                                      = "common",
-    ["Empty dish"]                                          = "common_households",
-    ["EOTech 553 holographic sight"]                        = "uncommon",
-    ["F-1"]                                                 = "uncommon",
-    ["FAST MT Helmet"]                                      = "gear_rare",
-    ["FAST multi-hit ballistic face shield"]                = "gear_rare",
-    ["Field repair kit"]                                    = "usable_item",
-    ["Flash Drive"]                                         = "common",
-    ["Flour"]                                               = "common_households",
-    ["FN P90 5.7x28 50-round magazine"]                     = "uncommon",
-    ["FN SCAR-H 7.62x51 20-round magazine"]                 = "uncommon",
-    ["FN SCAR-H 7.62x51 50-round drum magazine"]            = "uncommon",
-    ["Forest Green Ghillie Suit"]                           = "mythic",
-    ["FORT-9 Heavy Assault Rig"]                            = "gear_rare",
-    ["FORTIS Coastal Outpost Cache Key"]                    = "keys",
-    ["FORTIS Level-0 keycard"]                              = "keys",
-    ["FORTIS Level-1 keycard"]                              = "keys",
-    ["FORTIS Level-2 keycard"]                              = "keys",
-    ["FORTIS Level-3 keycard"]                              = "keys",
-    ["FORTIS Level-4 keycard"]                              = "keys",
-    ["FORTIS Level-5 keycard"]                              = "keys",
-    ["FORTIS Level-6 keycard"]                              = "keys",
-    ["FORTIS MK.II Gloves"]                                 = "mythic",
-    ["Gears"]                                               = "common",
-    ["Gemtech SFN-57 5.7x28 sound suppressor"]              = "uncommon",
-    ["Geolocator"]                                          = "common",
-    ["Glue"]                                                = "common",
-    ["Gold bar"]                                            = "mythic",
-    ["Gold Trophy"]                                         = "rare",
-    ["Golden Cube"]                                         = "rare",
-    ["Golden Skull"]                                        = "rare",
-    ["Golden Smartphone"]                                   = "rare",
-    ["Golden Watch"]                                        = "rare",
-    ["Graphics card"]                                       = "rare",
-    ["Gunpowder"]                                           = "rare",
-    ["Gzhel-K Body Armor"]                                  = "mythic",
-    ["Hand Wraps"]                                          = "gear_common",
-    ["Havocola Cherry Burn"]                                = "common_households",
-    ["Havocola Classic"]                                    = "common_households",
-    ["HK MP5 9x19 30-round magazine"]                       = "uncommon",
-    ["HK MP5 9x19 50-round drum magazine"]                  = "uncommon",
-    ["HK MP7 4.6x30 40-round magazine"]                     = "uncommon",
-    ["HK MP7 SD 2 4.6x30 sound suppressor"]                 = "uncommon",
-    ["HK UMP .45 ACP 25-round magazine"]                    = "uncommon",
-    ["HK416"]                                               = "mythic",
-    ["HM6: Hemostatic Inhaler"]                             = "usable_item_inhaler",
-    ["Homemade Soap"]                                       = "common_households",
-    ["HVC Gen4 Body Armor"]                                 = "mythic",
-    ["HVC Gen4 Body Armor (HMK)"]                           = "mythic",
-    ["HVC Plate Carrier"]                                   = "gear_rare",
-    ["HVC-10T Night Vision Goggles"]                        = "gear_rare",
-    ["Improvised plastic sound suppressor"]                 = "uncommon",
-    ["Insecticide spray"]                                   = "common_households",
-    ["Insects Spray"]                                       = "common_households",
-    ["Insulin pump"]                                        = "common",
-    ["Integrated Tactical Plate Carrier"]                   = "gear_rare",
-    ["Intelligence folder"]                                 = "rare",
-    ["Intervention M200"]                                   = "mythic",
-    ["Karambit"]                                            = "uncommon",
-    ["Katana"]                                              = "mythic",
-    ["Ketchup"]                                             = "common_households",
-    ["Keycard holder case"]                                 = "usable_item",
-    ["Korund-VM Body Armor"]                                = "gear_rare",
-    ["KS-23M"]                                             = "mythic",
-    ["Leupold Mark 8 8x24 riflescope"]                      = "uncommon",
-    ["Lockpick"]                                            = "uncommon",
-    ["Long Screwdriver"]                                    = "common",
-    ["LVPO 10x28 riflescope"]                               = "uncommon",
-    ["M18 (White)"]                                         = "uncommon",
-    ["M200 .408 Cheyenne Tactical 5-round magazine"]        = "uncommon",
-    ["M249"]                                                = "mythic",
-    ["M4 Benelli"]                                          = "mythic",
-    ["M40 Gas Mask Filter"]                                 = "gear_rare",
-    ["M40-1 Gas Mask"]                                      = "gear_common",
-    ["M40-2 Gas Mask"]                                      = "gear_common",
-    ["M4A1"]                                                = "mythic",
-    ["M67"]                                                 = "uncommon",
-    ["M79"]                                                 = "mythic",
-    ["M84"]                                                 = "uncommon",
-    ["Magic Lamp"]                                          = "rare",
-    ["Magnet"]                                              = "common",
-    ["Mask"]                                                = "gear_common",
-    ["MBC Plate Carrier"]                                   = "gear_common",
-    ["Measuring tape"]                                      = "common",
-    ["Meat grinder"]                                        = "common_households",
-    ["Medical bloodset"]                                    = "common",
-    ["Medical Kit"]                                         = "usable_item",
-    ["Medical set"]                                         = "rare",
-    ["Metal Awl"]                                           = "common",
-    ["Metal Cutting Scissors"]                              = "common",
-    ["Metal fuel tank"]                                     = "common_households",
-    ["Microcircuits"]                                       = "common",
-    ["Military Backpack"]                                   = "mythic",
-    ["Military Helmet"]                                     = "gear_common",
-    ["Mk14 7.62x51 10-round magazine"]                      = "common",
-    ["Mk14 EBR"]                                            = "mythic",
-    ["Molotov"]                                             = "uncommon",
-    ["MOTR Concealable Reinforced Vest"]                    = "gear_common",
-    ["Mounting Foam"]                                       = "common",
-    ["MP9 9x19 sound suppressor"]                           = "uncommon",
-    ["MSA Paraclete Plate Carrier"]                         = "gear_rare",
-    ["Mug"]                                                 = "common_households",
-    ["Nails"]                                               = "common",
-    ["NCStar AQPTLMG Compact Green Laser"]                  = "uncommon",
-    ["Nightforce ATACR 7-35x56"]                            = "uncommon",
-    ["Nomad Route Notes"]                                   = "rare",
-    ["North Dolphin Hospital Safe Key"]                     = "keys",
-    ["Northmont Sparkling Cider"]                           = "rare",
-    ["NovaTec reflex sight"]                                = "uncommon",
-    ["NovaTec RMR reflex sight"]                            = "uncommon",
-    ["ODWave 556 5.56x45 sound suppressor"]                 = "uncommon",
-    ["Oil Filter sound suppressor"]                         = "uncommon",
-    ["OKP-7 reflex sight"]                                  = "uncommon",
-    ["Orange juice carton"]                                 = "common_households",
-    ["PA3: Relief Inhaler"]                                 = "usable_item_inhaler",
-    ["Pack of matches"]                                     = "common_households",
-    ["Palmolive handwash"]                                  = "common_households",
-    ["PBS-1 sound suppressor"]                              = "uncommon",
-    ["Perfume"]                                             = "common_households",
-    ["PG-7V HEAT grenade"]                                  = "mythic",
-    ["Pickaxe"]                                             = "uncommon",
-    ["PICO-A1 Light Lower Body Armor"]                      = "gear_common",
-    ["PICO-A2 Heavy Lower Body Armor"]                      = "gear_rare",
-    ["Pile of meds"]                                        = "common",
-    ["Pipe wrench"]                                         = "rare",
-    ["Pipecleaner"]                                         = "common",
-    ["Porcelain"]                                           = "rare",
-    ["Power unit"]                                          = "common",
-    ["Powerbank"]                                           = "common",
-    ["Precisive Grips"]                                     = "gear_rare",
-    ["Printer Paper"]                                       = "common",
-    ["PSO-1 4x24 scope"]                                    = "uncommon",
-    ["PU-1 3.5x riflescope"]                                = "uncommon",
-    ["PureFire X300 Ultra"]                                 = "uncommon",
-    ["PX27 Headlamp"]                                       = "gear_rare",
-    ["QDSS-NT4 5.56x45 sound suppressor"]                   = "uncommon",
-    ["RAM"]                                                 = "rare",
-    ["Rapid Emergency AED Compact Tool"]                    = "mythic",
-    ["Rat Poison"]                                          = "rare",
-    ["RG-9: Regenerative Inhaler"]                          = "usable_item_inhaler",
-    ["RGO"]                                                 = "mythic",
-    ["RK-1 tactical foregrip"]                              = "uncommon",
-    ["ROVER Motorcycle Helmet"]                             = "gear_common",
-    ["RPG-7"]                                               = "mythic",
-    ["RPK-16 5.45x39 95-round drum magazine"]               = "uncommon",
-    ["RV11: Emergency Resuscitator Inhaler"]                = "usable_item_inhaler",
-    ["S&M Backpack"]                                        = "usable_item",
-    ["S7: Stimulant Inhaler"]                               = "usable_item_inhaler",
-    ["SA-58"]                                               = "mythic",
-    ["SA58/FAL 7.62x51 20-round magazine"]                  = "uncommon",
-    ["SA58/FAL 7.62x51 50-round drum magazine"]             = "uncommon",
-    ["Saiga 12"]                                            = "mythic",
-    ["SAIPH signal pistol"]                                 = "usable_item",
-    ["SAS drive"]                                           = "rare",
-    ["SCAR-H"]                                              = "mythic",
-    ["Scissors"]                                            = "common_households",
-    ["Scrap Metal"]                                         = "common",
-    ["Screwdriver"]                                         = "common",
-    ["Scuba Gear"]                                          = "gear_common",
-    ["Sealed black file"]                                   = "rare",
-    ["Sealing Foam"]                                        = "common",
-    ["Sewing Kit"]                                          = "common",
-    ["Shampoo"]                                             = "common_households",
-    ["Shards in the Code: Season One"]                      = "common",
-    ["SHARK muzzle brake"]                                  = "mythic",
-    ["SilKo Osprey 9 9x19 sound suppressor"]                = "uncommon",
-    ["SilKo Salvo 12 12ga sound suppressor"]                = "uncommon",
-    ["Slick Plate Carrier"]                                 = "mythic",
-    ["Sling Bag"]                                           = "usable_item",
-    ["Smartphone"]                                          = "common",
-    ["Sodium Bicarbonate"]                                  = "common",
-    ["Sodium Chloride"]                                     = "common",
-    ["Splint"]                                              = "usable_item",
-    ["Spoon"]                                               = "common_households",
-    ["SR16"]                                                = "mythic",
-    ["SSD"]                                                 = "rare",
-    ["Sticky Tape"]                                         = "common",
-    ["String"]                                              = "common",
-    ["Superpunch"]                                          = "uncommon",
-    ["SureFire 3-prong flash hider"]                        = "uncommon",
-    ["SureFire 4-prong flash hider"]                        = "uncommon",
-    ["Surgical kit"]                                        = "rare",
-    ["SV-98 7.62x54R sound suppressor"]                     = "uncommon",
-    ["T-7 Thermal Goggles"]                                 = "mythic",
-    ["T178 Raid Backpack"]                                  = "mythic",
-    ["Tactical Sword"]                                      = "uncommon",
-    ["Tank Battery"]                                        = "rare",
-    ["The 5th Annual Bloxy Award"]                          = "rare",
-    ["The Crucible"]                                        = "contraband",
-    ["The Greatest Admin plushie"]                          = "rare",
-    ["Titanium Alloy Plate"]                                = "rare",
-    ["Toilet paper"]                                        = "common_households",
-    ["Tomahawk"]                                            = "uncommon",
-    ["Toothpaste"]                                          = "common_households",
-    ["Tourniquet"]                                          = "usable_item",
-    ["Tube of cold welding"]                                = "common",
-    ["Type 04-1 holographic sight"]                         = "uncommon",
-    ["Type 95 5.8x42mm 30-round magazine"]                  = "uncommon",
-    ["UH-1 holographic sight"]                              = "uncommon",
-    ["ULACH IIIA Helmet"]                                   = "gear_rare",
-    ["USB extension cable"]                                 = "common",
-    ["Vanish 30 5.56x45 sound suppressor"]                  = "mythic",
-    ["Vegetable oil"]                                       = "common_households",
-    ["Vertical foregrip"]                                   = "uncommon",
-    ["Vintage Gold Crown"]                                  = "rare",
-    ["Vitamins"]                                            = "common",
-    ["VSS modern stock"]                                    = "mythic",
-    ["VSS Vintorez"]                                        = "mythic",
-    ["Watch"]                                               = "common_households",
-    ["Weapon case"]                                         = "usable_item",
-    ["Weapon parts"]                                        = "rare",
-    ["White tube"]                                          = "common",
-    ["Wrench"]                                              = "common",
-    ["XLaser pointer module"]                               = "mythic",
-    ["Xtreme Motorcycle Helmet"]                            = "gear_common",
-    ["YMA95-1 3.5x riflescope"]                             = "uncommon",
+[".338 Lapua Magnum"]                                   = "mythic",
+[".408 Cheyenne Tactical"]                              = "mythic",
+[".45 ACP"]                                             = "uncommon",
+[".50 Action Express"]                                  = "uncommon",
+["0.2 BTC"]                                             = "rare",
+["12 Gauge Buckshot"]                                   = "uncommon",
+["23x75mm Shrapnel-10"]                                 = "mythic",
+["23x75mm Zvezda flashbang round"]                      = "mythic",
+["4.6x30mm"]                                            = "uncommon",
+["40x46mm M406 grenade"]                                = "mythic",
+["5.11 Hexgrid Plate Carrier"]                          = "mythic",
+["5.45x39mm"]                                           = "uncommon",
+["5.56x45 Beta C-Mag 100-round drum magazine"]          = "uncommon",
+["5.56x45 Colt AR-15 STANAG 20-round magazine"]         = "uncommon",
+["5.56x45 Colt AR-15 STANAG 30-round magazine"]         = "uncommon",
+["5.56x45 Colt AR-15 STANAG 60-round magazine"]         = "uncommon",
+["5.56x45 PMAG 60-round magazine"]                      = "uncommon",
+["5.56x45 TV 100-round magazine"]                       = "uncommon",
+["5.56x45mm NATO"]                                      = "uncommon",
+["5.7x28mm"]                                            = "uncommon",
+["5.8x42mm"]                                            = "uncommon",
+["7.62x39mm"]                                           = "uncommon",
+["7.62x51mm NATO"]                                      = "uncommon",
+["7.62x54mmR"]                                          = "uncommon",
+["9x18mm"]                                              = "uncommon",
+["9x19mm"]                                              = "uncommon",
+["9x39 20-round magazine"]                              = "uncommon",
+["9x39 30-round magazine"]                              = "uncommon",
+["9x39mm"]                                              = "uncommon",
+["A7 Delta Riot Helmet"]                                = "gear_common",
+["AA Battery"]                                          = "common",
+["ACOG TA11D 3.5x35 riflescope"]                        = "uncommon",
+["AI-2"]                                                = "usable_item",
+["Airstrike"]                                           = "mythic",
+["AK 7.62x39 40-round magazine"]                        = "uncommon",
+["AK 7.62x39 Magpul PMAG 30 GEN M3 30-round magazine"]  = "uncommon",
+["AK-74 5.45x39 6L20 30-round magazine"]                = "uncommon",
+["AK-74 5.45x39 Magpul PMAG 30 GEN M3 30-round magazine"] = "uncommon",
+["Altyn bulletproof Helmet"]                            = "mythic",
+["Altyn helmet face shield"]                            = "gear_rare",
+["Aluminium Nails"]                                     = "common",
+["Ammunition case"]                                     = "usable_item",
+["AN/PEQ-15 tactical device"]                           = "uncommon",
+["Angled foregrip"]                                     = "uncommon",
+["Antique teapot"]                                      = "rare",
+["AS VAL"]                                              = "mythic",
+["AWP"]                                                 = "mythic",
+["AWP .338 Lapua Magnum 5-round magazine"]              = "uncommon",
+["Awl"]                                                 = "common",
+["Bandage"]                                             = "usable_item",
+["Barbed Wire Bat"]                                     = "uncommon",
+["Bimetallic Thermometer"]                              = "rare",
+["Box of Sugar"]                                        = "common_households",
+["Bramit 7.62x54R sound suppressor"]                    = "uncommon",
+["Brassknuckles"]                                       = "uncommon",
+["Cables"]                                              = "common",
+["Can of Beef"]                                         = "rare",
+["Can of Mackerel"]                                     = "common_households",
+["Can of Salt"]                                         = "common_households",
+["Can of Tuna"]                                         = "common_households",
+["Capacitors"]                                          = "common",
+["Car Battery"]                                         = "common",
+["Cash"]                                                = "cash",
+["Chemical Solution"]                                   = "common",
+["CMMG Mk47 Mutant"]                                    = "mythic",
+["CMT ZCOMP linear compensator"]                        = "mythic",
+["Colt 4x20 riflescope"]                                = "uncommon",
+["Compact antenna"]                                     = "rare",
+["Conductor's Gold Pocket Watch"]                       = "rare",
+["Construction Measuring Tape"]                         = "common",
+["Corrugated Tube"]                                     = "rare",
+["Cottage Cache Key"]                                   = "keys",
+["Dawnscript Fragment"]                                 = "rare",
+["DC 800 High Cut Combat Helmet"]                       = "gear_rare",
+["Deodorant"]                                           = "common_households",
+["Diamond ring"]                                        = "mythic",
+["Diary"]                                               = "rare",
+["Dogtag"]                                              = "common",
+["Domino Crown"]                                        = "rare",
+["DP-27"]                                               = "mythic",
+["DP-27 7.62x54mmR 47-round pan magazine"]              = "uncommon",
+["Duct tape"]                                           = "common",
+["Electric Drill"]                                      = "common",
+["Empty dish"]                                          = "common_households",
+["EOTech 553 holographic sight"]                        = "uncommon",
+["F-1"]                                                 = "uncommon",
+["FAST MT Helmet"]                                      = "gear_rare",
+["FAST multi-hit ballistic face shield"]                = "gear_rare",
+["Field repair kit"]                                    = "usable_item",
+["Flash Drive"]                                         = "common",
+["Flour"]                                               = "common_households",
+["FN P90 5.7x28 50-round magazine"]                     = "uncommon",
+["FN SCAR-H 7.62x51 20-round magazine"]                 = "uncommon",
+["FN SCAR-H 7.62x51 50-round drum magazine"]            = "uncommon",
+["Forest Green Ghillie Suit"]                           = "mythic",
+["FORT-9 Heavy Assault Rig"]                            = "gear_rare",
+["FORTIS Coastal Outpost Cache Key"]                    = "keys",
+["FORTIS Level-0 keycard"]                              = "keys",
+["FORTIS Level-1 keycard"]                              = "keys",
+["FORTIS Level-2 keycard"]                              = "keys",
+["FORTIS Level-3 keycard"]                              = "keys",
+["FORTIS Level-4 keycard"]                              = "keys",
+["FORTIS Level-5 keycard"]                              = "keys",
+["FORTIS Level-6 keycard"]                              = "keys",
+["FORTIS MK.II Gloves"]                                 = "mythic",
+["Gears"]                                               = "common",
+["Gemtech SFN-57 5.7x28 sound suppressor"]              = "uncommon",
+["Geolocator"]                                          = "common",
+["Glue"]                                                = "common",
+["Gold bar"]                                            = "mythic",
+["Gold Trophy"]                                         = "rare",
+["Golden Cube"]                                         = "rare",
+["Golden Skull"]                                        = "rare",
+["Golden Smartphone"]                                   = "rare",
+["Golden Watch"]                                        = "rare",
+["Graphics card"]                                       = "rare",
+["Gunpowder"]                                           = "rare",
+["Gzhel-K Body Armor"]                                  = "mythic",
+["Hand Wraps"]                                          = "gear_common",
+["Havocola Cherry Burn"]                                = "common_households",
+["Havocola Classic"]                                    = "common_households",
+["HK MP5 9x19 30-round magazine"]                       = "uncommon",
+["HK MP5 9x19 50-round drum magazine"]                  = "uncommon",
+["HK MP7 4.6x30 40-round magazine"]                     = "uncommon",
+["HK MP7 SD 2 4.6x30 sound suppressor"]                 = "uncommon",
+["HK UMP .45 ACP 25-round magazine"]                    = "uncommon",
+["HK416"]                                               = "mythic",
+["HM6: Hemostatic Inhaler"]                             = "usable_item_inhaler",
+["Homemade Soap"]                                       = "common_households",
+["HVC Gen4 Body Armor"]                                 = "mythic",
+["HVC Gen4 Body Armor (HMK)"]                           = "mythic",
+["HVC Plate Carrier"]                                   = "gear_rare",
+["HVC-10T Night Vision Goggles"]                        = "gear_rare",
+["Improvised plastic sound suppressor"]                 = "uncommon",
+["Insecticide spray"]                                   = "common_households",
+["Insects Spray"]                                       = "common_households",
+["Insulin pump"]                                        = "common",
+["Integrated Tactical Plate Carrier"]                   = "gear_rare",
+["Intelligence folder"]                                 = "rare",
+["Intervention M200"]                                   = "mythic",
+["Karambit"]                                            = "uncommon",
+["Katana"]                                              = "mythic",
+["Ketchup"]                                             = "common_households",
+["Keycard holder case"]                                 = "usable_item",
+["Korund-VM Body Armor"]                                = "gear_rare",
+["KS-23M"]                                             = "mythic",
+["Leupold Mark 8 8x24 riflescope"]                      = "uncommon",
+["Lockpick"]                                            = "uncommon",
+["Long Screwdriver"]                                    = "common",
+["LVPO 10x28 riflescope"]                               = "uncommon",
+["M18 (White)"]                                         = "uncommon",
+["M200 .408 Cheyenne Tactical 5-round magazine"]        = "uncommon",
+["M249"]                                                = "mythic",
+["M4 Benelli"]                                          = "mythic",
+["M40 Gas Mask Filter"]                                 = "gear_rare",
+["M40-1 Gas Mask"]                                      = "gear_common",
+["M40-2 Gas Mask"]                                      = "gear_common",
+["M4A1"]                                                = "mythic",
+["M67"]                                                 = "uncommon",
+["M79"]                                                 = "mythic",
+["M84"]                                                 = "uncommon",
+["Magic Lamp"]                                          = "rare",
+["Magnet"]                                              = "common",
+["Mask"]                                                = "gear_common",
+["MBC Plate Carrier"]                                   = "gear_common",
+["Measuring tape"]                                      = "common",
+["Meat grinder"]                                        = "common_households",
+["Medical bloodset"]                                    = "common",
+["Medical Kit"]                                         = "usable_item",
+["Medical set"]                                         = "rare",
+["Metal Awl"]                                           = "common",
+["Metal Cutting Scissors"]                              = "common",
+["Metal fuel tank"]                                     = "common_households",
+["Microcircuits"]                                       = "common",
+["Military Backpack"]                                   = "mythic",
+["Military Helmet"]                                     = "gear_common",
+["Mk14 7.62x51 10-round magazine"]                      = "common",
+["Mk14 EBR"]                                            = "mythic",
+["Molotov"]                                             = "uncommon",
+["MOTR Concealable Reinforced Vest"]                    = "gear_common",
+["Mounting Foam"]                                       = "common",
+["MP9 9x19 sound suppressor"]                           = "uncommon",
+["MSA Paraclete Plate Carrier"]                         = "gear_rare",
+["Mug"]                                                 = "common_households",
+["Nails"]                                               = "common",
+["NCStar AQPTLMG Compact Green Laser"]                  = "uncommon",
+["Nightforce ATACR 7-35x56"]                            = "uncommon",
+["Nomad Route Notes"]                                   = "rare",
+["North Dolphin Hospital Safe Key"]                     = "keys",
+["Northmont Sparkling Cider"]                           = "rare",
+["NovaTec reflex sight"]                                = "uncommon",
+["NovaTec RMR reflex sight"]                            = "uncommon",
+["ODWave 556 5.56x45 sound suppressor"]                 = "uncommon",
+["Oil Filter sound suppressor"]                         = "uncommon",
+["OKP-7 reflex sight"]                                  = "uncommon",
+["Orange juice carton"]                                 = "common_households",
+["PA3: Relief Inhaler"]                                 = "usable_item_inhaler",
+["Pack of matches"]                                     = "common_households",
+["Palmolive handwash"]                                  = "common_households",
+["PBS-1 sound suppressor"]                              = "uncommon",
+["Perfume"]                                             = "common_households",
+["PG-7V HEAT grenade"]                                  = "mythic",
+["Pickaxe"]                                             = "uncommon",
+["PICO-A1 Light Lower Body Armor"]                      = "gear_common",
+["PICO-A2 Heavy Lower Body Armor"]                      = "gear_rare",
+["Pile of meds"]                                        = "common",
+["Pipe wrench"]                                         = "rare",
+["Pipecleaner"]                                         = "common",
+["Porcelain"]                                           = "rare",
+["Power unit"]                                          = "common",
+["Powerbank"]                                           = "common",
+["Precisive Grips"]                                     = "gear_rare",
+["Printer Paper"]                                       = "common",
+["PSO-1 4x24 scope"]                                    = "uncommon",
+["PU-1 3.5x riflescope"]                                = "uncommon",
+["PureFire X300 Ultra"]                                 = "uncommon",
+["PX27 Headlamp"]                                       = "gear_rare",
+["QDSS-NT4 5.56x45 sound suppressor"]                   = "uncommon",
+["RAM"]                                                 = "rare",
+["Rapid Emergency AED Compact Tool"]                    = "mythic",
+["Rat Poison"]                                          = "rare",
+["RG-9: Regenerative Inhaler"]                          = "usable_item_inhaler",
+["RGO"]                                                 = "mythic",
+["RK-1 tactical foregrip"]                              = "uncommon",
+["ROVER Motorcycle Helmet"]                             = "gear_common",
+["RPG-7"]                                               = "mythic",
+["RPK-16 5.45x39 95-round drum magazine"]               = "uncommon",
+["RV11: Emergency Resuscitator Inhaler"]                = "usable_item_inhaler",
+["S&M Backpack"]                                        = "usable_item",
+["S7: Stimulant Inhaler"]                               = "usable_item_inhaler",
+["SA-58"]                                               = "mythic",
+["SA58/FAL 7.62x51 20-round magazine"]                  = "uncommon",
+["SA58/FAL 7.62x51 50-round drum magazine"]             = "uncommon",
+["Saiga 12"]                                            = "mythic",
+["SAIPH signal pistol"]                                 = "usable_item",
+["SAS drive"]                                           = "rare",
+["SCAR-H"]                                              = "mythic",
+["Scissors"]                                            = "common_households",
+["Scrap Metal"]                                         = "common",
+["Screwdriver"]                                         = "common",
+["Scuba Gear"]                                          = "gear_common",
+["Sealed black file"]                                   = "rare",
+["Sealing Foam"]                                        = "common",
+["Sewing Kit"]                                          = "common",
+["Shampoo"]                                             = "common_households",
+["Shards in the Code: Season One"]                      = "common",
+["SHARK muzzle brake"]                                  = "mythic",
+["SilKo Osprey 9 9x19 sound suppressor"]                = "uncommon",
+["SilKo Salvo 12 12ga sound suppressor"]                = "uncommon",
+["Slick Plate Carrier"]                                 = "mythic",
+["Sling Bag"]                                           = "usable_item",
+["Smartphone"]                                          = "common",
+["Sodium Bicarbonate"]                                  = "common",
+["Sodium Chloride"]                                     = "common",
+["Splint"]                                              = "usable_item",
+["Spoon"]                                               = "common_households",
+["SR16"]                                                = "mythic",
+["SSD"]                                                 = "rare",
+["Sticky Tape"]                                         = "common",
+["String"]                                              = "common",
+["Superpunch"]                                          = "uncommon",
+["SureFire 3-prong flash hider"]                        = "uncommon",
+["SureFire 4-prong flash hider"]                        = "uncommon",
+["Surgical kit"]                                        = "rare",
+["SV-98 7.62x54R sound suppressor"]                     = "uncommon",
+["T-7 Thermal Goggles"]                                 = "mythic",
+["T178 Raid Backpack"]                                  = "mythic",
+["Tactical Sword"]                                      = "uncommon",
+["Tank Battery"]                                        = "rare",
+["The 5th Annual Bloxy Award"]                          = "rare",
+["The Crucible"]                                        = "contraband",
+["The Greatest Admin plushie"]                          = "rare",
+["Titanium Alloy Plate"]                                = "rare",
+["Toilet paper"]                                        = "common_households",
+["Tomahawk"]                                            = "uncommon",
+["Toothpaste"]                                          = "common_households",
+["Tourniquet"]                                          = "usable_item",
+["Tube of cold welding"]                                = "common",
+["Type 04-1 holographic sight"]                         = "uncommon",
+["Type 95 5.8x42mm 30-round magazine"]                  = "uncommon",
+["UH-1 holographic sight"]                              = "uncommon",
+["ULACH IIIA Helmet"]                                   = "gear_rare",
+["USB extension cable"]                                 = "common",
+["Vanish 30 5.56x45 sound suppressor"]                  = "mythic",
+["Vegetable oil"]                                       = "common_households",
+["Vertical foregrip"]                                   = "uncommon",
+["Vintage Gold Crown"]                                  = "rare",
+["Vitamins"]                                            = "common",
+["VSS modern stock"]                                    = "mythic",
+["VSS Vintorez"]                                        = "mythic",
+["Watch"]                                               = "common_households",
+["Weapon case"]                                         = "usable_item",
+["Weapon parts"]                                        = "rare",
+["White tube"]                                          = "common",
+["Wrench"]                                              = "common",
+["XLaser pointer module"]                               = "mythic",
+["Xtreme Motorcycle Helmet"]                            = "gear_common",
+["YMA95-1 3.5x riflescope"]                             = "uncommon",
 }
-
 local TIER_COLORS = {
-    common              = Color3.fromRGB(200, 200, 200),
-    common_gun          = Color3.fromRGB(180, 220, 180),
-    common_households   = Color3.fromRGB(210, 210, 210),
-    uncommon            = Color3.fromRGB( 80, 200,  80),
-    rare                = Color3.fromRGB(180,  60, 255),
-    mythic              = Color3.fromRGB(255,  40,  40),
-    keys                = Color3.fromRGB(255, 230,  50),
-    usable_item         = Color3.fromRGB( 60, 210, 210),
-    usable_item_inhaler = Color3.fromRGB( 60, 210, 210),
-    gear_common         = Color3.fromRGB(180, 130, 255),
-    gear_rare           = Color3.fromRGB(220,  80, 255),
-    contraband          = Color3.fromRGB(255,  30,  30),
-    cash                = Color3.fromRGB(100, 255, 100),
+common              = Color3.fromRGB(200, 200, 200),
+common_gun          = Color3.fromRGB(180, 220, 180),
+common_households   = Color3.fromRGB(210, 210, 210),
+uncommon            = Color3.fromRGB( 80, 200,  80),
+rare                = Color3.fromRGB(180,  60, 255),
+mythic              = Color3.fromRGB(255,  40,  40),
+keys                = Color3.fromRGB(255, 230,  50),
+usable_item         = Color3.fromRGB( 60, 210, 210),
+usable_item_inhaler = Color3.fromRGB( 60, 210, 210),
+gear_common         = Color3.fromRGB(180, 130, 255),
+gear_rare           = Color3.fromRGB(220,  80, 255),
+contraband          = Color3.fromRGB(255,  30,  30),
+cash                = Color3.fromRGB(100, 255, 100),
 }
-
 local function tierColor(name)
-    local tier = ITEM_TIER[name]
-    return (tier and TIER_COLORS[tier]) or Color3.fromRGB(255, 255, 255)
+local tier = ITEM_TIER[name]
+return (tier and TIER_COLORS[tier]) or Color3.fromRGB(255, 255, 255)
 end
-
 local itemColors = {}
 for name in pairs(ITEM_TIER) do itemColors[name] = tierColor(name) end
-
 local function isAmmo(name)
-    local n = name:lower()
-    return n:find("x18mm") or n:find("x19mm") or n:find("x39mm")
-        or n:find("x51mm") or n:find("x54mm") or n:find("x28mm")
-        or n:find("x42mm") or n:find("x30mm") or n:find("x45")
-        or n:find("x75mm") or n:find("gauge buckshot")
-        or n:find("%.338") or n:find("%.408") or n:find("%.45 acp")
-        or n:find("%.50 action") or n:find("4%.6x") or n:find("5%.45x")
-        or n:find("5%.56x") or n:find("5%.7x") or n:find("5%.8x")
-        or n:find("7%.62x") or n:find("9x39mm") or n:find("23x75mm")
-        or n:find("40x46mm")
+local n = name:lower()
+return n:find("x18mm") or n:find("x19mm") or n:find("x39mm")
+or n:find("x51mm") or n:find("x54mm") or n:find("x28mm")
+or n:find("x42mm") or n:find("x30mm") or n:find("x45")
+or n:find("x75mm") or n:find("gauge buckshot")
+or n:find("%.338") or n:find("%.408") or n:find("%.45 acp")
+or n:find("%.50 action") or n:find("4%.6x") or n:find("5%.45x")
+or n:find("5%.56x") or n:find("5%.7x") or n:find("5%.8x")
+or n:find("7%.62x") or n:find("9x39mm") or n:find("23x75mm")
+or n:find("40x46mm")
 end
-
 local function isAttachment(name)
-    local n = name:lower()
-    return n:find("magazine") or n:find("%-round ")
-        or n:find("suppressor") or n:find("silencer")
-        or n:find("foregrip") or n:find("grip")
-        or n:find("riflescope") or n:find("scope")
-        or n:find("holographic") or n:find("reflex sight")
-        or n:find("flash hider") or n:find("muzzle brake")
-        or n:find("compensator") or n:find("laser")
-        or n:find("tactical device") or n:find("headlamp")
+local n = name:lower()
+return n:find("magazine") or n:find("%-round ")
+or n:find("suppressor") or n:find("silencer")
+or n:find("foregrip") or n:find("grip")
+or n:find("riflescope") or n:find("scope")
+or n:find("holographic") or n:find("reflex sight")
+or n:find("flash hider") or n:find("muzzle brake")
+or n:find("compensator") or n:find("laser")
+or n:find("tactical device") or n:find("headlamp")
 end
-
 local tierLists = {
-    mythic={}; rare={}; uncommon={}; common={}; keys={};
-    usable={}; household={}; ammo={}; attachments={};
+mythic={}; rare={}; uncommon={}; common={}; keys={};
+usable={}; household={}; ammo={}; attachments={};
 }
-
 for name, tier in pairs(ITEM_TIER) do
-    if isAmmo(name) then
-        tierLists.ammo[#tierLists.ammo+1] = name
-    elseif isAttachment(name) then
-        tierLists.attachments[#tierLists.attachments+1] = name
-    elseif tier == "mythic" then
-        tierLists.mythic[#tierLists.mythic+1] = name
-    elseif tier == "rare" then
-        tierLists.rare[#tierLists.rare+1] = name
-    elseif tier == "uncommon" then
-        tierLists.uncommon[#tierLists.uncommon+1] = name
-    elseif tier == "common" then
-        tierLists.common[#tierLists.common+1] = name
-    elseif tier == "keys" then
-        tierLists.keys[#tierLists.keys+1] = name
-    elseif tier == "usable_item" or tier == "usable_item_inhaler" then
-        tierLists.usable[#tierLists.usable+1] = name
-    elseif tier == "common_households" then
-        tierLists.household[#tierLists.household+1] = name
-    end
+if isAmmo(name) then
+tierLists.ammo[#tierLists.ammo+1] = name
+elseif isAttachment(name) then
+tierLists.attachments[#tierLists.attachments+1] = name
+elseif tier == "mythic" then
+tierLists.mythic[#tierLists.mythic+1] = name
+elseif tier == "rare" then
+tierLists.rare[#tierLists.rare+1] = name
+elseif tier == "uncommon" then
+tierLists.uncommon[#tierLists.uncommon+1] = name
+elseif tier == "common" then
+tierLists.common[#tierLists.common+1] = name
+elseif tier == "keys" then
+tierLists.keys[#tierLists.keys+1] = name
+elseif tier == "usable_item" or tier == "usable_item_inhaler" then
+tierLists.usable[#tierLists.usable+1] = name
+elseif tier == "common_households" then
+tierLists.household[#tierLists.household+1] = name
 end
-
+end
 for _, list in pairs(tierLists) do table.sort(list) end
-
--- ============================================================
---  Crate Data
--- ============================================================
 local crateNames = {
-    "Ammunition Box","Cabinet","Cash Register","Closet","Complex Crate",
-    "Computer","Dishwasher","Double Washing Machine","Duffel Bag",
-    "Envelope","File Cabinet","Fridge","HospitalCabinet","HospitalCloset",
-    "HospitalTable","Locker","Medical Box","Medium Wooden Crate",
-    "Military Crate","Military File Cabinet","Military Radio",
-    "Miltary Server Unit","Pistol Case","Raider Cache","Rifle Case",
-    "Ruined Locker","Ruined Small Case","Safe","Server Unit","Small Case",
-    "StandingATM","Stove","Surgeon's Tool Shelf","TallFridge",
-    "Technical Shelf","Tool Shelf","Toolbox","WallATM","Washing Machine",
-    "Weapon Box","Weapon Locker","Wooden Crate",
+"Ammunition Box","Cabinet","Cash Register","Closet","Complex Crate",
+"Computer","Dishwasher","Double Washing Machine","Duffel Bag",
+"Envelope","File Cabinet","Fridge","HospitalCabinet","HospitalCloset",
+"HospitalTable","Locker","Medical Box","Medium Wooden Crate",
+"Military Crate","Military File Cabinet","Military Radio",
+"Miltary Server Unit","Pistol Case","Raider Cache","Rifle Case",
+"Ruined Locker","Ruined Small Case","Safe","Server Unit","Small Case",
+"StandingATM","Stove","Surgeon's Tool Shelf","TallFridge",
+"Technical Shelf","Tool Shelf","Toolbox","WallATM","Washing Machine",
+"Weapon Box","Weapon Locker","Wooden Crate",
 }
-
 local crateColors = {
-    ["Ammunition Box"]         = Color3.fromRGB(255, 80,  40),
-    ["Cabinet"]                = Color3.fromRGB(160, 120, 80),
-    ["Cash Register"]          = Color3.fromRGB(80,  200, 80),
-    ["Closet"]                 = Color3.fromRGB(200, 160, 255),
-    ["Complex Crate"]          = Color3.fromRGB(255, 160, 40),
-    ["Computer"]               = Color3.fromRGB(60,  180, 255),
-    ["Dishwasher"]             = Color3.fromRGB(120, 220, 240),
-    ["Double Washing Machine"] = Color3.fromRGB(100, 200, 255),
-    ["Duffel Bag"]             = Color3.fromRGB(180, 140, 80),
-    ["Envelope"]               = Color3.fromRGB(255, 240, 140),
-    ["File Cabinet"]           = Color3.fromRGB(160, 160, 160),
-    ["Fridge"]                 = Color3.fromRGB(180, 240, 255),
-    ["HospitalCabinet"]        = Color3.fromRGB(200, 255, 220),
-    ["HospitalCloset"]         = Color3.fromRGB(160, 240, 200),
-    ["HospitalTable"]          = Color3.fromRGB(120, 220, 180),
-    ["Locker"]                 = Color3.fromRGB(100, 140, 200),
-    ["Medical Box"]            = Color3.fromRGB(255, 60,  100),
-    ["Medium Wooden Crate"]    = Color3.fromRGB(200, 140, 60),
-    ["Military Crate"]         = Color3.fromRGB(100, 160, 60),
-    ["Military File Cabinet"]  = Color3.fromRGB(80,  140, 80),
-    ["Military Radio"]         = Color3.fromRGB(60,  200, 120),
-    ["Miltary Server Unit"]    = Color3.fromRGB(40,  180, 100),
-    ["Pistol Case"]            = Color3.fromRGB(255, 100, 60),
-    ["Raider Cache"]           = Color3.fromRGB(200, 60,  60),
-    ["Rifle Case"]             = Color3.fromRGB(220, 80,  40),
-    ["Ruined Locker"]          = Color3.fromRGB(140, 100, 80),
-    ["Ruined Small Case"]      = Color3.fromRGB(160, 110, 90),
-    ["Safe"]                   = Color3.fromRGB(80,  80,  200),
-    ["Server Unit"]            = Color3.fromRGB(60,  140, 255),
-    ["Small Case"]             = Color3.fromRGB(255, 180, 80),
-    ["StandingATM"]            = Color3.fromRGB(40,  200, 200),
-    ["Stove"]                  = Color3.fromRGB(220, 120, 60),
-    ["Surgeon's Tool Shelf"]   = Color3.fromRGB(100, 255, 200),
-    ["TallFridge"]             = Color3.fromRGB(160, 220, 255),
-    ["Technical Shelf"]        = Color3.fromRGB(120, 160, 220),
-    ["Tool Shelf"]             = Color3.fromRGB(200, 160, 80),
-    ["Toolbox"]                = Color3.fromRGB(255, 140, 20),
-    ["WallATM"]                = Color3.fromRGB(20,  180, 180),
-    ["Washing Machine"]        = Color3.fromRGB(140, 200, 255),
-    ["Weapon Box"]             = Color3.fromRGB(255, 60,  60),
-    ["Weapon Locker"]          = Color3.fromRGB(220, 40,  40),
-    ["Wooden Crate"]           = Color3.fromRGB(180, 120, 40),
+["Ammunition Box"]         = Color3.fromRGB(255, 80,  40),
+["Cabinet"]                = Color3.fromRGB(160, 120, 80),
+["Cash Register"]          = Color3.fromRGB(80,  200, 80),
+["Closet"]                 = Color3.fromRGB(200, 160, 255),
+["Complex Crate"]          = Color3.fromRGB(255, 160, 40),
+["Computer"]               = Color3.fromRGB(60,  180, 255),
+["Dishwasher"]             = Color3.fromRGB(120, 220, 240),
+["Double Washing Machine"] = Color3.fromRGB(100, 200, 255),
+["Duffel Bag"]             = Color3.fromRGB(180, 140, 80),
+["Envelope"]               = Color3.fromRGB(255, 240, 140),
+["File Cabinet"]           = Color3.fromRGB(160, 160, 160),
+["Fridge"]                 = Color3.fromRGB(180, 240, 255),
+["HospitalCabinet"]        = Color3.fromRGB(200, 255, 220),
+["HospitalCloset"]         = Color3.fromRGB(160, 240, 200),
+["HospitalTable"]          = Color3.fromRGB(120, 220, 180),
+["Locker"]                 = Color3.fromRGB(100, 140, 200),
+["Medical Box"]            = Color3.fromRGB(255, 60,  100),
+["Medium Wooden Crate"]    = Color3.fromRGB(200, 140, 60),
+["Military Crate"]         = Color3.fromRGB(100, 160, 60),
+["Military File Cabinet"]  = Color3.fromRGB(80,  140, 80),
+["Military Radio"]         = Color3.fromRGB(60,  200, 120),
+["Miltary Server Unit"]    = Color3.fromRGB(40,  180, 100),
+["Pistol Case"]            = Color3.fromRGB(255, 100, 60),
+["Raider Cache"]           = Color3.fromRGB(200, 60,  60),
+["Rifle Case"]             = Color3.fromRGB(220, 80,  40),
+["Ruined Locker"]          = Color3.fromRGB(140, 100, 80),
+["Ruined Small Case"]      = Color3.fromRGB(160, 110, 90),
+["Safe"]                   = Color3.fromRGB(80,  80,  200),
+["Server Unit"]            = Color3.fromRGB(60,  140, 255),
+["Small Case"]             = Color3.fromRGB(255, 180, 80),
+["StandingATM"]            = Color3.fromRGB(40,  200, 200),
+["Stove"]                  = Color3.fromRGB(220, 120, 60),
+["Surgeon's Tool Shelf"]   = Color3.fromRGB(100, 255, 200),
+["TallFridge"]             = Color3.fromRGB(160, 220, 255),
+["Technical Shelf"]        = Color3.fromRGB(120, 160, 220),
+["Tool Shelf"]             = Color3.fromRGB(200, 160, 80),
+["Toolbox"]                = Color3.fromRGB(255, 140, 20),
+["WallATM"]                = Color3.fromRGB(20,  180, 180),
+["Washing Machine"]        = Color3.fromRGB(140, 200, 255),
+["Weapon Box"]             = Color3.fromRGB(255, 60,  60),
+["Weapon Locker"]          = Color3.fromRGB(220, 40,  40),
+["Wooden Crate"]           = Color3.fromRGB(180, 120, 40),
 }
-
--- ============================================================
---  Weapon Data
--- ============================================================
 local weaponTiers = {
-    ["311 Double Barrel"]="common_gun", ["870 MCS"]="common_gun",
-    ["AK-74M"]="common_gun",           ["AKS-74U"]="common_gun",
-    ["AS VAL"]="mythic",               ["AWP"]="mythic",
-    ["Beretta 92X"]="common_gun",      ["Citori 725"]="common_gun",
-    ["CMMG Mk47 Mutant"]="mythic",     ["Colt Python"]="common_gun",
-    ["Deagle"]="common_gun",           ["DIY Flamethrower"]="common_gun",
-    ["DP-27"]="mythic",                ["GL 19 Gen4"]="common_gun",
-    ["HK416"]="mythic",                ["Intervention M200"]="mythic",
-    ["KS-23M"]="mythic",               ["KRISS Vector"]="common_gun",
-    ["M16A1"]="common_gun",            ["M1911"]="common_gun",
-    ["M249"]="mythic",                 ["M4 Benelli"]="mythic",
-    ["M4A1"]="mythic",                 ["M79"]="mythic",
-    ["MAC-10"]="common_gun",           ["Makarov"]="common_gun",
-    ["Mk14 EBR"]="mythic",             ["MP34"]="common_gun",
-    ["MP5A5"]="common_gun",            ["MP7"]="common_gun",
-    ["MP9"]="common_gun",              ["P90"]="common_gun",
-    ["QBZ-95"]="common_gun",           ["RPG-7"]="mythic",
-    ["RPK"]="common_gun",              ["SA-58"]="mythic",
-    ["Saiga 12"]="mythic",             ["SCAR-H"]="mythic",
-    ["SKS"]="common_gun",              ["SR16"]="mythic",
-    ["SV-98"]="common_gun",            ["SVD"]="common_gun",
-    ["UMP45"]="common_gun",            ["VSS Vintorez"]="mythic",
+["311 Double Barrel"]="common_gun", ["870 MCS"]="common_gun",
+["AK-74M"]="common_gun",           ["AKS-74U"]="common_gun",
+["AS VAL"]="mythic",               ["AWP"]="mythic",
+["Beretta 92X"]="common_gun",      ["Citori 725"]="common_gun",
+["CMMG Mk47 Mutant"]="mythic",     ["Colt Python"]="common_gun",
+["Deagle"]="common_gun",           ["DIY Flamethrower"]="common_gun",
+["DP-27"]="mythic",                ["GL 19 Gen4"]="common_gun",
+["HK416"]="mythic",                ["Intervention M200"]="mythic",
+["KS-23M"]="mythic",               ["KRISS Vector"]="common_gun",
+["M16A1"]="common_gun",            ["M1911"]="common_gun",
+["M249"]="mythic",                 ["M4 Benelli"]="mythic",
+["M4A1"]="mythic",                 ["M79"]="mythic",
+["MAC-10"]="common_gun",           ["Makarov"]="common_gun",
+["Mk14 EBR"]="mythic",             ["MP34"]="common_gun",
+["MP5A5"]="common_gun",            ["MP7"]="common_gun",
+["MP9"]="common_gun",              ["P90"]="common_gun",
+["QBZ-95"]="common_gun",           ["RPG-7"]="mythic",
+["RPK"]="common_gun",              ["SA-58"]="mythic",
+["Saiga 12"]="mythic",             ["SCAR-H"]="mythic",
+["SKS"]="common_gun",              ["SR16"]="mythic",
+["SV-98"]="common_gun",            ["SVD"]="common_gun",
+["UMP45"]="common_gun",            ["VSS Vintorez"]="mythic",
 }
-
 local weaponNames = {}
 for k in pairs(weaponTiers) do weaponNames[#weaponNames+1] = k end
 table.sort(weaponNames)
-
--- ============================================================
---  Offsets
--- ============================================================
 local OFF = {}
 do
-    local _raw = {}
-    pcall(function()
-        local res = game:HttpGet("https://offsets.imtheo.lol/Offsets.json")
-        _raw = (HttpService:JSONDecode(res) or {}).Offsets or {}
-    end)
-    local function o(sec, key, fb)
-        local s = _raw[sec]; return (s and s[key]) or fb
-    end
-    OFF.FOG_END      = o("Lighting",   "FogEnd",   0x13C)
-    OFF.FOG_START    = o("Lighting",   "FogStart", 0x140)
-    OFF.ATMO_DENSITY = o("Atmosphere", "Density",  0x0E8)
-    OFF.ATMO_GLARE   = o("Atmosphere", "Glare",    0x0EC)
-    OFF.ATMO_HAZE    = o("Atmosphere", "Haze",     0x0F0)
-    OFF.ATMO_OFFSET  = o("Atmosphere", "Offset",   0x0F4)
+local _raw = {}
+pcall(function()
+local res = game:HttpGet("https://offsets.imtheo.lol/Offsets.json")
+_raw = (HttpService:JSONDecode(res) or {}).Offsets or {}
+end)
+local function o(sec, key, fb)
+local s = _raw[sec]; return (s and s[key]) or fb
 end
-
--- ============================================================
---  No Fog
--- ============================================================
+OFF.FOG_END      = o("Lighting",   "FogEnd",   0x13C)
+OFF.FOG_START    = o("Lighting",   "FogStart", 0x140)
+OFF.ATMO_DENSITY = o("Atmosphere", "Density",  0x0E8)
+OFF.ATMO_GLARE   = o("Atmosphere", "Glare",    0x0EC)
+OFF.ATMO_HAZE    = o("Atmosphere", "Haze",     0x0F0)
+OFF.ATMO_OFFSET  = o("Atmosphere", "Offset",   0x0F4)
+end
 local FOG = {
-    lightingAddr=0, atmoAddr=0,
-    origEnd=100000, origStart=0,
-    origDensity=0.3, origGlare=0, origHaze=0, origOffset=0.25,
-    captured=false, enabled=false, last=false,
+lightingAddr=0, atmoAddr=0,
+origEnd=100000, origStart=0,
+origDensity=0.3, origGlare=0, origHaze=0, origOffset=0.25,
+captured=false, enabled=false, last=false,
 }
-
 local function captureFog()
-    FOG.captured = true
-    pcall(function() FOG.lightingAddr = Lighting.Address or 0 end)
-    pcall(function() FOG.origEnd = Lighting.FogEnd; FOG.origStart = Lighting.FogStart end)
-    local atmo = Lighting:FindFirstChildOfClass("Atmosphere")
-    if atmo then
-        pcall(function() FOG.atmoAddr = atmo.Address or 0 end)
-        pcall(function()
-            FOG.origDensity = atmo.Density; FOG.origGlare  = atmo.Glare
-            FOG.origHaze    = atmo.Haze;    FOG.origOffset = atmo.Offset
-        end)
-    end
+FOG.captured = true
+pcall(function() FOG.lightingAddr = Lighting.Address or 0 end)
+pcall(function() FOG.origEnd = Lighting.FogEnd; FOG.origStart = Lighting.FogStart end)
+local atmo = Lighting:FindFirstChildOfClass("Atmosphere")
+if atmo then
+pcall(function() FOG.atmoAddr = atmo.Address or 0 end)
+pcall(function()
+FOG.origDensity = atmo.Density; FOG.origGlare  = atmo.Glare
+FOG.origHaze    = atmo.Haze;    FOG.origOffset = atmo.Offset
+end)
 end
-
+end
 local function applyNoFog()
-    if not FOG.captured then captureFog() end
-    if not memory_write then return end
-    if FOG.lightingAddr ~= 0 then
-        memory_write("float", FOG.lightingAddr + OFF.FOG_END,   9e8)
-        memory_write("float", FOG.lightingAddr + OFF.FOG_START, 9e8)
-    end
-    if FOG.atmoAddr ~= 0 then
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_DENSITY, 0)
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_GLARE,   0)
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_HAZE,    0)
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_OFFSET,  0)
-    end
+if not FOG.captured then captureFog() end
+if not memory_write then return end
+if FOG.lightingAddr ~= 0 then
+memory_write("float", FOG.lightingAddr + OFF.FOG_END,   9e8)
+memory_write("float", FOG.lightingAddr + OFF.FOG_START, 9e8)
 end
-
+if FOG.atmoAddr ~= 0 then
+memory_write("float", FOG.atmoAddr + OFF.ATMO_DENSITY, 0)
+memory_write("float", FOG.atmoAddr + OFF.ATMO_GLARE,   0)
+memory_write("float", FOG.atmoAddr + OFF.ATMO_HAZE,    0)
+memory_write("float", FOG.atmoAddr + OFF.ATMO_OFFSET,  0)
+end
+end
 local function restoreFog()
-    if not FOG.captured or not memory_write then return end
-    if FOG.lightingAddr ~= 0 then
-        memory_write("float", FOG.lightingAddr + OFF.FOG_END,   FOG.origEnd)
-        memory_write("float", FOG.lightingAddr + OFF.FOG_START, FOG.origStart)
-    end
-    if FOG.atmoAddr ~= 0 then
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_DENSITY, FOG.origDensity)
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_GLARE,   FOG.origGlare)
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_HAZE,    FOG.origHaze)
-        memory_write("float", FOG.atmoAddr + OFF.ATMO_OFFSET,  FOG.origOffset)
-    end
+if not FOG.captured or not memory_write then return end
+if FOG.lightingAddr ~= 0 then
+memory_write("float", FOG.lightingAddr + OFF.FOG_END,   FOG.origEnd)
+memory_write("float", FOG.lightingAddr + OFF.FOG_START, FOG.origStart)
 end
-
--- ============================================================
---  No Recoil
--- ============================================================
+if FOG.atmoAddr ~= 0 then
+memory_write("float", FOG.atmoAddr + OFF.ATMO_DENSITY, FOG.origDensity)
+memory_write("float", FOG.atmoAddr + OFF.ATMO_GLARE,   FOG.origGlare)
+memory_write("float", FOG.atmoAddr + OFF.ATMO_HAZE,    FOG.origHaze)
+memory_write("float", FOG.atmoAddr + OFF.ATMO_OFFSET,  FOG.origOffset)
+end
+end
 local RECOIL = {
-    enabled = false,
-    cache   = nil,
-    keys    = {"vPunchBase","hPunchBase","vel","spreadReduce","spread","weight","unAimWeight","aimWeight"},
-    payload = {
-        vPunchBase=0, hPunchBase=0, spreadReduce=100,
-        spread={y={[1]=0,[2]=0,[3]=0},x={[1]=0,[2]=0,[3]=0},z={[1]=0,[2]=0,[3]=0}},
-        vel=100000, weight=0, aimWeight=0, unAimWeight=0,
-    },
+enabled = false,
+cache   = nil,
+keys    = {"vPunchBase","hPunchBase","vel","spreadReduce","spread","weight","unAimWeight","aimWeight"},
+payload = {
+vPunchBase=0, hPunchBase=0, spreadReduce=100,
+spread={y={[1]=0,[2]=0,[3]=0},x={[1]=0,[2]=0,[3]=0},z={[1]=0,[2]=0,[3]=0}},
+vel=100000, weight=0, aimWeight=0, unAimWeight=0,
+},
 }
-
--- ============================================================
---  Combat Mode
--- ============================================================
 local COMBAT = {
-    active      = false,
-    keyType     = "key",
-    keyCode     = 0x71,   -- F2 default
-    keyName     = "F2",
-    listening   = false,
-    wasDown     = false,  -- for edge-detection toggle
+active      = false,
+keyType     = "key",
+keyCode     = 0x71,
+keyName     = "F2",
+listening   = false,
+wasDown     = false,
 }
-
 local function combatKeyDown()
-    if COMBAT.keyType == "mouse1" then return ismouse1pressed()
-    elseif COMBAT.keyType == "mouse2" then return ismouse2pressed()
-    elseif COMBAT.keyType == "key" and COMBAT.keyCode then
-        return iskeypressed(COMBAT.keyCode)
-    end
-    return false
+if COMBAT.keyType == "mouse1" then return ismouse1pressed()
+elseif COMBAT.keyType == "mouse2" then return ismouse2pressed()
+elseif COMBAT.keyType == "key" and COMBAT.keyCode then
+return iskeypressed(COMBAT.keyCode)
 end
-
--- Wipe all loot/weapon ESP drawing pools immediately (called on activation)
+return false
+end
 local function combatHideLoot()
-    -- These pools don't exist yet at definition time, so we reference them
-    -- via upvalues set after pool creation (see bottom of file).
-    -- Handled in the render loop guard instead — zero-cost when active==true.
 end
-
--- ============================================================
---  Instant Loot (OPTIMIZED)
--- ============================================================
 local INSTANT_LOOT = { enabled=false, loopThread=nil }
-
 local IL_GC_KEYS = {
-    "search_speed","searchSpeed","SearchSpeed",
-    "searchTime","SearchTime","searchDuration",
-    "lootSearchTime","containerSearchTime",
-    "level","required_level",
+"search_speed","searchSpeed","SearchSpeed",
+"searchTime","SearchTime","searchDuration",
+"lootSearchTime","containerSearchTime",
+"level","required_level",
 }
 local IL_GC_VALUES = {
-    search_speed=999999, searchSpeed=999999, SearchSpeed=999999,
-    searchTime=0, SearchTime=0, searchDuration=0,
-    lootSearchTime=0, containerSearchTime=0,
-    level=50, required_level=0,
+search_speed=999999, searchSpeed=999999, SearchSpeed=999999,
+searchTime=0, SearchTime=0, searchDuration=0,
+lootSearchTime=0, containerSearchTime=0,
+level=50, required_level=0,
 }
-
 local IL_CACHE = nil
-
 local function il_applyGC()
-    pcall(function()
-        if not IL_CACHE or #IL_CACHE == 0 then
-            IL_CACHE = getgc(IL_GC_KEYS)
-        end
-        if IL_CACHE and #IL_CACHE > 0 then
-            applygc(IL_CACHE, IL_GC_VALUES)
-        end
-    end)
+pcall(function()
+if not IL_CACHE or #IL_CACHE == 0 then
+IL_CACHE = getgc(IL_GC_KEYS)
 end
-
+if IL_CACHE and #IL_CACHE > 0 then
+applygc(IL_CACHE, IL_GC_VALUES)
+end
+end)
+end
 local function il_patchSkillsOn(model)
-    if not model then return end
-    local playerData = model:FindFirstChild("playerData")
-    local skills     = playerData and playerData:FindFirstChild("skills")
-    if not skills then return end
-    local scavenger  = skills:FindFirstChild("Scavenger")
-    local level      = scavenger and scavenger:FindFirstChild("level")
-    if level then pcall(function() level.Value = 50 end) end
+if not model then return end
+local playerData = model:FindFirstChild("playerData")
+local skills     = playerData and playerData:FindFirstChild("skills")
+if not skills then return end
+local scavenger  = skills:FindFirstChild("Scavenger")
+local level      = scavenger and scavenger:FindFirstChild("level")
+if level then pcall(function() level.Value = 50 end) end
 end
-
 local function il_patchLocal()
-    local lp = Players.LocalPlayer
-    if not lp then return end
-    local char = lp.Character
-    il_patchSkillsOn(char)
-    if char then
-        local ok, raidFolder = pcall(function() return char.Parent end)
-        if ok and raidFolder and raidFolder ~= workspace then
-            il_patchSkillsOn(raidFolder:FindFirstChild(lp.Name))
-        end
-    end
+local lp = Players.LocalPlayer
+if not lp then return end
+local char = lp.Character
+il_patchSkillsOn(char)
+if char then
+local ok, raidFolder = pcall(function() return char.Parent end)
+if ok and raidFolder and raidFolder ~= workspace then
+il_patchSkillsOn(raidFolder:FindFirstChild(lp.Name))
 end
-
+end
+end
 local function startInstantLoot()
-    IL_CACHE = nil
-    il_applyGC()
-    il_patchLocal()
-    INSTANT_LOOT.loopThread = task.spawn(function()
-        while INSTANT_LOOT.enabled do
-            task.wait(2)
-            if not INSTANT_LOOT.enabled then break end
-            il_applyGC()
-            il_patchLocal()
-        end
-    end)
+IL_CACHE = nil
+il_applyGC()
+il_patchLocal()
+INSTANT_LOOT.loopThread = task.spawn(function()
+while INSTANT_LOOT.enabled do
+task.wait(2)
+if not INSTANT_LOOT.enabled then break end
+il_applyGC()
+il_patchLocal()
 end
-
+end)
+end
 local function stopInstantLoot()
-    INSTANT_LOOT.enabled    = false
-    INSTANT_LOOT.loopThread = nil
-    IL_CACHE = nil
+INSTANT_LOOT.enabled    = false
+INSTANT_LOOT.loopThread = nil
+IL_CACHE = nil
 end
-
--- ============================================================
---  Drawing helpers
--- ============================================================
 local FONT = Drawing.Fonts.Monospace
 local function poolVis(w,v) if w.vis~=v then w.o.Visible=v; w.vis=v end end
 local function poolPos(w,x,y) if w.px~=x or w.py~=y then w.o.Position=Vector2.new(x,y); w.px=x; w.py=y end end
@@ -724,729 +645,631 @@ local function wCol(w,v)   if w.col~=v then w.o.Color=v; w.col=v end end
 local function wPos(w,x,y) if w.px~=x or w.py~=y then w.o.Position=Vector2.new(x,y); w.px=x; w.py=y end end
 local function wText(w,s)  if w.txt~=s then w.o.Text=s; w.txt=s end end
 local function wSeg(w,fx,fy,tx,ty)
-    if w.fx~=fx or w.fy~=fy then w.o.From=Vector2.new(fx,fy); w.fx=fx; w.fy=fy end
-    if w.gx~=tx or w.gy~=ty then w.o.To=Vector2.new(tx,ty); w.gx=tx; w.gy=ty end
+if w.fx~=fx or w.fy~=fy then w.o.From=Vector2.new(fx,fy); w.fx=fx; w.fy=fy end
+if w.gx~=tx or w.gy~=ty then w.o.To=Vector2.new(tx,ty); w.gx=tx; w.gy=ty end
 end
-
--- ============================================================
---  Cleanup guard
--- ============================================================
 if _G.HAVOC_ESP_CLEANUP then pcall(_G.HAVOC_ESP_CLEANUP) end
 local running    = true
 local drawings   = {}
 local renderConn = nil
 local function track(obj) drawings[obj]=true; return obj end
-
 _G.HAVOC_ESP_CLEANUP = function()
-    running = false
-    if renderConn then pcall(function() renderConn:Disconnect() end); renderConn=nil end
-    for obj in pairs(drawings) do pcall(function() obj:Remove() end) end
-    drawings = {}
-    pcall(restoreFog)
-    stopInstantLoot()
+running = false
+if renderConn then pcall(function() renderConn:Disconnect() end); renderConn=nil end
+for obj in pairs(drawings) do pcall(function() obj:Remove() end) end
+drawings = {}
+pcall(restoreFog)
+stopInstantLoot()
 end
-
--- ============================================================
---  AI/NPC ESP colours / constants
--- ============================================================
 local AIC = {
-    NAME    = Color3.fromRGB(238, 238, 238),
-    DIST    = Color3.fromRGB(205, 205, 205),
-    WPN     = Color3.fromRGB(205, 205, 205),
-    HP      = Color3.fromRGB(120, 235, 120),
-    HP_BG   = Color3.fromRGB(40,  40,  40),
-    BOX     = Color3.fromRGB(255, 80,  80),
-    TRACER  = Color3.fromRGB(255, 80,  80),
-    CORPSE  = Color3.fromRGB(180, 180, 180),
-    PLAYER_NAME   = Color3.fromRGB(80,  220, 255),
-    PLAYER_BOX    = Color3.fromRGB(80,  220, 255),
-    PLAYER_TRACER = Color3.fromRGB(80,  220, 255),
-    PLAYER_HP     = Color3.fromRGB(80,  220, 255),
-    MAX_SLOTS  = 128,
-    HEAD_OFF   = Vector3.new(0, 2.8, 0),
-    FOOT_OFF   = Vector3.new(0, 3.2, 0),
-    TEXT_SIZE  = 13,
-    CHARW      = 7,
-    GAP        = 6,
+NAME    = Color3.fromRGB(238, 238, 238),
+DIST    = Color3.fromRGB(205, 205, 205),
+WPN     = Color3.fromRGB(205, 205, 205),
+HP      = Color3.fromRGB(120, 235, 120),
+HP_BG   = Color3.fromRGB(40,  40,  40),
+BOX     = Color3.fromRGB(255, 80,  80),
+TRACER  = Color3.fromRGB(255, 80,  80),
+CORPSE  = Color3.fromRGB(180, 180, 180),
+PLAYER_NAME   = Color3.fromRGB(80,  220, 255),
+PLAYER_BOX    = Color3.fromRGB(80,  220, 255),
+PLAYER_TRACER = Color3.fromRGB(80,  220, 255),
+PLAYER_HP     = Color3.fromRGB(80,  220, 255),
+MAX_SLOTS  = 128,
+HEAD_OFF   = Vector3.new(0, 2.8, 0),
+FOOT_OFF   = Vector3.new(0, 3.2, 0),
+TEXT_SIZE  = 13,
+CHARW      = 7,
+GAP        = 6,
 }
-
--- ============================================================
---  Player ESP state
--- ============================================================
 local PLAYER_ESP = {
-    enabled  = false,
-    distMax  = 1500,
-    snap = { box=true, name=true, dist=true, health=true, weapon=true, tracer=false },
-    MAX_SLOTS = 64,
-    slots     = {},
-    lastDrawn = 0,
-    items     = {},
-    timer     = 0,
-    updateRate= 15,
+enabled  = false,
+distMax  = 1500,
+snap = { box=true, name=true, dist=true, health=true, weapon=true, tracer=false },
+MAX_SLOTS = 64,
+slots     = {},
+lastDrawn = 0,
+items     = {},
+timer     = 0,
+updateRate= 15,
 }
-
--- ============================================================
---  Slot factories
--- ============================================================
 local function newLine(color)
-    local l=track(Drawing.new("Line"))
-    l.Thickness=1; l.Color=color or Color3.new(1,1,1); l.Visible=false; return l
+local l=track(Drawing.new("Line"))
+l.Thickness=1; l.Color=color or Color3.new(1,1,1); l.Visible=false; return l
 end
 local function newText(color)
-    local t=track(Drawing.new("Text"))
-    t.Size=AIC.TEXT_SIZE; t.Center=true; t.Outline=true
-    t.Font=FONT; t.Color=color or AIC.NAME; t.Visible=false; return t
+local t=track(Drawing.new("Text"))
+t.Size=AIC.TEXT_SIZE; t.Center=true; t.Outline=true
+t.Font=FONT; t.Color=color or AIC.NAME; t.Visible=false; return t
 end
 local function newDot(color)
-    local d=track(Drawing.new("Circle"))
-    d.Radius=4; d.Filled=true; d.Thickness=1
-    d.Color=color or Color3.new(1,1,1); d.Visible=false; return d
+local d=track(Drawing.new("Circle"))
+d.Radius=4; d.Filled=true; d.Thickness=1
+d.Color=color or Color3.new(1,1,1); d.Visible=false; return d
 end
 local function wrap(o) return {o=o} end
-
 local function hpColor(ratio)
-    ratio=clamp(ratio,0,1)
-    return Color3.fromRGB(floor(255*(1-ratio)),floor(235*ratio),60)
+ratio=clamp(ratio,0,1)
+return Color3.fromRGB(floor(255*(1-ratio)),floor(235*ratio),60)
 end
-
 local function newSlot(boxColor, tracerColor, nameColor)
-    boxColor    = boxColor    or AIC.BOX
-    tracerColor = tracerColor or AIC.TRACER
-    nameColor   = nameColor   or AIC.NAME
-    local hpBg=track(Drawing.new("Line")); hpBg.Thickness=3; hpBg.Color=AIC.HP_BG; hpBg.Visible=false
-    local hpFg=track(Drawing.new("Line")); hpFg.Thickness=3; hpFg.Color=AIC.HP;    hpFg.Visible=false
-    return {
-        box    = {wrap(newLine(boxColor)),wrap(newLine(boxColor)),wrap(newLine(boxColor)),wrap(newLine(boxColor))},
-        hpBg   = wrap(hpBg), hpFg=wrap(hpFg),
-        name   = wrap(newText(nameColor)), dist=wrap(newText(AIC.DIST)),
-        wpn    = wrap(newText(AIC.WPN)),  tracer=wrap(newLine(tracerColor)),
-        dot    = wrap(newDot(AIC.CORPSE)),
-    }
+boxColor    = boxColor    or AIC.BOX
+tracerColor = tracerColor or AIC.TRACER
+nameColor   = nameColor   or AIC.NAME
+local hpBg=track(Drawing.new("Line")); hpBg.Thickness=3; hpBg.Color=AIC.HP_BG; hpBg.Visible=false
+local hpFg=track(Drawing.new("Line")); hpFg.Thickness=3; hpFg.Color=AIC.HP;    hpFg.Visible=false
+return {
+box    = {wrap(newLine(boxColor)),wrap(newLine(boxColor)),wrap(newLine(boxColor)),wrap(newLine(boxColor))},
+hpBg   = wrap(hpBg), hpFg=wrap(hpFg),
+name   = wrap(newText(nameColor)), dist=wrap(newText(AIC.DIST)),
+wpn    = wrap(newText(AIC.WPN)),  tracer=wrap(newLine(tracerColor)),
+dot    = wrap(newDot(AIC.CORPSE)),
+}
 end
-
 local slots = {}
 for i=1,AIC.MAX_SLOTS do slots[i]=newSlot(AIC.BOX, AIC.TRACER, AIC.NAME) end
 for i=1,PLAYER_ESP.MAX_SLOTS do PLAYER_ESP.slots[i]=newSlot(AIC.PLAYER_BOX, AIC.PLAYER_TRACER, AIC.PLAYER_NAME) end
-
 local function hideSlot(s)
-    for i=1,4 do wVis(s.box[i],false) end
-    wVis(s.hpBg,false); wVis(s.hpFg,false)
-    wVis(s.name,false); wVis(s.dist,false)
-    wVis(s.wpn,false);  wVis(s.tracer,false)
-    wVis(s.dot,false)
+for i=1,4 do wVis(s.box[i],false) end
+wVis(s.hpBg,false); wVis(s.hpFg,false)
+wVis(s.name,false); wVis(s.dist,false)
+wVis(s.wpn,false);  wVis(s.tracer,false)
+wVis(s.dot,false)
 end
-
 local function textW(t) return #t*AIC.CHARW end
-
 local function drawTextRow(w,cx,y,text,color)
-    wText(w,text); wPos(w,cx,y); wCol(w,color); wVis(w,true)
+wText(w,text); wPos(w,cx,y); wCol(w,color); wVis(w,true)
 end
-
 local function drawBox(s,x,y,w,h,col)
-    wSeg(s.box[1],x,y,x+w,y);   wSeg(s.box[2],x,y+h,x+w,y+h)
-    wSeg(s.box[3],x,y,x,y+h);   wSeg(s.box[4],x+w,y,x+w,y+h)
-    for i=1,4 do wCol(s.box[i],col); wVis(s.box[i],true) end
+wSeg(s.box[1],x,y,x+w,y);   wSeg(s.box[2],x,y+h,x+w,y+h)
+wSeg(s.box[3],x,y,x,y+h);   wSeg(s.box[4],x+w,y,x+w,y+h)
+for i=1,4 do wCol(s.box[i],col); wVis(s.box[i],true) end
 end
-
--- ============================================================
---  Build Player ESP items
--- ============================================================
 local function rebuildPlayerESP()
-    local char   = LocalPlayer and LocalPlayer.Character
-    local myHRP  = char and char:FindFirstChild("HumanoidRootPart")
-    local myPos  = myHRP and myHRP.Position
-    if not myPos then PLAYER_ESP.items={}; return end
-    local myX,myY,myZ = myPos.X,myPos.Y,myPos.Z
-    local distSqMax    = PLAYER_ESP.distMax^2
-    local raw={}
-    for _,plr in ipairs(Players:GetPlayers()) do
-        if plr ~= LocalPlayer then
-            local pchar = plr.Character
-            local hrp   = pchar and pchar:FindFirstChild("HumanoidRootPart")
-            if hrp and hrp.Parent then
-                local rp = hrp.Position
-                local dx,dy,dz = rp.X-myX, rp.Y-myY, rp.Z-myZ
-                local dSq = dx*dx+dy*dy+dz*dz
-                if dSq <= distSqMax then
-                    local hp, maxhp, hRatio, hColor
-                    local hum = pchar:FindFirstChildOfClass("Humanoid")
-                    if hum then
-                        pcall(function() hp=hum.Health; maxhp=hum.MaxHealth end)
-                        if hp and maxhp and maxhp>0 then
-                            hRatio = clamp(hp/maxhp,0,1)
-                            hColor = hpColor(hRatio)
-                        end
-                    end
-                    local wpnName
-                    local tool = pchar:FindFirstChildOfClass("Tool")
-                    if tool then wpnName = tool.Name end
-                    raw[#raw+1] = {
-                        part=hrp, name="[PLAYER] "..plr.Name,
-                        distText=floor(sqrt(dSq)).."m",
-                        healthRatio=hRatio, healthColor=hColor,
-                        weapon=wpnName, _distSq=dSq,
-                    }
-                end
-            end
-        end
-    end
-    table.sort(raw, function(a,b) return a._distSq < b._distSq end)
-    local out={}
-    for _,v in ipairs(raw) do
-        if #out >= PLAYER_ESP.MAX_SLOTS then break end
-        out[#out+1]=v
-    end
-    PLAYER_ESP.items=out
+local char   = LocalPlayer and LocalPlayer.Character
+local myHRP  = char and char:FindFirstChild("HumanoidRootPart")
+local myPos  = myHRP and myHRP.Position
+if not myPos then PLAYER_ESP.items={}; return end
+local myX,myY,myZ = myPos.X,myPos.Y,myPos.Z
+local distSqMax    = PLAYER_ESP.distMax^2
+local raw={}
+for _,plr in ipairs(Players:GetPlayers()) do
+if plr ~= LocalPlayer then
+local pchar = plr.Character
+local hrp   = pchar and pchar:FindFirstChild("HumanoidRootPart")
+if hrp and hrp.Parent then
+local rp = hrp.Position
+local dx,dy,dz = rp.X-myX, rp.Y-myY, rp.Z-myZ
+local dSq = dx*dx+dy*dy+dz*dz
+if dSq <= distSqMax then
+local hp, maxhp, hRatio, hColor
+local hum = pchar:FindFirstChildOfClass("Humanoid")
+if hum then
+pcall(function() hp=hum.Health; maxhp=hum.MaxHealth end)
+if hp and maxhp and maxhp>0 then
+hRatio = clamp(hp/maxhp,0,1)
+hColor = hpColor(hRatio)
 end
-
--- ============================================================
---  Draw one ESP slot
--- ============================================================
+end
+local wpnName
+local tool = pchar:FindFirstChildOfClass("Tool")
+if tool then wpnName = tool.Name end
+raw[#raw+1] = {
+part=hrp, name="[PLAYER] "..plr.Name,
+distText=floor(sqrt(dSq)).."m",
+healthRatio=hRatio, healthColor=hColor,
+weapon=wpnName, _distSq=dSq,
+}
+end
+end
+end
+end
+table.sort(raw, function(a,b) return a._distSq < b._distSq end)
+local out={}
+for _,v in ipairs(raw) do
+if #out >= PLAYER_ESP.MAX_SLOTS then break end
+out[#out+1]=v
+end
+PLAYER_ESP.items=out
+end
 local function drawSlot(s, it, snap, nameColor, boxColor, tracerColor, vpCX, vpCY)
-    local part=it.part
-    if not (part and part.Parent) then return false end
-    local rp=part.Position
-    local topPos,topOn=WorldToScreen(rp+AIC.HEAD_OFF)
-    if not topOn then return false end
-    local botPos,botOn=WorldToScreen(rp-AIC.FOOT_OFF)
-    local hx=topPos.X; local rowY=topPos.Y-AIC.TEXT_SIZE-2
-
-    if snap.box and botOn then
-        local h=max(abs(botPos.Y-topPos.Y),1); local w=h*0.5
-        drawBox(s, hx-w*0.5, topPos.Y, w, h, boxColor)
-    else for i=1,4 do wVis(s.box[i],false) end end
-
-    if snap.health and it.healthRatio and botOn then
-        local charH=max(abs(botPos.Y-topPos.Y),10)
-        local barX=hx-charH*0.25-5; local fillH=max(charH*it.healthRatio,1)
-        wSeg(s.hpBg,barX,topPos.Y,barX,topPos.Y+charH)
-        wCol(s.hpBg,AIC.HP_BG); wVis(s.hpBg,true)
-        wSeg(s.hpFg,barX,topPos.Y+charH,barX,topPos.Y+charH-fillH)
-        wCol(s.hpFg,it.healthColor or AIC.HP); wVis(s.hpFg,true)
-    else wVis(s.hpBg,false); wVis(s.hpFg,false) end
-
-    local nmTxt=snap.name and it.name or nil
-    local dsTxt=snap.dist and it.distText or nil
-    local nmW=nmTxt and textW(nmTxt) or 0
-    local dsW=dsTxt and textW(dsTxt) or 0
-    local total,cnt=0,0
-    if nmTxt then total=total+nmW; cnt=cnt+1 end
-    if dsTxt then total=total+dsW; cnt=cnt+1 end
-    if cnt>1 then total=total+AIC.GAP*(cnt-1) end
-
-    local x=hx-total*0.5
-    if nmTxt then drawTextRow(s.name,x+nmW*0.5,rowY,nmTxt,nameColor); x=x+nmW+AIC.GAP
-    else wVis(s.name,false) end
-    if dsTxt then drawTextRow(s.dist,x+dsW*0.5,rowY,dsTxt,AIC.DIST)
-    else wVis(s.dist,false) end
-
-    if snap.weapon and it.weapon and botOn then
-        drawTextRow(s.wpn, hx, botPos.Y+2, it.weapon, AIC.WPN)
-    else wVis(s.wpn,false) end
-
-    wVis(s.dot,false)
-
-    if snap.tracer then
-        wSeg(s.tracer, vpCX, vpCY, hx, topPos.Y)
-        wCol(s.tracer, tracerColor); wVis(s.tracer, true)
-    else wVis(s.tracer,false) end
-
-    return true
+local part=it.part
+if not (part and part.Parent) then return false end
+local rp=part.Position
+local topPos,topOn=WorldToScreen(rp+AIC.HEAD_OFF)
+if not topOn then return false end
+local botPos,botOn=WorldToScreen(rp-AIC.FOOT_OFF)
+local hx=topPos.X; local rowY=topPos.Y-AIC.TEXT_SIZE-2
+if snap.box and botOn then
+local h=max(abs(botPos.Y-topPos.Y),1); local w=h*0.5
+drawBox(s, hx-w*0.5, topPos.Y, w, h, boxColor)
+else for i=1,4 do wVis(s.box[i],false) end end
+if snap.health and it.healthRatio and botOn then
+local charH=max(abs(botPos.Y-topPos.Y),10)
+local barX=hx-charH*0.25-5; local fillH=max(charH*it.healthRatio,1)
+wSeg(s.hpBg,barX,topPos.Y,barX,topPos.Y+charH)
+wCol(s.hpBg,AIC.HP_BG); wVis(s.hpBg,true)
+wSeg(s.hpFg,barX,topPos.Y+charH,barX,topPos.Y+charH-fillH)
+wCol(s.hpFg,it.healthColor or AIC.HP); wVis(s.hpFg,true)
+else wVis(s.hpBg,false); wVis(s.hpFg,false) end
+local nmTxt=snap.name and it.name or nil
+local dsTxt=snap.dist and it.distText or nil
+local nmW=nmTxt and textW(nmTxt) or 0
+local dsW=dsTxt and textW(dsTxt) or 0
+local total,cnt=0,0
+if nmTxt then total=total+nmW; cnt=cnt+1 end
+if dsTxt then total=total+dsW; cnt=cnt+1 end
+if cnt>1 then total=total+AIC.GAP*(cnt-1) end
+local x=hx-total*0.5
+if nmTxt then drawTextRow(s.name,x+nmW*0.5,rowY,nmTxt,nameColor); x=x+nmW+AIC.GAP
+else wVis(s.name,false) end
+if dsTxt then drawTextRow(s.dist,x+dsW*0.5,rowY,dsTxt,AIC.DIST)
+else wVis(s.dist,false) end
+if snap.weapon and it.weapon and botOn then
+drawTextRow(s.wpn, hx, botPos.Y+2, it.weapon, AIC.WPN)
+else wVis(s.wpn,false) end
+wVis(s.dot,false)
+if snap.tracer then
+wSeg(s.tracer, vpCX, vpCY, hx, topPos.Y)
+wCol(s.tracer, tracerColor); wVis(s.tracer, true)
+else wVis(s.tracer,false) end
+return true
 end
-
--- ============================================================
---  AI Character collection
--- ============================================================
 local function readWeapon(model)
-    local tool=model:FindFirstChildOfClass("Tool")
-    if tool then return tool.Name end
+local tool=model:FindFirstChildOfClass("Tool")
+if tool then return tool.Name end
 end
-
 local function buildPlayerCharSet()
-    local set={}
-    for _,plr in ipairs(Players:GetPlayers()) do
-        local c=plr.Character; if c then set[c]=true end
-    end
-    return set
+local set={}
+for _,plr in ipairs(Players:GetPlayers()) do
+local c=plr.Character; if c then set[c]=true end
 end
-
+return set
+end
 local function collectFrom(inst,myChar,playerCharSet,out,depth)
-    if depth>8 then return end
-    local ok,kids=pcall(function() return inst:GetChildren() end)
-    if not ok or not kids then return end
-    for _,child in ipairs(kids) do
-        if child~=myChar and not playerCharSet[child] then
-            local hum
-            pcall(function() hum=child:FindFirstChildOfClass("Humanoid") end)
-            if hum then
-                local hrp=child:FindFirstChild("HumanoidRootPart")
-                    or child:FindFirstChild("Torso") or child:FindFirstChild("Head")
-                if not hrp then pcall(function() hrp=child:FindFirstChildWhichIsA("BasePart") end) end
-                if hrp then
-                    local hp,maxhp
-                    pcall(function() hp=hum.Health; maxhp=hum.MaxHealth end)
-                    out[#out+1]={model=child,hrp=hrp,hp=hp,maxhp=maxhp,weapon=readWeapon(child)}
-                end
-            else
-                local cn=child.ClassName
-                if cn=="Model" or cn=="Folder" then collectFrom(child,myChar,playerCharSet,out,depth+1) end
-            end
-        end
-    end
+if depth>8 then return end
+local ok,kids=pcall(function() return inst:GetChildren() end)
+if not ok or not kids then return end
+for _,child in ipairs(kids) do
+if child~=myChar and not playerCharSet[child] then
+local hum
+pcall(function() hum=child:FindFirstChildOfClass("Humanoid") end)
+if hum then
+local hrp=child:FindFirstChild("HumanoidRootPart")
+or child:FindFirstChild("Torso") or child:FindFirstChild("Head")
+if not hrp then pcall(function() hrp=child:FindFirstChildWhichIsA("BasePart") end) end
+if hrp then
+local hp,maxhp
+pcall(function() hp=hum.Health; maxhp=hum.MaxHealth end)
+out[#out+1]={model=child,hrp=hrp,hp=hp,maxhp=maxhp,weapon=readWeapon(child)}
 end
-
+else
+local cn=child.ClassName
+if cn=="Model" or cn=="Folder" then collectFrom(child,myChar,playerCharSet,out,depth+1) end
+end
+end
+end
+end
 local CHARS = { folder=nil, cache={}, stamp=0 }
-
 local function countRigs(container)
-    local ok,kids=pcall(function() return container:GetChildren() end)
-    if not ok or not kids then return 0 end
-    local n=0
-    for _,c in ipairs(kids) do
-        if c.ClassName=="Model" then
-            local ok2,hum=pcall(function() return c:FindFirstChildOfClass("Humanoid") end)
-            if ok2 and hum then n=n+1 end
-        end
-    end
-    return n
+local ok,kids=pcall(function() return container:GetChildren() end)
+if not ok or not kids then return 0 end
+local n=0
+for _,c in ipairs(kids) do
+if c.ClassName=="Model" then
+local ok2,hum=pcall(function() return c:FindFirstChildOfClass("Humanoid") end)
+if ok2 and hum then n=n+1 end
 end
-
+end
+return n
+end
 local function resolveCharFolder()
-    local ch=LocalPlayer and LocalPlayer.Character
-    if ch then
-        local ok,par=pcall(function() return ch.Parent end)
-        if ok and par and par~=workspace and countRigs(par)>=1 then return par end
-    end
-    local best,bestN=nil,0
-    local ok,kids=pcall(function() return workspace:GetChildren() end)
-    if ok and kids then
-        for _,c in ipairs(kids) do
-            local cn=c.ClassName
-            if cn=="Model" or cn=="Folder" then
-                local n=countRigs(c); if n>bestN then bestN=n; best=c end
-            end
-        end
-    end
-    if bestN>=1 then return best end
+local ch=LocalPlayer and LocalPlayer.Character
+if ch then
+local ok,par=pcall(function() return ch.Parent end)
+if ok and par and par~=workspace and countRigs(par)>=1 then return par end
 end
-
+local best,bestN=nil,0
+local ok,kids=pcall(function() return workspace:GetChildren() end)
+if ok and kids then
+for _,c in ipairs(kids) do
+local cn=c.ClassName
+if cn=="Model" or cn=="Folder" then
+local n=countRigs(c); if n>bestN then bestN=n; best=c end
+end
+end
+end
+if bestN>=1 then return best end
+end
 local function getCharFolder()
-    if CHARS.folder then
-        local ok,par=pcall(function() return CHARS.folder.Parent end)
-        if ok and par then return CHARS.folder end; CHARS.folder=nil
-    end
-    CHARS.folder=resolveCharFolder(); return CHARS.folder
+if CHARS.folder then
+local ok,par=pcall(function() return CHARS.folder.Parent end)
+if ok and par then return CHARS.folder end; CHARS.folder=nil
 end
-
+CHARS.folder=resolveCharFolder(); return CHARS.folder
+end
 local function getCharacters()
-    local now=os.clock()
-    if (now-CHARS.stamp)<0.5 then return CHARS.cache end
-    CHARS.stamp=now; local out={}
-    local folder=getCharFolder()
-    local myChar=LocalPlayer and LocalPlayer.Character
-    local playerCharSet=buildPlayerCharSet()
-    if folder then pcall(collectFrom, folder, myChar, playerCharSet, out, 0) end
-    CHARS.cache=out; return out
+local now=os.clock()
+if (now-CHARS.stamp)<0.5 then return CHARS.cache end
+CHARS.stamp=now; local out={}
+local folder=getCharFolder()
+local myChar=LocalPlayer and LocalPlayer.Character
+local playerCharSet=buildPlayerCharSet()
+if folder then pcall(collectFrom, folder, myChar, playerCharSet, out, 0) end
+CHARS.cache=out; return out
 end
-
--- ============================================================
---  Folder refs
--- ============================================================
 local FOLDERS = { item=nil, crate=nil, sentry=nil, corpse=nil, slider=nil, mine=nil, tripmine=nil }
-
 local function getItemFolder()
-    if FOLDERS.item then local ok,par=pcall(function() return FOLDERS.item.Parent end)
-        if ok and par then return FOLDERS.item end; FOLDERS.item=nil end
-    local ok,f=pcall(function() return workspace.Buildings.Loots:FindFirstChild("Items") end)
-    FOLDERS.item=ok and f or nil; return FOLDERS.item
+if FOLDERS.item then local ok,par=pcall(function() return FOLDERS.item.Parent end)
+if ok and par then return FOLDERS.item end; FOLDERS.item=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots:FindFirstChild("Items") end)
+FOLDERS.item=ok and f or nil; return FOLDERS.item
 end
 local function getCrateFolder()
-    if FOLDERS.crate then local ok,par=pcall(function() return FOLDERS.crate.Parent end)
-        if ok and par then return FOLDERS.crate end; FOLDERS.crate=nil end
-    local ok,f=pcall(function() return workspace.Buildings.Loots.Loots:FindFirstChild("Crates") end)
-    FOLDERS.crate=ok and f or nil; return FOLDERS.crate
+if FOLDERS.crate then local ok,par=pcall(function() return FOLDERS.crate.Parent end)
+if ok and par then return FOLDERS.crate end; FOLDERS.crate=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots.Loots:FindFirstChild("Crates") end)
+FOLDERS.crate=ok and f or nil; return FOLDERS.crate
 end
 local function getSentryFolder()
-    if FOLDERS.sentry then local ok,par=pcall(function() return FOLDERS.sentry.Parent end)
-        if ok and par then return FOLDERS.sentry end; FOLDERS.sentry=nil end
-    local ok,f=pcall(function() return workspace.Buildings.EventObjects.Sentries end)
-    FOLDERS.sentry=ok and f or nil; return FOLDERS.sentry
+if FOLDERS.sentry then local ok,par=pcall(function() return FOLDERS.sentry.Parent end)
+if ok and par then return FOLDERS.sentry end; FOLDERS.sentry=nil end
+local ok,f=pcall(function() return workspace.Buildings.EventObjects.Sentries end)
+FOLDERS.sentry=ok and f or nil; return FOLDERS.sentry
 end
 local function getCorpseFolder()
-    if FOLDERS.corpse then local ok,par=pcall(function() return FOLDERS.corpse.Parent end)
-        if ok and par then return FOLDERS.corpse end; FOLDERS.corpse=nil end
-    local ok,f=pcall(function() return workspace.Buildings.Loots.Loots:FindFirstChild("Characters") end)
-    FOLDERS.corpse=ok and f or nil; return FOLDERS.corpse
+if FOLDERS.corpse then local ok,par=pcall(function() return FOLDERS.corpse.Parent end)
+if ok and par then return FOLDERS.corpse end; FOLDERS.corpse=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots.Loots:FindFirstChild("Characters") end)
+FOLDERS.corpse=ok and f or nil; return FOLDERS.corpse
 end
 local function getSliderFolder()
-    if FOLDERS.slider then local ok,par=pcall(function() return FOLDERS.slider.Parent end)
-        if ok and par then return FOLDERS.slider end; FOLDERS.slider=nil end
-    local ok,f=pcall(function() return workspace.Buildings.Loots.Interactable:FindFirstChild("KeycardSliders") end)
-    FOLDERS.slider=ok and f or nil; return FOLDERS.slider
+if FOLDERS.slider then local ok,par=pcall(function() return FOLDERS.slider.Parent end)
+if ok and par then return FOLDERS.slider end; FOLDERS.slider=nil end
+local ok,f=pcall(function() return workspace.Buildings.Loots.Interactable:FindFirstChild("KeycardSliders") end)
+FOLDERS.slider=ok and f or nil; return FOLDERS.slider
 end
 local function getMineFolder()
-    if FOLDERS.mine then local ok,par=pcall(function() return FOLDERS.mine.Parent end)
-        if ok and par then return FOLDERS.mine end; FOLDERS.mine=nil end
-    local ok,f=pcall(function() return workspace.Buildings.EventObjects.Minefields end)
-    FOLDERS.mine=ok and f or nil; return FOLDERS.mine
+if FOLDERS.mine then local ok,par=pcall(function() return FOLDERS.mine.Parent end)
+if ok and par then return FOLDERS.mine end; FOLDERS.mine=nil end
+local ok,f=pcall(function() return workspace.Buildings.EventObjects.Minefields end)
+FOLDERS.mine=ok and f or nil; return FOLDERS.mine
 end
 local function getTripmineFolder()
-    if FOLDERS.tripmine then local ok,par=pcall(function() return FOLDERS.tripmine.Parent end)
-        if ok and par then return FOLDERS.tripmine end; FOLDERS.tripmine=nil end
-    local ok,f=pcall(function() return workspace.Buildings.EnvInteractable.Mines:FindFirstChild("Tripmines") end)
-    FOLDERS.tripmine=ok and f or nil; return FOLDERS.tripmine
+if FOLDERS.tripmine then local ok,par=pcall(function() return FOLDERS.tripmine.Parent end)
+if ok and par then return FOLDERS.tripmine end; FOLDERS.tripmine=nil end
+local ok,f=pcall(function() return workspace.Buildings.EnvInteractable.Mines:FindFirstChild("Tripmines") end)
+FOLDERS.tripmine=ok and f or nil; return FOLDERS.tripmine
 end
-
--- ============================================================
---  Loot ESP Pool
--- ============================================================
 local LOOT = { POOL_SIZE=200, TTL=1.0, labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={} }
 for i=1,LOOT.POOL_SIZE do
-    local lbl=track(Drawing.new("Text"))
-    lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Visible=false
-    LOOT.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=Color3.new(1,1,1)}
-    local dot=track(Drawing.new("Circle"))
-    dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Visible=false
-    LOOT.dotPool[i]={o=dot,vis=false,px=0,py=0,col=Color3.new(1,1,1)}
+local lbl=track(Drawing.new("Text"))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Visible=false
+LOOT.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=Color3.new(1,1,1)}
+local dot=track(Drawing.new("Circle"))
+dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Visible=false
+LOOT.dotPool[i]={o=dot,vis=false,px=0,py=0,col=Color3.new(1,1,1)}
 end
-
--- Flush all loot drawings to hidden instantly (called when Combat Mode activates)
 local function flushLootPool()
-    for i=1,LOOT.lastDrawn do poolVis(LOOT.labelPool[i],false); poolVis(LOOT.dotPool[i],false) end
-    LOOT.lastDrawn=0; LOOT.cache={}
+for i=1,LOOT.lastDrawn do poolVis(LOOT.labelPool[i],false); poolVis(LOOT.dotPool[i],false) end
+LOOT.lastDrawn=0; LOOT.cache={}
 end
-
 local function rebuildLootCache()
-    local char=LocalPlayer.Character
-    local hrp=char and char:FindFirstChild("HumanoidRootPart")
-    if not hrp then LOOT.cache={}; return end
-    local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local maxDistSq=_G.ESP.MaxDistance^2
-    local itemSet,crateSet={},{}
-    for _,v in ipairs(_G.ESP.SelectedItems)  do itemSet[v]=true end
-    for _,v in ipairs(_G.ESP.SelectedCrates) do crateSet[v]=true end
-    local out={}
-    local function collect(folder,colorTable,setTable)
-        if not folder then return end
-        local ok,kids=pcall(function() return folder:GetChildren() end)
-        if not ok or not kids then return end
-        for _,obj in ipairs(kids) do
-            if #out>=LOOT.POOL_SIZE then break end
-            if setTable[obj.Name] then
-                local root=obj:FindFirstChildWhichIsA("BasePart")
-                if root and root.Parent then
-                    local rp=root.Position
-                    local dx,dy,dz=rp.X-myX,rp.Y-myY,rp.Z-myZ
-                    if dx*dx+dy*dy+dz*dz<=maxDistSq then
-                        out[#out+1]={root=root,name=obj.Name,color=colorTable[obj.Name] or Color3.new(1,1,1),dist=floor(sqrt(dx*dx+dy*dy+dz*dz))}
-                    end
-                end
-            end
-        end
-    end
-    collect(getItemFolder(),itemColors,itemSet)
-    collect(getCrateFolder(),crateColors,crateSet)
-    LOOT.cache=out
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild("HumanoidRootPart")
+if not hrp then LOOT.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=_G.ESP.MaxDistance^2
+local itemSet,crateSet={},{}
+for _,v in ipairs(_G.ESP.SelectedItems)  do itemSet[v]=true end
+for _,v in ipairs(_G.ESP.SelectedCrates) do crateSet[v]=true end
+local out={}
+local function collect(folder,colorTable,setTable)
+if not folder then return end
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then return end
+for _,obj in ipairs(kids) do
+if #out>=LOOT.POOL_SIZE then break end
+if setTable[obj.Name] then
+local root=obj:FindFirstChildWhichIsA("BasePart")
+if root and root.Parent then
+local rp=root.Position
+local dx,dy,dz=rp.X-myX,rp.Y-myY,rp.Z-myZ
+if dx*dx+dy*dy+dz*dz<=maxDistSq then
+out[#out+1]={root=root,name=obj.Name,color=colorTable[obj.Name] or Color3.new(1,1,1),dist=floor(sqrt(dx*dx+dy*dy+dz*dz))}
 end
-
--- ============================================================
---  Weapon ESP Pool
--- ============================================================
+end
+end
+end
+end
+collect(getItemFolder(),itemColors,itemSet)
+collect(getCrateFolder(),crateColors,crateSet)
+LOOT.cache=out
+end
 local WPN = { POOL_SIZE=100, labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={} }
 for i=1,WPN.POOL_SIZE do
-    local lbl=track(Drawing.new("Text"))
-    lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Visible=false
-    WPN.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=Color3.new(1,1,1)}
-    local dot=track(Drawing.new("Circle"))
-    dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Visible=false
-    WPN.dotPool[i]={o=dot,vis=false,px=0,py=0,col=Color3.new(1,1,1)}
+local lbl=track(Drawing.new("Text"))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Visible=false
+WPN.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=Color3.new(1,1,1)}
+local dot=track(Drawing.new("Circle"))
+dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Visible=false
+WPN.dotPool[i]={o=dot,vis=false,px=0,py=0,col=Color3.new(1,1,1)}
 end
-
 local function flushWeaponPool()
-    for i=1,WPN.lastDrawn do poolVis(WPN.labelPool[i],false); poolVis(WPN.dotPool[i],false) end
-    WPN.lastDrawn=0; WPN.cache={}
+for i=1,WPN.lastDrawn do poolVis(WPN.labelPool[i],false); poolVis(WPN.dotPool[i],false) end
+WPN.lastDrawn=0; WPN.cache={}
 end
-
 local function rebuildWeaponCache()
-    local char=LocalPlayer.Character
-    local hrp=char and char:FindFirstChild("HumanoidRootPart")
-    if not hrp then WPN.cache={}; return end
-    local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local maxDistSq=_G.WEAPON_ESP.MaxDistance^2
-    local selSet={}
-    for _,v in ipairs(_G.WEAPON_ESP.SelectedWeapons) do selSet[v]=true end
-    local out={}
-    local itemFolder=getItemFolder()
-    if itemFolder then
-        local ok,kids=pcall(function() return itemFolder:GetChildren() end)
-        if ok and kids then
-            for _,obj in ipairs(kids) do
-                if #out>=WPN.POOL_SIZE then break end
-                if selSet[obj.Name] then
-                    local root=obj:FindFirstChildWhichIsA("BasePart")
-                    if root and root.Parent then
-                        local rp=root.Position
-                        local dx,dy,dz=rp.X-myX,rp.Y-myY,rp.Z-myZ
-                        local dSq=dx*dx+dy*dy+dz*dz
-                        if dSq<=maxDistSq then
-                            local tier=weaponTiers[obj.Name] or "common_gun"
-                            local color=TIER_COLORS[tier] or Color3.new(1,1,1)
-                            out[#out+1]={root=root,name=obj.Name,color=color,dist=floor(sqrt(dSq))}
-                        end
-                    end
-                end
-            end
-        end
-    end
-    WPN.cache=out
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild("HumanoidRootPart")
+if not hrp then WPN.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=_G.WEAPON_ESP.MaxDistance^2
+local selSet={}
+for _,v in ipairs(_G.WEAPON_ESP.SelectedWeapons) do selSet[v]=true end
+local out={}
+local itemFolder=getItemFolder()
+if itemFolder then
+local ok,kids=pcall(function() return itemFolder:GetChildren() end)
+if ok and kids then
+for _,obj in ipairs(kids) do
+if #out>=WPN.POOL_SIZE then break end
+if selSet[obj.Name] then
+local root=obj:FindFirstChildWhichIsA("BasePart")
+if root and root.Parent then
+local rp=root.Position
+local dx,dy,dz=rp.X-myX,rp.Y-myY,rp.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then
+local tier=weaponTiers[obj.Name] or "common_gun"
+local color=TIER_COLORS[tier] or Color3.new(1,1,1)
+out[#out+1]={root=root,name=obj.Name,color=color,dist=floor(sqrt(dSq))}
 end
-
--- ============================================================
---  Turret ESP Pool
--- ============================================================
+end
+end
+end
+end
+end
+WPN.cache=out
+end
 local TURRET = {
-    COL=Color3.fromRGB(255,60,60), POOL_SIZE=50, TTL=2.0,
-    labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
-    enabled=false, maxDist=1000,
+COL=Color3.fromRGB(255,60,60), POOL_SIZE=50, TTL=2.0,
+labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
+enabled=false, maxDist=1000,
 }
 for i=1,TURRET.POOL_SIZE do
-    local lbl=track(Drawing.new("Text"))
-    lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=TURRET.COL; lbl.Visible=false
-    TURRET.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt=""}
-    local dot=track(Drawing.new("Circle"))
-    dot.Radius=5; dot.Filled=true; dot.Thickness=1; dot.Color=TURRET.COL; dot.Visible=false
-    TURRET.dotPool[i]={o=dot,vis=false,px=0,py=0}
+local lbl=track(Drawing.new("Text"))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=TURRET.COL; lbl.Visible=false
+TURRET.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt=""}
+local dot=track(Drawing.new("Circle"))
+dot.Radius=5; dot.Filled=true; dot.Thickness=1; dot.Color=TURRET.COL; dot.Visible=false
+TURRET.dotPool[i]={o=dot,vis=false,px=0,py=0}
 end
-
 local function rebuildTurretCache()
-    local folder=getSentryFolder(); if not folder then TURRET.cache={}; return end
-    local char=LocalPlayer.Character
-    local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then TURRET.cache={}; return end
-    local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local maxDistSq=TURRET.maxDist^2; local out={}
-    local ok,kids=pcall(function() return folder:GetChildren() end)
-    if not ok or not kids then TURRET.cache={}; return end
-    for _,obj in ipairs(kids) do
-        if #out>=TURRET.POOL_SIZE then break end
-        local anchor=obj:FindFirstChild("Base") or obj:FindFirstChild("Rotator") or obj:FindFirstChildWhichIsA("BasePart")
-        if anchor then
-            local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
-            local dSq=dx*dx+dy*dy+dz*dz
-            if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=obj.Name,dist=floor(sqrt(dSq))} end
-        end
-    end
-    TURRET.cache=out
+local folder=getSentryFolder(); if not folder then TURRET.cache={}; return end
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then TURRET.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=TURRET.maxDist^2; local out={}
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then TURRET.cache={}; return end
+for _,obj in ipairs(kids) do
+if #out>=TURRET.POOL_SIZE then break end
+local anchor=obj:FindFirstChild("Base") or obj:FindFirstChild("Rotator") or obj:FindFirstChildWhichIsA("BasePart")
+if anchor then
+local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=obj.Name,dist=floor(sqrt(dSq))} end
 end
-
--- ============================================================
---  Corpse ESP Pool
--- ============================================================
+end
+TURRET.cache=out
+end
 local CORPSE = {
-    COL=Color3.fromRGB(255,255,255), POOL_SIZE=80, TTL=2.0,
-    labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
-    enabled=false, maxDist=500,
+COL=Color3.fromRGB(255,255,255), POOL_SIZE=80, TTL=2.0,
+labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
+enabled=false, maxDist=500,
 }
 for i=1,CORPSE.POOL_SIZE do
-    local lbl=track(Drawing.new("Text"))
-    lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=CORPSE.COL; lbl.Visible=false
-    CORPSE.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt=""}
-    local dot=track(Drawing.new("Circle"))
-    dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Color=CORPSE.COL; dot.Visible=false
-    CORPSE.dotPool[i]={o=dot,vis=false,px=0,py=0}
+local lbl=track(Drawing.new("Text"))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=CORPSE.COL; lbl.Visible=false
+CORPSE.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt=""}
+local dot=track(Drawing.new("Circle"))
+dot.Radius=4; dot.Filled=true; dot.Thickness=1; dot.Color=CORPSE.COL; dot.Visible=false
+CORPSE.dotPool[i]={o=dot,vis=false,px=0,py=0}
 end
-
 local function rebuildCorpseCache()
-    local folder=getCorpseFolder(); if not folder then CORPSE.cache={}; return end
-    local char=LocalPlayer.Character
-    local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then CORPSE.cache={}; return end
-    local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local maxDistSq=CORPSE.maxDist^2; local out={}
-    local ok,kids=pcall(function() return folder:GetChildren() end)
-    if not ok or not kids then CORPSE.cache={}; return end
-    for _,m in ipairs(kids) do
-        if #out>=CORPSE.POOL_SIZE then break end
-        if m.ClassName=="Model" then
-            local anchor=m:FindFirstChild("HumanoidRootPart") or m:FindFirstChild("Torso")
-                or m:FindFirstChild("Head") or m:FindFirstChildWhichIsA("BasePart")
-            if anchor then
-                local ap=anchor.Position; local dx,dy,dz=ap.X-myX,ap.Y-myY,ap.Z-myZ
-                local dSq=dx*dx+dy*dy+dz*dz
-                if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=m.Name,dist=floor(sqrt(dSq))} end
-            end
-        end
-    end
-    CORPSE.cache=out
+local folder=getCorpseFolder(); if not folder then CORPSE.cache={}; return end
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then CORPSE.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=CORPSE.maxDist^2; local out={}
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then CORPSE.cache={}; return end
+for _,m in ipairs(kids) do
+if #out>=CORPSE.POOL_SIZE then break end
+if m.ClassName=="Model" then
+local anchor=m:FindFirstChild("HumanoidRootPart") or m:FindFirstChild("Torso")
+or m:FindFirstChild("Head") or m:FindFirstChildWhichIsA("BasePart")
+if anchor then
+local ap=anchor.Position; local dx,dy,dz=ap.X-myX,ap.Y-myY,ap.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=m.Name,dist=floor(sqrt(dSq))} end
 end
-
--- ============================================================
---  Keycard Slider ESP
--- ============================================================
+end
+end
+CORPSE.cache=out
+end
 local SLIDER = {
-    TIER_COLORS = {
-        [0]=Color3.fromRGB(180,180,180),[1]=Color3.fromRGB(100,220,100),
-        [2]=Color3.fromRGB(80,160,255), [3]=Color3.fromRGB(180,100,255),
-        [4]=Color3.fromRGB(255,180,50), [5]=Color3.fromRGB(255,60,60),
-        [6]=Color3.fromRGB(255,215,0),
-    },
-    FALLBACK=Color3.fromRGB(255,215,0), POOL_SIZE=60, TTL=2.0,
-    labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
-    enabled=false, maxDist=1000,
+TIER_COLORS = {
+[0]=Color3.fromRGB(180,180,180),[1]=Color3.fromRGB(100,220,100),
+[2]=Color3.fromRGB(80,160,255), [3]=Color3.fromRGB(180,100,255),
+[4]=Color3.fromRGB(255,180,50), [5]=Color3.fromRGB(255,60,60),
+[6]=Color3.fromRGB(255,215,0),
+},
+FALLBACK=Color3.fromRGB(255,215,0), POOL_SIZE=60, TTL=2.0,
+labelPool={}, dotPool={}, lastDrawn=0, stamp=0, cache={},
+enabled=false, maxDist=1000,
 }
 for i=1,SLIDER.POOL_SIZE do
-    local lbl=track(Drawing.new("Text"))
-    lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=SLIDER.FALLBACK; lbl.Visible=false
-    SLIDER.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=SLIDER.FALLBACK}
-    local dot=track(Drawing.new("Circle"))
-    dot.Radius=5; dot.Filled=true; dot.Thickness=1; dot.Color=SLIDER.FALLBACK; dot.Visible=false
-    SLIDER.dotPool[i]={o=dot,vis=false,px=0,py=0,col=SLIDER.FALLBACK}
+local lbl=track(Drawing.new("Text"))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=SLIDER.FALLBACK; lbl.Visible=false
+SLIDER.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=SLIDER.FALLBACK}
+local dot=track(Drawing.new("Circle"))
+dot.Radius=5; dot.Filled=true; dot.Thickness=1; dot.Color=SLIDER.FALLBACK; dot.Visible=false
+SLIDER.dotPool[i]={o=dot,vis=false,px=0,py=0,col=SLIDER.FALLBACK}
 end
-
 local function getSliderTier(name)
-    local tier=name:match("[Ll]evel[-% ]?(%d)") or name:match("(%d)")
-    if tier then local t=tonumber(tier); if t and t>=0 and t<=6 then return t end end
+local tier=name:match("[Ll]evel[-% ]?(%d)") or name:match("(%d)")
+if tier then local t=tonumber(tier); if t and t>=0 and t<=6 then return t end end
 end
-
 local function rebuildSliderCache()
-    local folder=getSliderFolder(); if not folder then SLIDER.cache={}; return end
-    local char=LocalPlayer.Character
-    local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then SLIDER.cache={}; return end
-    local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local maxDistSq=SLIDER.maxDist^2; local out={}
-    local ok,kids=pcall(function() return folder:GetChildren() end)
-    if not ok or not kids then SLIDER.cache={}; return end
-    for _,obj in ipairs(kids) do
-        if #out>=SLIDER.POOL_SIZE then break end
-        if obj.ClassName=="Model" then
-            local anchor=obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
-            if anchor then
-                local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
-                local dSq=dx*dx+dy*dy+dz*dz
-                if dSq<=maxDistSq then
-                    local tier=getSliderTier(obj.Name)
-                    local color=(tier and SLIDER.TIER_COLORS[tier]) or SLIDER.FALLBACK
-                    local label=tier and ("Slider T"..tier) or "Keycard Slider"
-                    out[#out+1]={anchor=anchor,name=label,color=color,dist=floor(sqrt(dSq))}
-                end
-            end
-        end
-    end
-    SLIDER.cache=out
+local folder=getSliderFolder(); if not folder then SLIDER.cache={}; return end
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then SLIDER.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=SLIDER.maxDist^2; local out={}
+local ok,kids=pcall(function() return folder:GetChildren() end)
+if not ok or not kids then SLIDER.cache={}; return end
+for _,obj in ipairs(kids) do
+if #out>=SLIDER.POOL_SIZE then break end
+if obj.ClassName=="Model" then
+local anchor=obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
+if anchor then
+local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then
+local tier=getSliderTier(obj.Name)
+local color=(tier and SLIDER.TIER_COLORS[tier]) or SLIDER.FALLBACK
+local label=tier and ("Slider T"..tier) or "Keycard Slider"
+out[#out+1]={anchor=anchor,name=label,color=color,dist=floor(sqrt(dSq))}
 end
-
--- ============================================================
---  Landmine ESP Pool
--- ============================================================
+end
+end
+end
+SLIDER.cache=out
+end
 local MINE = {
-    COL_MINE=Color3.fromRGB(255,200,0), COL_TRIP=Color3.fromRGB(255,80,80),
-    POOL_SIZE=80, TTL=2.0, labelPool={}, dotPool={},
-    lastDrawn=0, stamp=0, cache={}, enabled=false, maxDist=500,
+COL_MINE=Color3.fromRGB(255,200,0), COL_TRIP=Color3.fromRGB(255,80,80),
+POOL_SIZE=80, TTL=2.0, labelPool={}, dotPool={},
+lastDrawn=0, stamp=0, cache={}, enabled=false, maxDist=500,
 }
 for i=1,MINE.POOL_SIZE do
-    local lbl=track(Drawing.new("Text"))
-    lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=MINE.COL_MINE; lbl.Visible=false
-    MINE.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=MINE.COL_MINE}
-    local dot=track(Drawing.new("Circle"))
-    dot.Radius=6; dot.Filled=true; dot.Thickness=1; dot.Color=MINE.COL_MINE; dot.Visible=false
-    MINE.dotPool[i]={o=dot,vis=false,px=0,py=0,col=MINE.COL_MINE}
+local lbl=track(Drawing.new("Text"))
+lbl.Center=true; lbl.Outline=true; lbl.Size=13; lbl.Font=FONT; lbl.Color=MINE.COL_MINE; lbl.Visible=false
+MINE.labelPool[i]={o=lbl,vis=false,px=0,py=0,txt="",col=MINE.COL_MINE}
+local dot=track(Drawing.new("Circle"))
+dot.Radius=6; dot.Filled=true; dot.Thickness=1; dot.Color=MINE.COL_MINE; dot.Visible=false
+MINE.dotPool[i]={o=dot,vis=false,px=0,py=0,col=MINE.COL_MINE}
 end
-
 local function rebuildMineCache()
-    local char=LocalPlayer.Character
-    local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then MINE.cache={}; return end
-    local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local maxDistSq=MINE.maxDist^2; local out={}
-    local function addAnchor(anchor,label,color)
-        if #out>=MINE.POOL_SIZE then return end
-        local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
-        local dSq=dx*dx+dy*dy+dz*dz
-        if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=label,color=color,dist=floor(sqrt(dSq))} end
-    end
-    local mineFolder=getMineFolder()
-    if mineFolder then
-        local ok,zones=pcall(function() return mineFolder:GetChildren() end)
-        if ok and zones then
-            for _,zone in ipairs(zones) do
-                local ok2,hitboxes=pcall(function() return zone:GetChildren() end)
-                if ok2 and hitboxes then
-                    for _,hitbox in ipairs(hitboxes) do
-                        if hitbox.Name=="MineHitbox" and hitbox:IsA("BasePart") then
-                            addAnchor(hitbox,"[MINE] Pressure Mine",MINE.COL_MINE)
-                        end
-                    end
-                end
-            end
-        end
-    end
-    local tripFolder=getTripmineFolder()
-    if tripFolder then
-        local ok,trips=pcall(function() return tripFolder:GetChildren() end)
-        if ok and trips then
-            for _,tripmine in ipairs(trips) do
-                local ok2,anchor=pcall(function() return tripmine:FindFirstChildWhichIsA("BasePart") end)
-                if ok2 and anchor then addAnchor(anchor,"[MINE] Tripwire",MINE.COL_TRIP) end
-            end
-        end
-    end
-    MINE.cache=out
+local char=LocalPlayer.Character
+local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then MINE.cache={}; return end
+local myPos=hrp.Position; local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local maxDistSq=MINE.maxDist^2; local out={}
+local function addAnchor(anchor,label,color)
+if #out>=MINE.POOL_SIZE then return end
+local pos=anchor.Position; local dx,dy,dz=pos.X-myX,pos.Y-myY,pos.Z-myZ
+local dSq=dx*dx+dy*dy+dz*dz
+if dSq<=maxDistSq then out[#out+1]={anchor=anchor,name=label,color=color,dist=floor(sqrt(dSq))} end
 end
-
--- ============================================================
---  Aimbot / Aimlock
--- ============================================================
+local mineFolder=getMineFolder()
+if mineFolder then
+local ok,zones=pcall(function() return mineFolder:GetChildren() end)
+if ok and zones then
+for _,zone in ipairs(zones) do
+local ok2,hitboxes=pcall(function() return zone:GetChildren() end)
+if ok2 and hitboxes then
+for _,hitbox in ipairs(hitboxes) do
+if hitbox.Name=="MineHitbox" and hitbox:IsA("BasePart") then
+addAnchor(hitbox,"[MINE] Pressure Mine",MINE.COL_MINE)
+end
+end
+end
+end
+end
+end
+local tripFolder=getTripmineFolder()
+if tripFolder then
+local ok,trips=pcall(function() return tripFolder:GetChildren() end)
+if ok and trips then
+for _,tripmine in ipairs(trips) do
+local ok2,anchor=pcall(function() return tripmine:FindFirstChildWhichIsA("BasePart") end)
+if ok2 and anchor then addAnchor(anchor,"[MINE] Tripwire",MINE.COL_TRIP) end
+end
+end
+end
+MINE.cache=out
+end
 local AIM = {
-    enabled=false, fov=150, smooth=0.2, bone="Head",
-    showFOV=false, keyType="mouse2", keyCode=nil, keyName="MB2",
-    listening=false, lockEnabled=false, lockSmooth=0.35, stickyTarget=nil,
+enabled=false, fov=150, smooth=0.2, bone="Head",
+showFOV=false, keyType="mouse2", keyCode=nil, keyName="MB2",
+listening=false, lockEnabled=false, lockSmooth=0.35, stickyTarget=nil,
 }
-
 local VK_NAMES = {
-    [0x08]="Backspace",[0x09]="Tab",[0x0D]="Enter",
-    [0x10]="Shift",[0x11]="Ctrl",[0x12]="Alt",
-    [0x13]="Pause",[0x14]="CapsLock",[0x1B]="Escape",
-    [0x20]="Space",[0x21]="PgUp",[0x22]="PgDn",
-    [0x23]="End",[0x24]="Home",
-    [0x25]="Left",[0x26]="Up",[0x27]="Right",[0x28]="Down",
-    [0x2D]="Insert",[0x2E]="Delete",
-    [0x30]="0",[0x31]="1",[0x32]="2",[0x33]="3",[0x34]="4",
-    [0x35]="5",[0x36]="6",[0x37]="7",[0x38]="8",[0x39]="9",
-    [0x41]="A",[0x42]="B",[0x43]="C",[0x44]="D",[0x45]="E",
-    [0x46]="F",[0x47]="G",[0x48]="H",[0x49]="I",[0x4A]="J",
-    [0x4B]="K",[0x4C]="L",[0x4D]="M",[0x4E]="N",[0x4F]="O",
-    [0x50]="P",[0x51]="Q",[0x52]="R",[0x53]="S",[0x54]="T",
-    [0x55]="U",[0x56]="V",[0x57]="W",[0x58]="X",[0x59]="Y",
-    [0x5A]="Z",
-    [0x60]="Num0",[0x61]="Num1",[0x62]="Num2",[0x63]="Num3",
-    [0x64]="Num4",[0x65]="Num5",[0x66]="Num6",[0x67]="Num7",
-    [0x68]="Num8",[0x69]="Num9",
-    [0x6A]="Num*",[0x6B]="Num+",[0x6D]="Num-",[0x6E]="Num.",[0x6F]="Num/",
-    [0x70]="F1",[0x71]="F2",[0x72]="F3",[0x73]="F4",
-    [0x74]="F5",[0x75]="F6",[0x76]="F7",[0x77]="F8",
-    [0x78]="F9",[0x79]="F10",[0x7A]="F11",[0x7B]="F12",
-    [0x90]="NumLock",[0x91]="ScrollLock",
-    [0xA0]="LShift",[0xA1]="RShift",[0xA2]="LCtrl",[0xA3]="RCtrl",
-    [0xA4]="LAlt",[0xA5]="RAlt",
-    [0x04]="MB3",[0x05]="MB4",[0x06]="MB5",
+[0x08]="Backspace",[0x09]="Tab",[0x0D]="Enter",
+[0x10]="Shift",[0x11]="Ctrl",[0x12]="Alt",
+[0x13]="Pause",[0x14]="CapsLock",[0x1B]="Escape",
+[0x20]="Space",[0x21]="PgUp",[0x22]="PgDn",
+[0x23]="End",[0x24]="Home",
+[0x25]="Left",[0x26]="Up",[0x27]="Right",[0x28]="Down",
+[0x2D]="Insert",[0x2E]="Delete",
+[0x30]="0",[0x31]="1",[0x32]="2",[0x33]="3",[0x34]="4",
+[0x35]="5",[0x36]="6",[0x37]="7",[0x38]="8",[0x39]="9",
+[0x41]="A",[0x42]="B",[0x43]="C",[0x44]="D",[0x45]="E",
+[0x46]="F",[0x47]="G",[0x48]="H",[0x49]="I",[0x4A]="J",
+[0x4B]="K",[0x4C]="L",[0x4D]="M",[0x4E]="N",[0x4F]="O",
+[0x50]="P",[0x51]="Q",[0x52]="R",[0x53]="S",[0x54]="T",
+[0x55]="U",[0x56]="V",[0x57]="W",[0x58]="X",[0x59]="Y",
+[0x5A]="Z",
+[0x60]="Num0",[0x61]="Num1",[0x62]="Num2",[0x63]="Num3",
+[0x64]="Num4",[0x65]="Num5",[0x66]="Num6",[0x67]="Num7",
+[0x68]="Num8",[0x69]="Num9",
+[0x6A]="Num*",[0x6B]="Num+",[0x6D]="Num-",[0x6E]="Num.",[0x6F]="Num/",
+[0x70]="F1",[0x71]="F2",[0x72]="F3",[0x73]="F4",
+[0x74]="F5",[0x75]="F6",[0x76]="F7",[0x77]="F8",
+[0x78]="F9",[0x79]="F10",[0x7A]="F11",[0x7B]="F12",
+[0x90]="NumLock",[0x91]="ScrollLock",
+[0xA0]="LShift",[0xA1]="RShift",[0xA2]="LCtrl",[0xA3]="RCtrl",
+[0xA4]="LAlt",[0xA5]="RAlt",
+[0x04]="MB3",[0x05]="MB4",[0x06]="MB5",
 }
-
 local function detectPressedKey()
-    if ismouse1pressed() then return "mouse1",nil,"MB1" end
-    if ismouse2pressed() then return "mouse2",nil,"MB2" end
-    for vk=0x03,0xFE do
-        if vk~=0x01 and vk~=0x02 then
-            if iskeypressed(vk) then
-                return "key",vk,(VK_NAMES[vk] or string.format("0x%02X",vk))
-            end
-        end
-    end
+if ismouse1pressed() then return "mouse1",nil,"MB1" end
+if ismouse2pressed() then return "mouse2",nil,"MB2" end
+for vk=0x03,0xFE do
+if vk~=0x01 and vk~=0x02 then
+if iskeypressed(vk) then
+return "key",vk,(VK_NAMES[vk] or string.format("0x%02X",vk))
 end
-
+end
+end
+end
 local function isAimbotKeyDown()
-    if AIM.keyType=="mouse1" then return ismouse1pressed()
-    elseif AIM.keyType=="mouse2" then return ismouse2pressed()
-    elseif AIM.keyType=="key" and AIM.keyCode then return iskeypressed(AIM.keyCode)
-    end
-    return false
+if AIM.keyType=="mouse1" then return ismouse1pressed()
+elseif AIM.keyType=="mouse2" then return ismouse2pressed()
+elseif AIM.keyType=="key" and AIM.keyCode then return iskeypressed(AIM.keyCode)
 end
-
+return false
+end
 local fovCircle        = track(Drawing.new("Circle"))
 fovCircle.Radius       = AIM.fov
 fovCircle.Filled       = false
@@ -1455,87 +1278,79 @@ fovCircle.NumSides     = 64
 fovCircle.Color        = Color3.fromRGB(255,255,255)
 fovCircle.Transparency = 0.5
 fovCircle.Visible      = false
-
 local lockDot          = track(Drawing.new("Circle"))
 lockDot.Radius         = 6
 lockDot.Filled         = true
 lockDot.Thickness      = 1
 lockDot.Color          = Color3.fromRGB(255,50,50)
 lockDot.Visible        = false
-
 local function getNearestNPC()
-    local char=LocalPlayer and LocalPlayer.Character
-    local myHRP=char and char:FindFirstChild("HumanoidRootPart")
-    if not myHRP then return nil end
-    local vp=Camera.ViewportSize; local cx,cy=vp.X*0.5,vp.Y*0.5
-    local fovSq=AIM.fov*AIM.fov
-    if AIM.lockEnabled and AIM.stickyTarget then
-        local t=AIM.stickyTarget; local stillAlive=true
-        pcall(function()
-            local hum=t.Parent and t.Parent:FindFirstChildOfClass("Humanoid")
-            if not hum or hum.Health<=0 then stillAlive=false end
-        end)
-        if stillAlive and t.Parent then
-            local pos,onScreen=WorldToScreen(t.Position)
-            if onScreen then
-                local dx=pos.X-cx; local dy=pos.Y-cy
-                if dx*dx+dy*dy<=fovSq*4 then return t end
-            end
-        end
-        AIM.stickyTarget=nil
-    end
-    local best,bestDSq=nil,huge
-    for _,e in ipairs(getCharacters()) do
-        if not (e.hp and e.hp<=0) then
-            local bone=e.model:FindFirstChild(AIM.bone)
-                or e.model:FindFirstChild("HumanoidRootPart") or e.hrp
-            if bone then
-                local pos,onScreen=WorldToScreen(bone.Position)
-                if onScreen then
-                    local dx=pos.X-cx; local dy=pos.Y-cy; local dSq=dx*dx+dy*dy
-                    if dSq<fovSq and dSq<bestDSq then bestDSq=dSq; best=bone end
-                end
-            end
-        end
-    end
-    if AIM.lockEnabled and best then AIM.stickyTarget=best end
-    return best
+local char=LocalPlayer and LocalPlayer.Character
+local myHRP=char and char:FindFirstChild("HumanoidRootPart")
+if not myHRP then return nil end
+local vp=Camera.ViewportSize; local cx,cy=vp.X*0.5,vp.Y*0.5
+local fovSq=AIM.fov*AIM.fov
+if AIM.lockEnabled and AIM.stickyTarget then
+local t=AIM.stickyTarget; local stillAlive=true
+pcall(function()
+local hum=t.Parent and t.Parent:FindFirstChildOfClass("Humanoid")
+if not hum or hum.Health<=0 then stillAlive=false end
+end)
+if stillAlive and t.Parent then
+local pos,onScreen=WorldToScreen(t.Position)
+if onScreen then
+local dx=pos.X-cx; local dy=pos.Y-cy
+if dx*dx+dy*dy<=fovSq*4 then return t end
 end
-
+end
+AIM.stickyTarget=nil
+end
+local best,bestDSq=nil,huge
+for _,e in ipairs(getCharacters()) do
+if not (e.hp and e.hp<=0) then
+local bone=e.model:FindFirstChild(AIM.bone)
+or e.model:FindFirstChild("HumanoidRootPart") or e.hrp
+if bone then
+local pos,onScreen=WorldToScreen(bone.Position)
+if onScreen then
+local dx=pos.X-cx; local dy=pos.Y-cy; local dSq=dx*dx+dy*dy
+if dSq<fovSq and dSq<bestDSq then bestDSq=dSq; best=bone end
+end
+end
+end
+end
+if AIM.lockEnabled and best then AIM.stickyTarget=best end
+return best
+end
 local function doAimbot()
-    if not AIM.enabled then lockDot.Visible=false; return end
-    if not isAimbotKeyDown() then
-        if AIM.lockEnabled then AIM.stickyTarget=nil end
-        lockDot.Visible=false; return
-    end
-    local target=getNearestNPC()
-    if not target then lockDot.Visible=false; return end
-    local pos,onScreen=WorldToScreen(target.Position)
-    if not onScreen then lockDot.Visible=false; return end
-    local vp=Camera.ViewportSize
-    local dx=pos.X-(vp.X*0.5); local dy=pos.Y-(vp.Y*0.5)
-    if AIM.lockEnabled and AIM.stickyTarget then
-        lockDot.Position=Vector2.new(pos.X,pos.Y); lockDot.Visible=false
-    else lockDot.Visible=false end
-    if abs(dx)<1 and abs(dy)<1 then return end
-    local smooth=AIM.lockEnabled and AIM.lockSmooth or AIM.smooth
-    local moveX=floor(dx*smooth); local moveY=floor(dy*smooth)
-    if moveX==0 and abs(dx)>=1 then moveX=dx>0 and 1 or -1 end
-    if moveY==0 and abs(dy)>=1 then moveY=dy>0 and 1 or -1 end
-    mousemoverel(moveX,moveY)
+if not AIM.enabled then lockDot.Visible=false; return end
+if not isAimbotKeyDown() then
+if AIM.lockEnabled then AIM.stickyTarget=nil end
+lockDot.Visible=false; return
 end
-
+local target=getNearestNPC()
+if not target then lockDot.Visible=false; return end
+local pos,onScreen=WorldToScreen(target.Position)
+if not onScreen then lockDot.Visible=false; return end
+local vp=Camera.ViewportSize
+local dx=pos.X-(vp.X*0.5); local dy=pos.Y-(vp.Y*0.5)
+if AIM.lockEnabled and AIM.stickyTarget then
+lockDot.Position=Vector2.new(pos.X,pos.Y); lockDot.Visible=false
+else lockDot.Visible=false end
+if abs(dx)<1 and abs(dy)<1 then return end
+local smooth=AIM.lockEnabled and AIM.lockSmooth or AIM.smooth
+local moveX=floor(dx*smooth); local moveY=floor(dy*smooth)
+if moveX==0 and abs(dx)>=1 then moveX=dx>0 and 1 or -1 end
+if moveY==0 and abs(dy)>=1 then moveY=dy>0 and 1 or -1 end
+mousemoverel(moveX,moveY)
+end
 local function updateFOVCircle()
-    if AIM.showFOV and AIM.enabled then
-        local vp=Camera.ViewportSize
-        fovCircle.Position=Vector2.new(vp.X*0.5,vp.Y*0.5)
-        fovCircle.Radius=AIM.fov; fovCircle.Visible=true
-    else fovCircle.Visible=false end
+if AIM.showFOV and AIM.enabled then
+local vp=Camera.ViewportSize
+fovCircle.Position=Vector2.new(vp.X*0.5,vp.Y*0.5)
+fovCircle.Radius=AIM.fov; fovCircle.Visible=true
+else fovCircle.Visible=false end
 end
-
--- ============================================================
---  UI Tabs
--- ============================================================
 local espTab     = win:Tab("ESP",     "eye")
 local secLeft    = espTab:Section("Loot Selection","Left")
 local secRight   = espTab:Section("Settings","Right")
@@ -1543,7 +1358,7 @@ local visualsTab = win:Tab("Visuals", "sun")
 local visLeft    = visualsTab:Section("Environment","Left")
 local combatTab  = win:Tab("Combat",  "crosshair")
 local combatLeft = combatTab:Section("Weapon","Left")
-local combatRight= combatTab:Section("Combat Mode","Right")   -- NEW right section
+local combatRight= combatTab:Section("Combat Mode","Right")
 local aiTab      = win:Tab("AI ESP",  "users")
 local aiLeft     = aiTab:Section("AI/Scav ESP","Left")
 local aiRight    = aiTab:Section("Aimbot","Right")
@@ -1551,17 +1366,14 @@ local playerTab  = win:Tab("Players", "user")
 local playerLeft = playerTab:Section("Player ESP","Left")
 local dangerTab  = win:Tab("Danger",  "shield")
 local dangerLeft = dangerTab:Section("Turrets","Left")
-
--- ── Loot ESP ─────────────────────────────────────────────────
 local _selectedByTier = {}
 local function rebuildSelected()
-    local out={}
-    for _,bucket in pairs(_selectedByTier) do
-        for _,name in ipairs(bucket) do out[#out+1]=name end
-    end
-    _G.ESP.SelectedItems=out
+local out={}
+for _,bucket in pairs(_selectedByTier) do
+for _,name in ipairs(bucket) do out[#out+1]=name end
 end
-
+_G.ESP.SelectedItems=out
+end
 secLeft:Toggle("Enable ESP",true,function(v) _G.ESP.Enabled=v end)
 secLeft:Divider("Mythic")
 secLeft:Dropdown("Mythic Items",{},tierLists.mythic,true,function(s) _selectedByTier["mythic"]=s; rebuildSelected() end,nil,true)
@@ -1575,11 +1387,11 @@ secLeft:Divider("Keys")
 secLeft:Dropdown("Keys",{},tierLists.keys,true,function(s) _selectedByTier["keys"]=s; rebuildSelected() end,nil,true)
 secLeft:Divider("Keycard Sliders")
 secLeft:Toggle("Keycard Slider ESP",false,function(v)
-    SLIDER.enabled=v
-    if not v then
-        for i=1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[i],false); poolVis(SLIDER.dotPool[i],false) end
-        SLIDER.lastDrawn=0; SLIDER.cache={}
-    end
+SLIDER.enabled=v
+if not v then
+for i=1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[i],false); poolVis(SLIDER.dotPool[i],false) end
+SLIDER.lastDrawn=0; SLIDER.cache={}
+end
 end)
 secLeft:Slider("Slider Max Distance",1000,50,50,3000,"m",function(v) SLIDER.maxDist=v end)
 secLeft:Divider("Usable")
@@ -1595,84 +1407,68 @@ secLeft:Dropdown("Select Crates",{},crateNames,true,function(s) _G.ESP.SelectedC
 secLeft:Divider("Weapons")
 secLeft:Toggle("Enable Weapon ESP",false,function(v) _G.WEAPON_ESP.Enabled=v end)
 secLeft:Dropdown("Select Weapons",{},weaponNames,true,function(s) _G.WEAPON_ESP.SelectedWeapons=s end,nil,true)
-
 secRight:Slider("Max Distance",500,10,10,2000,"m",function(v)
-    _G.ESP.MaxDistance=v; _G.WEAPON_ESP.MaxDistance=v
+_G.ESP.MaxDistance=v; _G.WEAPON_ESP.MaxDistance=v
 end)
 secRight:Divider("Loot")
 secRight:Toggle("Instant Loot",false,function(v)
-    INSTANT_LOOT.enabled=v
-    if v then startInstantLoot() else stopInstantLoot() end
+INSTANT_LOOT.enabled=v
+if v then startInstantLoot() else stopInstantLoot() end
 end)
-
 visLeft:Toggle("No Fog",false,function(v) FOG.enabled=v end)
-
--- ── Combat tab left: Weapon ───────────────────────────────────
 combatLeft:Toggle("No Recoil",false,function(v)
-    RECOIL.enabled=v
-    RECOIL.cache=v and getgc(RECOIL.keys) or nil
+RECOIL.enabled=v
+RECOIL.cache=v and getgc(RECOIL.keys) or nil
 end)
-
--- ── Combat tab right: Combat Mode ────────────────────────────
 combatRight:Toggle("Enable Combat Mode",false,function(v)
-    COMBAT.active=v
-    if v then
-        -- Immediately flush all loot drawings on activation
-        flushLootPool()
-        flushWeaponPool()
-        Lib:Notify("Combat Mode","ACTIVE — Loot ESP suspended",2,"info")
-    else
-        -- Reactivate loot on next cache rebuild cycle (no extra work needed)
-        Lib:Notify("Combat Mode","OFF — Loot ESP resumed",2,"info")
-    end
+COMBAT.active=v
+if v then
+flushLootPool()
+flushWeaponPool()
+Lib:Notify("Combat Mode","ACTIVE — Loot ESP suspended",2,"info")
+else
+Lib:Notify("Combat Mode","OFF — Loot ESP resumed",2,"info")
+end
 end)
-
 local combatKeyBtn
 combatKeyBtn = combatRight:Button("Hotkey: F2", function()
-    if COMBAT.listening then return end
-    COMBAT.listening = true
-    combatKeyBtn:SetText("Press any key...")
-    spawn(function()
-        wait(0.25)
-        local deadline = tick() + 5
-        while tick() < deadline do
-            local ktype, kcode, kname = detectPressedKey()
-            if ktype then
-                COMBAT.keyType = ktype
-                COMBAT.keyCode = kcode
-                COMBAT.keyName = kname
-                combatKeyBtn:SetText("Hotkey: " .. kname)
-                COMBAT.listening = false
-                return
-            end
-            wait(0.02)
-        end
-        combatKeyBtn:SetText("Hotkey: " .. COMBAT.keyName)
-        COMBAT.listening = false
-    end)
+if COMBAT.listening then return end
+COMBAT.listening = true
+combatKeyBtn:SetText("Press any key...")
+spawn(function()
+wait(0.25)
+local deadline = tick() + 5
+while tick() < deadline do
+local ktype, kcode, kname = detectPressedKey()
+if ktype then
+COMBAT.keyType = ktype
+COMBAT.keyCode = kcode
+COMBAT.keyName = kname
+combatKeyBtn:SetText("Hotkey: " .. kname)
+COMBAT.listening = false
+return
+end
+wait(0.02)
+end
+combatKeyBtn:SetText("Hotkey: " .. COMBAT.keyName)
+COMBAT.listening = false
 end)
-
+end)
 combatRight:Divider("While Active")
 combatRight:Toggle("Keep AI/Scav ESP",true,function(v)
-    -- stored as a hint for the render loop; always-on by default in combat mode
-    COMBAT.keepAI = v
+COMBAT.keepAI = v
 end)
 combatRight:Toggle("Keep Player ESP",true,function(v)
-    COMBAT.keepPlayer = v
+COMBAT.keepPlayer = v
 end)
 combatRight:Toggle("Keep Mine ESP",false,function(v)
-    COMBAT.keepMines = v
+COMBAT.keepMines = v
 end)
-
--- set defaults
 COMBAT.keepAI     = true
 COMBAT.keepPlayer = true
 COMBAT.keepMines  = false
-
--- ── AI/Scav ESP tab ──────────────────────────────────────────
 local snapAI = { box=false, name=true, dist=true, health=true, weapon=true, tracer=false }
 local AI_STATE = { enabled=true, distMax=1500, updateRate=15, items={}, timer=0, lastDrawn=0 }
-
 aiLeft:Toggle("Enabled",true,function(v) AI_STATE.enabled=v end)
 aiLeft:Toggle("Name",true,function(v) snapAI.name=v end)
 aiLeft:Toggle("Distance",true,function(v) snapAI.dist=v end)
@@ -1682,54 +1478,49 @@ aiLeft:Toggle("Box",false,function(v) snapAI.box=v end)
 aiLeft:Toggle("Tracers",false,function(v) snapAI.tracer=v end)
 aiLeft:Slider("Max Distance",1500,50,50,3000,"m",function(v) AI_STATE.distMax=v end)
 aiLeft:Slider("Update Rate (fps)",15,5,5,60,"fps",function(v) AI_STATE.updateRate=v end)
-
 aiRight:Toggle("Enable Aimbot",false,function(v)
-    AIM.enabled=v
-    if not v then fovCircle.Visible=false; lockDot.Visible=false; AIM.stickyTarget=nil end
+AIM.enabled=v
+if not v then fovCircle.Visible=false; lockDot.Visible=false; AIM.stickyTarget=nil end
 end)
 aiRight:Toggle("Show FOV Circle",false,function(v)
-    AIM.showFOV=v; if not v then fovCircle.Visible=false end
+AIM.showFOV=v; if not v then fovCircle.Visible=false end
 end)
 aiRight:Slider("FOV Radius",150,10,10,500,"px",function(v)
-    AIM.fov=v; fovCircle.Radius=v
+AIM.fov=v; fovCircle.Radius=v
 end)
 aiRight:Slider("Smoothing",20,1,1,100,"%",function(v) AIM.smooth=v/100 end)
 aiRight:Toggle("Aimlock (Sticky)",false,function(v)
-    AIM.lockEnabled=v; if not v then AIM.stickyTarget=nil; lockDot.Visible=false end
+AIM.lockEnabled=v; if not v then AIM.stickyTarget=nil; lockDot.Visible=false end
 end)
 aiRight:Slider("Aimlock Speed",35,5,5,100,"%",function(v) AIM.lockSmooth=v/100 end)
-
 local keybindBtn
 keybindBtn = aiRight:Button("Aimbot Key: MB2", function()
-    if AIM.listening then return end
-    AIM.listening=true; keybindBtn:SetText("Press any key...")
-    spawn(function()
-        wait(0.25); local deadline=tick()+5
-        while tick()<deadline do
-            local ktype,kcode,kname=detectPressedKey()
-            if ktype then
-                AIM.keyType=ktype; AIM.keyCode=kcode; AIM.keyName=kname
-                keybindBtn:SetText("Aimbot Key: "..kname)
-                AIM.listening=false; return
-            end
-            wait(0.02)
-        end
-        keybindBtn:SetText("Aimbot Key: "..AIM.keyName)
-        AIM.listening=false
-    end)
+if AIM.listening then return end
+AIM.listening=true; keybindBtn:SetText("Press any key...")
+spawn(function()
+wait(0.25); local deadline=tick()+5
+while tick()<deadline do
+local ktype,kcode,kname=detectPressedKey()
+if ktype then
+AIM.keyType=ktype; AIM.keyCode=kcode; AIM.keyName=kname
+keybindBtn:SetText("Aimbot Key: "..kname)
+AIM.listening=false; return
+end
+wait(0.02)
+end
+keybindBtn:SetText("Aimbot Key: "..AIM.keyName)
+AIM.listening=false
 end)
-
+end)
 aiRight:Dropdown("Target Bone",{"Head","HumanoidRootPart"},{"Head","HumanoidRootPart"},false,function(v)
-    AIM.bone=(type(v)=="table" and v[1]) or v or "Head"
+AIM.bone=(type(v)=="table" and v[1]) or v or "Head"
 end)
-
--- ── Player ESP tab ───────────────────────────────────────────
 playerLeft:Toggle("Enable Player ESP",false,function(v)
-    PLAYER_ESP.enabled=v
-    if not v then
-        for i=1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
-        PLAYER_ESP.lastDrawn=0; PLAYER_ESP.items={}
-    end
+PLAYER_ESP.enabled=v
+if not v then
+for i=1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
+PLAYER_ESP.lastDrawn=0; PLAYER_ESP.items={}
+end
 end)
 playerLeft:Toggle("Name",true,function(v) PLAYER_ESP.snap.name=v end)
 playerLeft:Toggle("Distance",true,function(v) PLAYER_ESP.snap.dist=v end)
@@ -1739,355 +1530,303 @@ playerLeft:Toggle("Box",true,function(v) PLAYER_ESP.snap.box=v end)
 playerLeft:Toggle("Tracers",false,function(v) PLAYER_ESP.snap.tracer=v end)
 playerLeft:Slider("Max Distance",1500,50,50,3000,"m",function(v) PLAYER_ESP.distMax=v end)
 playerLeft:Slider("Update Rate (fps)",15,5,5,60,"fps",function(v) PLAYER_ESP.updateRate=v end)
-
--- ── Danger tab ───────────────────────────────────────────────
 dangerLeft:Toggle("Turret ESP",false,function(v)
-    TURRET.enabled=v
-    if not v then
-        for i=1,TURRET.lastDrawn do poolVis(TURRET.labelPool[i],false); poolVis(TURRET.dotPool[i],false) end
-        TURRET.lastDrawn=0; TURRET.cache={}
-    end
+TURRET.enabled=v
+if not v then
+for i=1,TURRET.lastDrawn do poolVis(TURRET.labelPool[i],false); poolVis(TURRET.dotPool[i],false) end
+TURRET.lastDrawn=0; TURRET.cache={}
+end
 end)
 dangerLeft:Slider("Turret Max Distance",1000,50,50,3000,"m",function(v) TURRET.maxDist=v end)
 dangerLeft:Divider("Corpses")
 dangerLeft:Toggle("Corpse ESP",false,function(v)
-    CORPSE.enabled=v
-    if not v then
-        for i=1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[i],false); poolVis(CORPSE.dotPool[i],false) end
-        CORPSE.lastDrawn=0; CORPSE.cache={}
-    end
+CORPSE.enabled=v
+if not v then
+for i=1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[i],false); poolVis(CORPSE.dotPool[i],false) end
+CORPSE.lastDrawn=0; CORPSE.cache={}
+end
 end)
 dangerLeft:Slider("Corpse Max Distance",500,50,50,2000,"m",function(v) CORPSE.maxDist=v end)
 dangerLeft:Divider("Landmines")
 dangerLeft:Toggle("Landmine ESP",false,function(v)
-    MINE.enabled=v
-    if not v then
-        for i=1,MINE.lastDrawn do poolVis(MINE.labelPool[i],false); poolVis(MINE.dotPool[i],false) end
-        MINE.lastDrawn=0; MINE.cache={}
-    end
+MINE.enabled=v
+if not v then
+for i=1,MINE.lastDrawn do poolVis(MINE.labelPool[i],false); poolVis(MINE.dotPool[i],false) end
+MINE.lastDrawn=0; MINE.cache={}
+end
 end)
 dangerLeft:Slider("Mine Max Distance",500,50,50,2000,"m",function(v) MINE.maxDist=v end)
-
--- ============================================================
---  AI rebuild
--- ============================================================
 local function rebuildAI()
-    local char=LocalPlayer and LocalPlayer.Character
-    local myHRP=char and char:FindFirstChild("HumanoidRootPart")
-    local myPos=myHRP and myHRP.Position; if not myPos then AI_STATE.items={}; return end
-    local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
-    local distSqMax=AI_STATE.distMax^2; local raw={}
-    for _,e in ipairs(getCharacters()) do
-        local hrp=e.hrp
-        if hrp and hrp.Parent then
-            local rootPos=hrp.Position
-            local dx=myX-rootPos.X; local dy=myY-rootPos.Y; local dz=myZ-rootPos.Z
-            local distSq=dx*dx+dy*dy+dz*dz
-            if distSq<=distSqMax then
-                local d=sqrt(distSq)
-                local healthRatio,healthColor
-                if e.hp and e.maxhp and e.maxhp>0 then
-                    healthRatio=clamp(e.hp/e.maxhp,0,1); healthColor=hpColor(healthRatio)
-                end
-                raw[#raw+1]={
-                    kind="ai", part=hrp, name=e.model.Name,
-                    distText=floor(d).."m",
-                    healthRatio=healthRatio, healthColor=healthColor,
-                    weapon=e.weapon, _distSq=distSq,
-                }
-            end
-        end
-    end
-    table.sort(raw,function(a,b) return a._distSq<b._distSq end)
-    local out={}
-    for _,v in ipairs(raw) do
-        if #out>=AIC.MAX_SLOTS then break end; out[#out+1]=v
-    end
-    AI_STATE.items=out
+local char=LocalPlayer and LocalPlayer.Character
+local myHRP=char and char:FindFirstChild("HumanoidRootPart")
+local myPos=myHRP and myHRP.Position; if not myPos then AI_STATE.items={}; return end
+local myX,myY,myZ=myPos.X,myPos.Y,myPos.Z
+local distSqMax=AI_STATE.distMax^2; local raw={}
+for _,e in ipairs(getCharacters()) do
+local hrp=e.hrp
+if hrp and hrp.Parent then
+local rootPos=hrp.Position
+local dx=myX-rootPos.X; local dy=myY-rootPos.Y; local dz=myZ-rootPos.Z
+local distSq=dx*dx+dy*dy+dz*dz
+if distSq<=distSqMax then
+local d=sqrt(distSq)
+local healthRatio,healthColor
+if e.hp and e.maxhp and e.maxhp>0 then
+healthRatio=clamp(e.hp/e.maxhp,0,1); healthColor=hpColor(healthRatio)
 end
-
--- ============================================================
---  Viewport centre
--- ============================================================
+raw[#raw+1]={
+kind="ai", part=hrp, name=e.model.Name,
+distText=floor(d).."m",
+healthRatio=healthRatio, healthColor=healthColor,
+weapon=e.weapon, _distSq=distSq,
+}
+end
+end
+end
+table.sort(raw,function(a,b) return a._distSq<b._distSq end)
+local out={}
+for _,v in ipairs(raw) do
+if #out>=AIC.MAX_SLOTS then break end; out[#out+1]=v
+end
+AI_STATE.items=out
+end
 local VP = { cx=0, cy=0, timer=0 }
 local function updateVP()
-    local vp=Camera.ViewportSize; VP.cx=vp.X*0.5; VP.cy=vp.Y
+local vp=Camera.ViewportSize; VP.cx=vp.X*0.5; VP.cy=vp.Y
 end
 updateVP()
-
 local FRAME = { phase=0, fogTimer=0 }
-
--- ============================================================
---  Heartbeat — aimbot + Combat Mode keybind edge detection
--- ============================================================
 RunService.Heartbeat:Connect(function()
-    if not running then return end
-    pcall(doAimbot)
-
-    -- Edge-detect Combat Mode hotkey toggle
-    if not COMBAT.listening then
-        local down = combatKeyDown()
-        if down and not COMBAT.wasDown then
-            COMBAT.active = not COMBAT.active
-            if COMBAT.active then
-                flushLootPool()
-                flushWeaponPool()
-                Lib:Notify("Combat Mode","ACTIVE — Loot ESP suspended",2,"info")
-            else
-                Lib:Notify("Combat Mode","OFF — Loot ESP resumed",2,"info")
-            end
-        end
-        COMBAT.wasDown = down
-    end
+if not running then return end
+pcall(doAimbot)
+if not COMBAT.listening then
+local down = combatKeyDown()
+if down and not COMBAT.wasDown then
+COMBAT.active = not COMBAT.active
+if COMBAT.active then
+flushLootPool()
+flushWeaponPool()
+Lib:Notify("Combat Mode","ACTIVE — Loot ESP suspended",2,"info")
+else
+Lib:Notify("Combat Mode","OFF — Loot ESP resumed",2,"info")
+end
+end
+COMBAT.wasDown = down
+end
 end)
-
--- ============================================================
---  RenderStepped
--- ============================================================
 renderConn = RunService.RenderStepped:Connect(function(dt)
-    if not running then return end
-
-    pcall(updateFOVCircle)
-
-    FRAME.fogTimer=FRAME.fogTimer+dt
-    if FRAME.fogTimer>=0.1 then
-        FRAME.fogTimer=0
-        if FOG.enabled then applyNoFog() elseif FOG.last then restoreFog() end
-        FOG.last=FOG.enabled
-    end
-
-    if RECOIL.enabled and RECOIL.cache then applygc(RECOIL.cache,RECOIL.payload) end
-
-    -- ── Throttled rebuilds — ALL loot skipped when Combat Mode active ─────
-    AI_STATE.timer=AI_STATE.timer+dt
-    if AI_STATE.timer>=(1/max(1,AI_STATE.updateRate)) then
-        AI_STATE.timer=0
-        if AI_STATE.enabled then pcall(rebuildAI) end
-    end
-
-    PLAYER_ESP.timer=PLAYER_ESP.timer+dt
-    if PLAYER_ESP.timer>=(1/max(1,PLAYER_ESP.updateRate)) then
-        PLAYER_ESP.timer=0
-        if PLAYER_ESP.enabled then pcall(rebuildPlayerESP) end
-    end
-
-    VP.timer=VP.timer+dt
-    if VP.timer>=0.5 then VP.timer=0; updateVP() end
-
-    local now=os.clock()
-
-    -- Phase-based cache rebuilds — entirely skipped in Combat Mode
-    if not COMBAT.active then
-        FRAME.phase=(FRAME.phase+1)%6
-        if FRAME.phase==0 then
-            if (now-LOOT.stamp)>=LOOT.TTL then LOOT.stamp=now; if _G.ESP.Enabled then pcall(rebuildLootCache) end end
-        elseif FRAME.phase==1 then
-            if (now-WPN.stamp)>=LOOT.TTL then WPN.stamp=now; if _G.WEAPON_ESP.Enabled then pcall(rebuildWeaponCache) end end
-        elseif FRAME.phase==2 then
-            if (now-TURRET.stamp)>=TURRET.TTL then TURRET.stamp=now; if TURRET.enabled then pcall(rebuildTurretCache) end end
-        elseif FRAME.phase==3 then
-            if (now-CORPSE.stamp)>=CORPSE.TTL then CORPSE.stamp=now; if CORPSE.enabled then pcall(rebuildCorpseCache) end end
-        elseif FRAME.phase==4 then
-            if (now-SLIDER.stamp)>=SLIDER.TTL then SLIDER.stamp=now; if SLIDER.enabled then pcall(rebuildSliderCache) end end
-        elseif FRAME.phase==5 then
-            if (now-MINE.stamp)>=MINE.TTL then MINE.stamp=now; if MINE.enabled then pcall(rebuildMineCache) end end
-        end
-    else
-        -- Combat Mode: only rebuild mine cache if opted-in (small, safety-critical)
-        if COMBAT.keepMines then
-            FRAME.phase=(FRAME.phase+1)%2
-            if FRAME.phase==0 then
-                if (now-MINE.stamp)>=MINE.TTL then MINE.stamp=now; if MINE.enabled then pcall(rebuildMineCache) end end
-            end
-        end
-    end
-
-    local char  = LocalPlayer.Character
-    local hrp   = char and char:FindFirstChild("HumanoidRootPart")
-    local myPos = hrp and hrp.Position
-
-    -- ── Loot ESP — fully bypassed in Combat Mode ──────────────
-    if not COMBAT.active and _G.ESP.Enabled and myPos then
-        local slot=0
-        for i=1,#LOOT.cache do
-            local entry=LOOT.cache[i]; local root=entry.root
-            if root and root.Parent then
-                local pos,onScreen=WorldToScreen(root.Position)
-                if onScreen then
-                    slot=slot+1
-                    local lbl=LOOT.labelPool[slot]; local dot=LOOT.dotPool[slot]
-                    local rp=entry.root.Position
-                    local dx,dy,dz=rp.X-myPos.X,rp.Y-myPos.Y,rp.Z-myPos.Z
-                    local dist=floor(sqrt(dx*dx+dy*dy+dz*dz))
-                    poolTxt(lbl,entry.name.." ["..dist.."m]"); poolCol(lbl,entry.color)
-                    poolPos(lbl,pos.X,pos.Y-6); poolVis(lbl,true)
-                    poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
-                end
-            end
-        end
-        for j=slot+1,LOOT.lastDrawn do poolVis(LOOT.labelPool[j],false); poolVis(LOOT.dotPool[j],false) end
-        LOOT.lastDrawn=slot
-    else
-        -- Hide any remaining loot drawings instantly
-        for i=1,LOOT.lastDrawn do poolVis(LOOT.labelPool[i],false); poolVis(LOOT.dotPool[i],false) end
-        LOOT.lastDrawn=0
-    end
-
-    -- ── Weapon ESP — fully bypassed in Combat Mode ────────────
-    if not COMBAT.active and _G.WEAPON_ESP.Enabled and myPos then
-        local wslot=0
-        for i=1,#WPN.cache do
-            local entry=WPN.cache[i]; local root=entry.root
-            if root and root.Parent then
-                local pos,onScreen=WorldToScreen(root.Position)
-                if onScreen then
-                    wslot=wslot+1
-                    local lbl=WPN.labelPool[wslot]; local dot=WPN.dotPool[wslot]
-                    local rp=entry.root.Position
-                    local dx,dy,dz=rp.X-myPos.X,rp.Y-myPos.Y,rp.Z-myPos.Z
-                    local dist=floor(sqrt(dx*dx+dy*dy+dz*dz))
-                    poolTxt(lbl,entry.name.." ["..dist.."m]"); poolCol(lbl,entry.color)
-                    poolPos(lbl,pos.X,pos.Y-6); poolVis(lbl,true)
-                    poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
-                end
-            end
-        end
-        for j=wslot+1,WPN.lastDrawn do poolVis(WPN.labelPool[j],false); poolVis(WPN.dotPool[j],false) end
-        WPN.lastDrawn=wslot
-    else
-        for i=1,WPN.lastDrawn do poolVis(WPN.labelPool[i],false); poolVis(WPN.dotPool[i],false) end
-        WPN.lastDrawn=0
-    end
-
-    -- ── Turret ESP ───────────────────────────────────────────
-    if TURRET.enabled and myPos then
-        local tslot=0
-        for i=1,#TURRET.cache do
-            local entry=TURRET.cache[i]; local anchor=entry.anchor
-            if anchor and anchor.Parent then
-                local pos,onScreen=WorldToScreen(anchor.Position)
-                if onScreen then
-                    tslot=tslot+1
-                    local lbl=TURRET.labelPool[tslot]; local dot=TURRET.dotPool[tslot]
-                    local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
-                    poolTxt(lbl,"[TURRET] "..entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]")
-                    poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
-                    poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
-                end
-            end
-        end
-        for j=tslot+1,TURRET.lastDrawn do poolVis(TURRET.labelPool[j],false); poolVis(TURRET.dotPool[j],false) end
-        TURRET.lastDrawn=tslot
-    else
-        for i=1,TURRET.lastDrawn do poolVis(TURRET.labelPool[i],false); poolVis(TURRET.dotPool[i],false) end
-        TURRET.lastDrawn=0
-    end
-
-    -- ── Corpse ESP ───────────────────────────────────────────
-    if CORPSE.enabled and myPos then
-        local cslot=0
-        for i=1,#CORPSE.cache do
-            local entry=CORPSE.cache[i]; local anchor=entry.anchor
-            if anchor and anchor.Parent then
-                local pos,onScreen=WorldToScreen(anchor.Position)
-                if onScreen then
-                    cslot=cslot+1
-                    local lbl=CORPSE.labelPool[cslot]; local dot=CORPSE.dotPool[cslot]
-                    local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
-                    poolTxt(lbl,"[CORPSE] "..entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]")
-                    poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
-                    poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
-                end
-            end
-        end
-        for j=cslot+1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[j],false); poolVis(CORPSE.dotPool[j],false) end
-        CORPSE.lastDrawn=cslot
-    else
-        for i=1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[i],false); poolVis(CORPSE.dotPool[i],false) end
-        CORPSE.lastDrawn=0
-    end
-
-    -- ── Slider ESP ───────────────────────────────────────────
-    if SLIDER.enabled and myPos then
-        local sslot=0
-        for i=1,#SLIDER.cache do
-            local entry=SLIDER.cache[i]; local anchor=entry.anchor
-            if anchor and anchor.Parent then
-                local pos,onScreen=WorldToScreen(anchor.Position)
-                if onScreen then
-                    sslot=sslot+1
-                    local lbl=SLIDER.labelPool[sslot]; local dot=SLIDER.dotPool[sslot]
-                    local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
-                    poolTxt(lbl,entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]"); poolCol(lbl,entry.color)
-                    poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
-                    poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
-                end
-            end
-        end
-        for j=sslot+1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[j],false); poolVis(SLIDER.dotPool[j],false) end
-        SLIDER.lastDrawn=sslot
-    else
-        for i=1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[i],false); poolVis(SLIDER.dotPool[i],false) end
-        SLIDER.lastDrawn=0
-    end
-
-    -- ── Mine ESP ─────────────────────────────────────────────
-    if MINE.enabled and myPos and (not COMBAT.active or COMBAT.keepMines) then
-        local mslot=0
-        for i=1,#MINE.cache do
-            local entry=MINE.cache[i]; local anchor=entry.anchor
-            if anchor and anchor.Parent then
-                local pos,onScreen=WorldToScreen(anchor.Position)
-                if onScreen then
-                    mslot=mslot+1
-                    local lbl=MINE.labelPool[mslot]; local dot=MINE.dotPool[mslot]
-                    local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
-                    poolTxt(lbl,entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]"); poolCol(lbl,entry.color)
-                    poolPos(lbl,pos.X,pos.Y-10); poolVis(lbl,true)
-                    poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
-                end
-            end
-        end
-        for j=mslot+1,MINE.lastDrawn do poolVis(MINE.labelPool[j],false); poolVis(MINE.dotPool[j],false) end
-        MINE.lastDrawn=mslot
-    else
-        for i=1,MINE.lastDrawn do poolVis(MINE.labelPool[i],false); poolVis(MINE.dotPool[i],false) end
-        MINE.lastDrawn=0
-    end
-
-    -- ── Player ESP ───────────────────────────────────────────
-    if PLAYER_ESP.enabled and (not COMBAT.active or COMBAT.keepPlayer) then
-        local pslot=0
-        for _,it in ipairs(PLAYER_ESP.items) do
-            if pslot>=PLAYER_ESP.MAX_SLOTS then break end
-            local s=PLAYER_ESP.slots[pslot+1]
-            local drawn=drawSlot(s,it,PLAYER_ESP.snap,AIC.PLAYER_NAME,AIC.PLAYER_BOX,AIC.PLAYER_TRACER,VP.cx,VP.cy)
-            if drawn then pslot=pslot+1 end
-        end
-        for i=pslot+1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
-        PLAYER_ESP.lastDrawn=pslot
-    else
-        for i=1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
-        PLAYER_ESP.lastDrawn=0
-    end
-
-    -- ── AI/Scav ESP ──────────────────────────────────────────
-    if not AI_STATE.enabled or (COMBAT.active and not COMBAT.keepAI) then
-        for i=1,AI_STATE.lastDrawn do hideSlot(slots[i]) end
-        AI_STATE.lastDrawn=0
-        return
-    end
-
-    local slot=0
-    for _,it in ipairs(AI_STATE.items) do
-        if slot>=AIC.MAX_SLOTS then break end
-        local s=slots[slot+1]
-        local drawn=drawSlot(s,it,snapAI,AIC.NAME,AIC.BOX,AIC.TRACER,VP.cx,VP.cy)
-        if drawn then slot=slot+1 end
-    end
-    for i=slot+1,AI_STATE.lastDrawn do hideSlot(slots[i]) end
-    AI_STATE.lastDrawn=slot
+if not running then return end
+pcall(updateFOVCircle)
+FRAME.fogTimer=FRAME.fogTimer+dt
+if FRAME.fogTimer>=0.1 then
+FRAME.fogTimer=0
+if FOG.enabled then applyNoFog() elseif FOG.last then restoreFog() end
+FOG.last=FOG.enabled
+end
+if RECOIL.enabled and RECOIL.cache then applygc(RECOIL.cache,RECOIL.payload) end
+AI_STATE.timer=AI_STATE.timer+dt
+if AI_STATE.timer>=(1/max(1,AI_STATE.updateRate)) then
+AI_STATE.timer=0
+if AI_STATE.enabled then pcall(rebuildAI) end
+end
+PLAYER_ESP.timer=PLAYER_ESP.timer+dt
+if PLAYER_ESP.timer>=(1/max(1,PLAYER_ESP.updateRate)) then
+PLAYER_ESP.timer=0
+if PLAYER_ESP.enabled then pcall(rebuildPlayerESP) end
+end
+VP.timer=VP.timer+dt
+if VP.timer>=0.5 then VP.timer=0; updateVP() end
+local now=os.clock()
+if not COMBAT.active then
+FRAME.phase=(FRAME.phase+1)%6
+if FRAME.phase==0 then
+if (now-LOOT.stamp)>=LOOT.TTL then LOOT.stamp=now; if _G.ESP.Enabled then pcall(rebuildLootCache) end end
+elseif FRAME.phase==1 then
+if (now-WPN.stamp)>=LOOT.TTL then WPN.stamp=now; if _G.WEAPON_ESP.Enabled then pcall(rebuildWeaponCache) end end
+elseif FRAME.phase==2 then
+if (now-TURRET.stamp)>=TURRET.TTL then TURRET.stamp=now; if TURRET.enabled then pcall(rebuildTurretCache) end end
+elseif FRAME.phase==3 then
+if (now-CORPSE.stamp)>=CORPSE.TTL then CORPSE.stamp=now; if CORPSE.enabled then pcall(rebuildCorpseCache) end end
+elseif FRAME.phase==4 then
+if (now-SLIDER.stamp)>=SLIDER.TTL then SLIDER.stamp=now; if SLIDER.enabled then pcall(rebuildSliderCache) end end
+elseif FRAME.phase==5 then
+if (now-MINE.stamp)>=MINE.TTL then MINE.stamp=now; if MINE.enabled then pcall(rebuildMineCache) end end
+end
+else
+if COMBAT.keepMines then
+FRAME.phase=(FRAME.phase+1)%2
+if FRAME.phase==0 then
+if (now-MINE.stamp)>=MINE.TTL then MINE.stamp=now; if MINE.enabled then pcall(rebuildMineCache) end end
+end
+end
+end
+local char  = LocalPlayer.Character
+local hrp   = char and char:FindFirstChild("HumanoidRootPart")
+local myPos = hrp and hrp.Position
+if not COMBAT.active and _G.ESP.Enabled and myPos then
+local slot=0
+for i=1,#LOOT.cache do
+local entry=LOOT.cache[i]; local root=entry.root
+if root and root.Parent then
+local pos,onScreen=WorldToScreen(root.Position)
+if onScreen then
+slot=slot+1
+local lbl=LOOT.labelPool[slot]; local dot=LOOT.dotPool[slot]
+local rp=entry.root.Position
+local dx,dy,dz=rp.X-myPos.X,rp.Y-myPos.Y,rp.Z-myPos.Z
+local dist=floor(sqrt(dx*dx+dy*dy+dz*dz))
+poolTxt(lbl,entry.name.." ["..dist.."m]"); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-6); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=slot+1,LOOT.lastDrawn do poolVis(LOOT.labelPool[j],false); poolVis(LOOT.dotPool[j],false) end
+LOOT.lastDrawn=slot
+else
+for i=1,LOOT.lastDrawn do poolVis(LOOT.labelPool[i],false); poolVis(LOOT.dotPool[i],false) end
+LOOT.lastDrawn=0
+end
+if not COMBAT.active and _G.WEAPON_ESP.Enabled and myPos then
+local wslot=0
+for i=1,#WPN.cache do
+local entry=WPN.cache[i]; local root=entry.root
+if root and root.Parent then
+local pos,onScreen=WorldToScreen(root.Position)
+if onScreen then
+wslot=wslot+1
+local lbl=WPN.labelPool[wslot]; local dot=WPN.dotPool[wslot]
+local rp=entry.root.Position
+local dx,dy,dz=rp.X-myPos.X,rp.Y-myPos.Y,rp.Z-myPos.Z
+local dist=floor(sqrt(dx*dx+dy*dy+dz*dz))
+poolTxt(lbl,entry.name.." ["..dist.."m]"); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-6); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=wslot+1,WPN.lastDrawn do poolVis(WPN.labelPool[j],false); poolVis(WPN.dotPool[j],false) end
+WPN.lastDrawn=wslot
+else
+for i=1,WPN.lastDrawn do poolVis(WPN.labelPool[i],false); poolVis(WPN.dotPool[i],false) end
+WPN.lastDrawn=0
+end
+if TURRET.enabled and myPos then
+local tslot=0
+for i=1,#TURRET.cache do
+local entry=TURRET.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+tslot=tslot+1
+local lbl=TURRET.labelPool[tslot]; local dot=TURRET.dotPool[tslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,"[TURRET] "..entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]")
+poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
+poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=tslot+1,TURRET.lastDrawn do poolVis(TURRET.labelPool[j],false); poolVis(TURRET.dotPool[j],false) end
+TURRET.lastDrawn=tslot
+else
+for i=1,TURRET.lastDrawn do poolVis(TURRET.labelPool[i],false); poolVis(TURRET.dotPool[i],false) end
+TURRET.lastDrawn=0
+end
+if CORPSE.enabled and myPos then
+local cslot=0
+for i=1,#CORPSE.cache do
+local entry=CORPSE.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+cslot=cslot+1
+local lbl=CORPSE.labelPool[cslot]; local dot=CORPSE.dotPool[cslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,"[CORPSE] "..entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]")
+poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
+poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=cslot+1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[j],false); poolVis(CORPSE.dotPool[j],false) end
+CORPSE.lastDrawn=cslot
+else
+for i=1,CORPSE.lastDrawn do poolVis(CORPSE.labelPool[i],false); poolVis(CORPSE.dotPool[i],false) end
+CORPSE.lastDrawn=0
+end
+if SLIDER.enabled and myPos then
+local sslot=0
+for i=1,#SLIDER.cache do
+local entry=SLIDER.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+sslot=sslot+1
+local lbl=SLIDER.labelPool[sslot]; local dot=SLIDER.dotPool[sslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]"); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-8); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=sslot+1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[j],false); poolVis(SLIDER.dotPool[j],false) end
+SLIDER.lastDrawn=sslot
+else
+for i=1,SLIDER.lastDrawn do poolVis(SLIDER.labelPool[i],false); poolVis(SLIDER.dotPool[i],false) end
+SLIDER.lastDrawn=0
+end
+if MINE.enabled and myPos and (not COMBAT.active or COMBAT.keepMines) then
+local mslot=0
+for i=1,#MINE.cache do
+local entry=MINE.cache[i]; local anchor=entry.anchor
+if anchor and anchor.Parent then
+local pos,onScreen=WorldToScreen(anchor.Position)
+if onScreen then
+mslot=mslot+1
+local lbl=MINE.labelPool[mslot]; local dot=MINE.dotPool[mslot]
+local ap=anchor.Position; local dx,dy,dz=ap.X-myPos.X,ap.Y-myPos.Y,ap.Z-myPos.Z
+poolTxt(lbl,entry.name.." ["..floor(sqrt(dx*dx+dy*dy+dz*dz)).."m]"); poolCol(lbl,entry.color)
+poolPos(lbl,pos.X,pos.Y-10); poolVis(lbl,true)
+poolCol(dot,entry.color); poolPos(dot,pos.X,pos.Y+8); poolVis(dot,true)
+end
+end
+end
+for j=mslot+1,MINE.lastDrawn do poolVis(MINE.labelPool[j],false); poolVis(MINE.dotPool[j],false) end
+MINE.lastDrawn=mslot
+else
+for i=1,MINE.lastDrawn do poolVis(MINE.labelPool[i],false); poolVis(MINE.dotPool[i],false) end
+MINE.lastDrawn=0
+end
+if PLAYER_ESP.enabled and (not COMBAT.active or COMBAT.keepPlayer) then
+local pslot=0
+for _,it in ipairs(PLAYER_ESP.items) do
+if pslot>=PLAYER_ESP.MAX_SLOTS then break end
+local s=PLAYER_ESP.slots[pslot+1]
+local drawn=drawSlot(s,it,PLAYER_ESP.snap,AIC.PLAYER_NAME,AIC.PLAYER_BOX,AIC.PLAYER_TRACER,VP.cx,VP.cy)
+if drawn then pslot=pslot+1 end
+end
+for i=pslot+1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
+PLAYER_ESP.lastDrawn=pslot
+else
+for i=1,PLAYER_ESP.lastDrawn do hideSlot(PLAYER_ESP.slots[i]) end
+PLAYER_ESP.lastDrawn=0
+end
+if not AI_STATE.enabled or (COMBAT.active and not COMBAT.keepAI) then
+for i=1,AI_STATE.lastDrawn do hideSlot(slots[i]) end
+AI_STATE.lastDrawn=0
+return
+end
+local slot=0
+for _,it in ipairs(AI_STATE.items) do
+if slot>=AIC.MAX_SLOTS then break end
+local s=slots[slot+1]
+local drawn=drawSlot(s,it,snapAI,AIC.NAME,AIC.BOX,AIC.TRACER,VP.cx,VP.cy)
+if drawn then slot=slot+1 end
+end
+for i=slot+1,AI_STATE.lastDrawn do hideSlot(slots[i]) end
+AI_STATE.lastDrawn=slot
 end)
-
 Lib:Notify("Seim Havoc V2","Loaded successfully!",4,"success")
 print("[Seim Havoc V2] loaded.")
