@@ -258,11 +258,11 @@ secLootL:addToggle(string.char(115, 104, 111, 119, 95, 114, 97, 114, 101),  stri
 secLootL:addToggle(string.char(115, 104, 111, 119, 95, 107, 101, 121, 115),  string.char(75, 101, 121, 115),             false,  function(v) CFG.showKeys     = v end)
 secLootL:addToggle(string.char(115, 104, 111, 119, 95, 103, 101, 97, 114),  string.char(71, 101, 97, 114),             false,  function(v) CFG.showGear     = v end)
 secLootL:addToggle(string.char(115, 104, 111, 119, 95, 99, 97, 115, 104),  string.char(67, 97, 115, 104),             false,  function(v) CFG.showCash     = v end)
-secLootL:addToggle(string.char(115, 104, 111, 119, 95, 117, 110, 99),   string.char(85, 110, 99, 111, 109, 109, 111, 110),         false, function(v) CFG.showUncommon = v end)
-secLootL:addToggle(string.char(115, 104, 111, 119, 95, 117, 115, 101),   string.char(85, 115, 97, 98, 108, 101, 32, 47, 32, 73, 110, 104, 97, 108, 101, 114, 115),false, function(v) CFG.showUsable   = v end)
-secLootL:addToggle(string.char(115, 104, 111, 119, 95, 99, 111, 109),   string.char(67, 111, 109, 109, 111, 110),           false, function(v) CFG.showCommon   = v end)
+secLootL:addToggle(string.char(115, 104, 111, 119, 95, 117, 110, 99),   string.char(85, 110, 99, 111, 109, 109, 111, 110),         false,  function(v) CFG.showUncommon = v end)
+secLootL:addToggle(string.char(115, 104, 111, 119, 95, 117, 115, 101),   string.char(85, 115, 97, 98, 108, 101, 32, 47, 32, 73, 110, 104, 97, 108, 101, 114, 115),false,  function(v) CFG.showUsable   = v end)
+secLootL:addToggle(string.char(115, 104, 111, 119, 95, 99, 111, 109),   string.char(67, 111, 109, 109, 111, 110),           false,  function(v) CFG.showCommon   = v end)
 secLootL:addSeparator()
-secLootL:addToggle(string.char(115, 104, 111, 119, 95, 99, 114, 97, 116, 101, 115),string.char(67, 114, 97, 116, 101, 115),           false, function(v) CFG.showCrates   = v end)
+secLootL:addToggle(string.char(115, 104, 111, 119, 95, 99, 114, 97, 116, 101, 115),string.char(67, 114, 97, 116, 101, 115),           false,  function(v) CFG.showCrates   = v end)
 secLootL:addMultiDropdown(string.char(99, 114, 97, 116, 101, 95, 115, 101, 108),string.char(83, 101, 108, 101, 99, 116, 32, 67, 114, 97, 116, 101, 115), CAT_CONTAINERS, {}, function(sel)
 local t = {}; for _,v in ipairs(sel) do t[v]=true end; CFG.selectedCrates = t
 end, false)
@@ -277,8 +277,8 @@ secEntR:addToggle(string.char(101, 110, 116, 95, 100, 105, 115, 116, 50),string.
 secEntR:addToggle(string.char(101, 110, 116, 95, 104, 112),   string.char(72, 101, 97, 108, 116, 104, 32, 66, 97, 114),  true,  function(v) CFG.showHealth = v end)
 secEntR:addToggle(string.char(101, 110, 116, 95, 119, 112, 110),  string.char(72, 101, 108, 100, 32, 87, 101, 97, 112, 111, 110), true,  function(v) CFG.showWeapon = v end)
 local tabCombat  = window:addTab(string.char(67, 111, 109, 98, 97, 116))
-local secCombatL = tabCombat:addSection(string.char(78, 111, 32, 82, 101, 99, 111, 105, 108), string.char(76, 101, 102, 116))
-local secCombatR = tabCombat:addSection(string.char(73, 110, 115, 116, 97, 110, 116, 32, 76, 111, 111, 116), string.char(82, 105, 103, 104, 116))
+local secCombatL = tabCombat:addSection(string.char(87, 101, 97, 112, 111, 110), string.char(76, 101, 102, 116))
+local secCombatR = tabCombat:addSection(string.char(65, 105, 109, 98, 111, 116), string.char(82, 105, 103, 104, 116))
 local RECOIL = {
 enabled = false,
 cache   = nil,
@@ -319,56 +319,147 @@ level=50, required_level=0,
 local IL_CACHE = nil
 local function il_applyGC()
 pcall(function()
-if not IL_CACHE or #IL_CACHE == 0 then
-IL_CACHE = getgc(IL_GC_KEYS)
-end
-if IL_CACHE and #IL_CACHE > 0 then
-applygc(IL_CACHE, IL_GC_VALUES)
-end
+if not IL_CACHE or #IL_CACHE == 0 then IL_CACHE = getgc(IL_GC_KEYS) end
+if IL_CACHE and #IL_CACHE > 0 then applygc(IL_CACHE, IL_GC_VALUES) end
 end)
 end
 local function il_patchSkillsOn(model)
 if not model then return end
-local playerData = model:FindFirstChild(string.char(112, 108, 97, 121, 101, 114, 68, 97, 116, 97))
-local skills     = playerData and playerData:FindFirstChild(string.char(115, 107, 105, 108, 108, 115))
-if not skills then return end
-local scavenger  = skills:FindFirstChild(string.char(83, 99, 97, 118, 101, 110, 103, 101, 114))
-local level      = scavenger and scavenger:FindFirstChild(string.char(108, 101, 118, 101, 108))
-if level then pcall(function() level.Value = 50 end) end
+local pd = model:FindFirstChild(string.char(112, 108, 97, 121, 101, 114, 68, 97, 116, 97))
+local sk = pd and pd:FindFirstChild(string.char(115, 107, 105, 108, 108, 115))
+if not sk then return end
+local sc = sk:FindFirstChild(string.char(83, 99, 97, 118, 101, 110, 103, 101, 114))
+local lv = sc and sc:FindFirstChild(string.char(108, 101, 118, 101, 108))
+if lv then pcall(function() lv.Value = 50 end) end
 end
 local function il_patchLocal()
-local lp = Players.LocalPlayer
-if not lp then return end
-local char = lp.Character
-il_patchSkillsOn(char)
-if char then
-local ok, raidFolder = pcall(function() return char.Parent end)
-if ok and raidFolder and raidFolder ~= workspace then
-il_patchSkillsOn(raidFolder:FindFirstChild(lp.Name))
-end
+local lp = Players.LocalPlayer; if not lp then return end
+local ch = lp.Character; il_patchSkillsOn(ch)
+if ch then
+local ok, rf = pcall(function() return ch.Parent end)
+if ok and rf and rf ~= workspace then il_patchSkillsOn(rf:FindFirstChild(lp.Name)) end
 end
 end
 local function startInstantLoot()
-IL_CACHE = nil
-il_applyGC()
-il_patchLocal()
+IL_CACHE = nil; il_applyGC(); il_patchLocal()
 INSTANT_LOOT.loopThread = task.spawn(function()
 while INSTANT_LOOT.enabled do
-task.wait(2)
-if not INSTANT_LOOT.enabled then break end
-il_applyGC()
-il_patchLocal()
+task.wait(2); if not INSTANT_LOOT.enabled then break end
+il_applyGC(); il_patchLocal()
 end
 end)
 end
 local function stopInstantLoot()
-INSTANT_LOOT.enabled    = false
-INSTANT_LOOT.loopThread = nil
-IL_CACHE = nil
+INSTANT_LOOT.enabled = false; INSTANT_LOOT.loopThread = nil; IL_CACHE = nil
 end
-secCombatR:addToggle(string.char(105, 110, 115, 116, 97, 110, 116, 108, 111, 111, 116), string.char(73, 110, 115, 116, 97, 110, 116, 32, 76, 111, 111, 116), false, function(v)
+secCombatL:addSeparator()
+secCombatL:addToggle(string.char(105, 110, 115, 116, 97, 110, 116, 108, 111, 111, 116), string.char(73, 110, 115, 116, 97, 110, 116, 32, 76, 111, 111, 116), false, function(v)
 INSTANT_LOOT.enabled = v
 if v then startInstantLoot() else stopInstantLoot() end
+end)
+local AIM = {
+enabled      = false,
+fov          = 150,
+smooth       = 0.2,
+bone         = string.char(72, 101, 97, 100),
+targetMode   = string.char(97, 108, 108),
+keyType      = string.char(109, 111, 117, 115, 101, 50),
+keyCode      = nil,
+keyName      = string.char(77, 66, 50),
+showFOV      = false,
+lockEnabled  = false,
+lockSmooth   = 0.35,
+stickyTarget = nil,
+listening    = false,
+}
+local fovCircle       = Drawing.new(string.char(67, 105, 114, 99, 108, 101))
+fovCircle.Radius      = AIM.fov
+fovCircle.Filled      = false
+fovCircle.Thickness   = 1
+fovCircle.NumSides    = 64
+fovCircle.Color       = Color3.fromRGB(255,255,255)
+fovCircle.Transparency= 0.5
+fovCircle.Visible     = false
+local VK_NAMES = {
+[0x08]=string.char(66, 97, 99, 107, 115, 112, 97, 99, 101),[0x09]=string.char(84, 97, 98),[0x0D]=string.char(69, 110, 116, 101, 114),
+[0x10]=string.char(83, 104, 105, 102, 116),[0x11]=string.char(67, 116, 114, 108),[0x12]=string.char(65, 108, 116),[0x1B]=string.char(69, 115, 99, 97, 112, 101),
+[0x20]=string.char(83, 112, 97, 99, 101),[0x21]=string.char(80, 103, 85, 112),[0x22]=string.char(80, 103, 68, 110),[0x23]=string.char(69, 110, 100),[0x24]=string.char(72, 111, 109, 101),
+[0x25]=string.char(76, 101, 102, 116),[0x26]=string.char(85, 112),[0x27]=string.char(82, 105, 103, 104, 116),[0x28]=string.char(68, 111, 119, 110),
+[0x2D]=string.char(73, 110, 115, 101, 114, 116),[0x2E]=string.char(68, 101, 108, 101, 116, 101),
+[0x30]=string.char(48),[0x31]=string.char(49),[0x32]=string.char(50),[0x33]=string.char(51),[0x34]=string.char(52),
+[0x35]=string.char(53),[0x36]=string.char(54),[0x37]=string.char(55),[0x38]=string.char(56),[0x39]=string.char(57),
+[0x41]=string.char(65),[0x42]=string.char(66),[0x43]=string.char(67),[0x44]=string.char(68),[0x45]=string.char(69),
+[0x46]=string.char(70),[0x47]=string.char(71),[0x48]=string.char(72),[0x49]=string.char(73),[0x4A]=string.char(74),
+[0x4B]=string.char(75),[0x4C]=string.char(76),[0x4D]=string.char(77),[0x4E]=string.char(78),[0x4F]=string.char(79),
+[0x50]=string.char(80),[0x51]=string.char(81),[0x52]=string.char(82),[0x53]=string.char(83),[0x54]=string.char(84),
+[0x55]=string.char(85),[0x56]=string.char(86),[0x57]=string.char(87),[0x58]=string.char(88),[0x59]=string.char(89),[0x5A]=string.char(90),
+[0x60]=string.char(78, 117, 109, 48),[0x61]=string.char(78, 117, 109, 49),[0x62]=string.char(78, 117, 109, 50),[0x63]=string.char(78, 117, 109, 51),[0x64]=string.char(78, 117, 109, 52),
+[0x65]=string.char(78, 117, 109, 53),[0x66]=string.char(78, 117, 109, 54),[0x67]=string.char(78, 117, 109, 55),[0x68]=string.char(78, 117, 109, 56),[0x69]=string.char(78, 117, 109, 57),
+[0x70]=string.char(70, 49),[0x71]=string.char(70, 50),[0x72]=string.char(70, 51),[0x73]=string.char(70, 52),[0x74]=string.char(70, 53),[0x75]=string.char(70, 54),
+[0x76]=string.char(70, 55),[0x77]=string.char(70, 56),[0x78]=string.char(70, 57),[0x79]=string.char(70, 49, 48),[0x7A]=string.char(70, 49, 49),[0x7B]=string.char(70, 49, 50),
+[0x04]=string.char(77, 66, 51),[0x05]=string.char(77, 66, 52),[0x06]=string.char(77, 66, 53),
+[0xA0]=string.char(76, 83, 104, 105, 102, 116),[0xA1]=string.char(82, 83, 104, 105, 102, 116),[0xA2]=string.char(76, 67, 116, 114, 108),[0xA3]=string.char(82, 67, 116, 114, 108),
+}
+local function detectPressedKey()
+if ismouse1pressed() then return string.char(109, 111, 117, 115, 101, 49),nil,string.char(77, 66, 49) end
+if ismouse2pressed() then return string.char(109, 111, 117, 115, 101, 50),nil,string.char(77, 66, 50) end
+for vk=0x03,0xFE do
+if vk~=0x01 and vk~=0x02 and iskeypressed(vk) then
+return string.char(107, 101, 121),vk,(VK_NAMES[vk] or string.format(string.char(48, 120, 37, 48, 50, 88),vk))
+end
+end
+end
+local function isAimbotKeyDown()
+if AIM.keyType==string.char(109, 111, 117, 115, 101, 49)  then return ismouse1pressed()
+elseif AIM.keyType==string.char(109, 111, 117, 115, 101, 50) then return ismouse2pressed()
+elseif AIM.keyType==string.char(107, 101, 121) and AIM.keyCode then return iskeypressed(AIM.keyCode)
+end
+return false
+end
+secCombatR:addToggle(string.char(97, 105, 109, 95, 101, 110),   string.char(69, 110, 97, 98, 108, 101, 32, 65, 105, 109, 98, 111, 116),    false, function(v)
+AIM.enabled = v
+if not v then fovCircle.Visible=false; AIM.stickyTarget=nil end
+end)
+secCombatR:addToggle(string.char(97, 105, 109, 95, 102, 111, 118),  string.char(83, 104, 111, 119, 32, 70, 79, 86, 32, 67, 105, 114, 99, 108, 101),  false, function(v)
+AIM.showFOV = v; if not v then fovCircle.Visible=false end
+end)
+secCombatR:addSlider(string.char(97, 105, 109, 95, 102, 111, 118, 95, 114),string.char(70, 79, 86, 32, 82, 97, 100, 105, 117, 115),   10, 500, 150, function(v)
+AIM.fov=v; fovCircle.Radius=v
+end)
+secCombatR:addSlider(string.char(97, 105, 109, 95, 115, 109, 116),  string.char(83, 109, 111, 111, 116, 104, 105, 110, 103, 32, 37),   1, 100,  20, function(v) AIM.smooth=v/100 end)
+secCombatR:addToggle(string.char(97, 105, 109, 95, 108, 111, 99, 107), string.char(83, 116, 105, 99, 107, 121, 32, 76, 111, 99, 107),    false, function(v)
+AIM.lockEnabled=v; if not v then AIM.stickyTarget=nil end
+end)
+secCombatR:addSlider(string.char(97, 105, 109, 95, 108, 115, 112, 100),string.char(76, 111, 99, 107, 32, 83, 112, 101, 101, 100, 32, 37),  5, 100,  35, function(v) AIM.lockSmooth=v/100 end)
+secCombatR:addDropdown(string.char(97, 105, 109, 95, 98, 111, 110, 101),string.char(84, 97, 114, 103, 101, 116, 32, 66, 111, 110, 101),{string.char(72, 101, 97, 100),string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)},string.char(72, 101, 97, 100),function(v)
+AIM.bone = v or string.char(72, 101, 97, 100)
+end)
+secCombatR:addSlider(string.char(97, 105, 109, 95, 112, 114, 101, 100),  string.char(80, 114, 101, 100, 105, 99, 116, 105, 111, 110, 32, 40, 109, 115, 41), 0, 300, 100, function(v) AIM.predTime=v/1000 end)
+secCombatR:addDropdown(string.char(97, 105, 109, 95, 109, 111, 100, 101),string.char(84, 97, 114, 103, 101, 116, 32, 77, 111, 100, 101),{string.char(65, 108, 108),string.char(78, 80, 67, 115, 32, 79, 110, 108, 121),string.char(80, 108, 97, 121, 101, 114, 115, 32, 79, 110, 108, 121)},string.char(65, 108, 108),function(v)
+if v==string.char(78, 80, 67, 115, 32, 79, 110, 108, 121) then AIM.targetMode=string.char(110, 112, 99)
+elseif v==string.char(80, 108, 97, 121, 101, 114, 115, 32, 79, 110, 108, 121) then AIM.targetMode=string.char(112, 108, 97, 121, 101, 114, 115)
+else AIM.targetMode=string.char(97, 108, 108) end
+end)
+local keybindBtn
+keybindBtn = secCombatR:addButton(string.char(65, 105, 109, 98, 111, 116, 32, 75, 101, 121, 58, 32, 77, 66, 50), function()
+if AIM.listening then return end
+AIM.listening = true
+keybindBtn:setText(string.char(80, 114, 101, 115, 115, 32, 97, 110, 121, 32, 107, 101, 121, 46, 46, 46))
+task.spawn(function()
+task.wait(0.25)
+local deadline = tick()+5
+while tick()<deadline do
+local kt,kc,kn = detectPressedKey()
+if kt then
+AIM.keyType=kt; AIM.keyCode=kc; AIM.keyName=kn
+keybindBtn:setText(string.char(65, 105, 109, 98, 111, 116, 32, 75, 101, 121, 58, 32)..kn)
+AIM.listening=false; return
+end
+task.wait(0.02)
+end
+keybindBtn:setText(string.char(65, 105, 109, 98, 111, 116, 32, 75, 101, 121, 58, 32)..AIM.keyName)
+AIM.listening=false
+end)
 end)
 local tabHazard  = window:addTab(string.char(72, 97, 122, 97, 114, 100))
 local secHazL    = tabHazard:addSection(string.char(87, 111, 114, 108, 100, 32, 83, 99, 97, 110, 110, 101, 114), string.char(76, 101, 102, 116))
@@ -391,145 +482,103 @@ sliderColors    = {
 },
 sliderFallback  = Color3.fromRGB(255,215,0),
 }
-secHazL:addToggle(string.char(104, 97, 122, 95, 115, 101, 110, 116, 114, 121),  string.char(83, 101, 110, 116, 114, 121, 32, 84, 117, 114, 114, 101, 116, 115),  false, function(v) HAZARD.sentryEnabled = v end)
-secHazL:addToggle(string.char(104, 97, 122, 95, 99, 111, 114, 112, 115, 101),  string.char(67, 111, 114, 112, 115, 101, 115),              false,  function(v) HAZARD.corpseEnabled  = v end)
-secHazL:addToggle(string.char(104, 97, 122, 95, 115, 108, 105, 100, 101, 114),  string.char(75, 101, 121, 99, 97, 114, 100, 32, 83, 108, 105, 100, 101, 114, 115),      false,  function(v) HAZARD.sliderEnabled  = v end)
-secHazR:addSlider(string.char(104, 97, 122, 95, 100, 105, 115, 116),    string.char(77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101), 50, 3000, 500, function(v) HAZARD.maxDist        = v end)
+secHazL:addToggle(string.char(104, 97, 122, 95, 115, 101, 110, 116, 114, 121), string.char(83, 101, 110, 116, 114, 121, 32, 84, 117, 114, 114, 101, 116, 115),  false, function(v) HAZARD.sentryEnabled = v end)
+secHazL:addToggle(string.char(104, 97, 122, 95, 99, 111, 114, 112, 115, 101), string.char(67, 111, 114, 112, 115, 101, 115),         false, function(v) HAZARD.corpseEnabled  = v end)
+secHazL:addToggle(string.char(104, 97, 122, 95, 115, 108, 105, 100, 101, 114), string.char(75, 101, 121, 99, 97, 114, 100, 32, 83, 108, 105, 100, 101, 114, 115), false, function(v) HAZARD.sliderEnabled  = v end)
+secHazR:addSlider(string.char(104, 97, 122, 95, 100, 105, 115, 116),   string.char(77, 97, 120, 32, 68, 105, 115, 116, 97, 110, 99, 101), 50, 3000, 500, function(v) HAZARD.maxDist = v end)
 window.visible = true
 window:render()
-local FONT      = Drawing.Fonts.System
-local FONT_ENT  = Drawing.Fonts.System
+local FONT     = Drawing.Fonts.System
+local FONT_ENT = Drawing.Fonts.System
 local function newText(size)
-local t = Drawing.new(string.char(84, 101, 120, 116))
-t.Outline = false
-t.Center  = true
-t.Font    = FONT
-t.Size    = size or 13
-t.ZIndex  = 1
-t.Visible = false
-return t
+local t=Drawing.new(string.char(84, 101, 120, 116)); t.Outline=false; t.Center=true
+t.Font=FONT; t.Size=size or 13; t.ZIndex=1; t.Visible=false; return t
 end
 local function newDot()
-local d = Drawing.new(string.char(67, 105, 114, 99, 108, 101))
-d.Radius   = 4
-d.Filled   = true
-d.NumSides = 12
-d.Thickness= 1
-d.Visible  = false
-return d
+local d=Drawing.new(string.char(67, 105, 114, 99, 108, 101)); d.Radius=4; d.Filled=true
+d.NumSides=12; d.Thickness=1; d.Visible=false; return d
 end
-local function newLine(col, thick)
-local l = Drawing.new(string.char(76, 105, 110, 101))
-l.Color     = col or Color3.new(1,1,1)
-l.Thickness = thick or 1
-l.Visible   = false
-return l
+local function newLine(col,thick)
+local l=Drawing.new(string.char(76, 105, 110, 101)); l.Color=col or Color3.new(1,1,1)
+l.Thickness=thick or 1; l.Visible=false; return l
 end
 local function newEntText(size)
-local t = Drawing.new(string.char(84, 101, 120, 116))
-t.Outline = false
-t.Center  = true
-t.Font    = FONT_ENT
-t.Size    = size or 13
-t.ZIndex  = 1
-t.Visible = false
-return t
+local t=Drawing.new(string.char(84, 101, 120, 116)); t.Outline=false; t.Center=true
+t.Font=FONT_ENT; t.Size=size or 13; t.ZIndex=1; t.Visible=false; return t
 end
-local LOOT_POOL = 300
-local lootLabels = {}
-local lootDots   = {}
-for i = 1, LOOT_POOL do
-lootLabels[i] = newText(13)
-lootDots[i]   = newDot()
-end
-local lootObjects = {}
-local lootDrawn   = 0
-local ENT_MAX  = 64
-local entSlots = {}
-for i = 1, ENT_MAX do
-entSlots[i] = {
-name   = newEntText(13),
-dist   = newEntText(12),
-hpBg   = newLine(Color3.fromRGB(30,30,30), 4),
-hpFg   = newLine(Color3.fromRGB(80,220,80), 4),
-hpTxt  = newEntText(11),
-weapon = newEntText(11),
+local LOOT_POOL=300; local lootLabels={}; local lootDots={}
+for i=1,LOOT_POOL do lootLabels[i]=newText(13); lootDots[i]=newDot() end
+local lootObjects={}; local lootDrawn=0
+local ENT_MAX=64; local entSlots={}
+for i=1,ENT_MAX do
+entSlots[i]={
+name=newEntText(13), dist=newEntText(12),
+hpBg=newLine(Color3.fromRGB(30,30,30),4),
+hpFg=newLine(Color3.fromRGB(80,220,80),4),
+hpTxt=newEntText(11), weapon=newEntText(11),
 }
 end
-local entObjects = {}
-local entDrawn   = 0
+local entObjects={}; local entDrawn=0
 local function hideEnt(s)
 s.name.Visible=false; s.dist.Visible=false
 s.hpBg.Visible=false; s.hpFg.Visible=false
 s.hpTxt.Visible=false; s.weapon.Visible=false
 end
-for i = 1, ENT_MAX do hideEnt(entSlots[i]) end
+for i=1,ENT_MAX do hideEnt(entSlots[i]) end
 local function getLootsFolder()
-local b = workspace:FindFirstChild(string.char(66, 117, 105, 108, 100, 105, 110, 103, 115))
-return b and b:FindFirstChild(string.char(76, 111, 111, 116, 115))
+local b=workspace:FindFirstChild(string.char(66, 117, 105, 108, 100, 105, 110, 103, 115)); return b and b:FindFirstChild(string.char(76, 111, 111, 116, 115))
 end
 local function rebuildLoot()
-local lp   = Players.LocalPlayer
-local char = lp and lp.Character
-local hrp  = char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
-if not hrp then lootObjects = {}; return end
-local myPos  = hrp.Position
-local maxDSq = CFG.maxDist * CFG.maxDist
-local lf     = getLootsFolder()
-if not lf then lootObjects = {}; return end
-local itemsF  = lf:FindFirstChild(string.char(73, 116, 101, 109, 115))
-local loots2  = lf:FindFirstChild(string.char(76, 111, 111, 116, 115))
-local cratesF = loots2 and loots2:FindFirstChild(string.char(67, 114, 97, 116, 101, 115))
-local out     = {}
-local function scan(folder, colorFn, filterFn)
+local lp=Players.LocalPlayer
+local char=lp and lp.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not hrp then lootObjects={}; return end
+local myPos=hrp.Position; local maxDSq=CFG.maxDist*CFG.maxDist
+local lf=getLootsFolder(); if not lf then lootObjects={}; return end
+local itemsF=lf:FindFirstChild(string.char(73, 116, 101, 109, 115))
+local loots2=lf:FindFirstChild(string.char(76, 111, 111, 116, 115))
+local cratesF=loots2 and loots2:FindFirstChild(string.char(67, 114, 97, 116, 101, 115))
+local out={}
+local function scan(folder,colorFn,filterFn)
 if not folder then return end
-local ok, kids = pcall(function() return folder:GetChildren() end)
+local ok,kids=pcall(function() return folder:GetChildren() end)
 if not ok or not kids then return end
-for _, obj in ipairs(kids) do
+for _,obj in ipairs(kids) do
 if filterFn(obj.Name) then
-local root = obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+local root=obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
 if root and root.Parent then
-local rp = root.Position
+local rp=root.Position
 local dx=rp.X-myPos.X; local dy=rp.Y-myPos.Y; local dz=rp.Z-myPos.Z
-if dx*dx+dy*dy+dz*dz <= maxDSq then
-out[#out+1] = { part=root, name=obj.Name, color=colorFn(obj.Name) }
+if dx*dx+dy*dy+dz*dz<=maxDSq then
+out[#out+1]={part=root,name=obj.Name,color=colorFn(obj.Name)}
 end
 end
 end
 end
 end
-scan(itemsF,
-function(n) return itemColor(n) end,
-function(n) return tierVisible(n) end
-)
+scan(itemsF,function(n) return itemColor(n) end,function(n) return tierVisible(n) end)
 if CFG.showCrates and cratesF then
-scan(cratesF,
-function(n) return crateColors[n] or Color3.fromRGB(200,200,200) end,
-function(n) return CFG.selectedCrates[n] == true end
-)
+scan(cratesF,function(n) return crateColors[n] or Color3.fromRGB(200,200,200) end,
+function(n) return CFG.selectedCrates[n]==true end)
 end
-lootObjects = out
+lootObjects=out
 end
-local _npcRef   = nil
-local _npcStamp = 0
+local _npcRef=nil; local _npcStamp=0
 local function findNPCFolder()
-local pChars = {}
-for _, plr in ipairs(Players:GetPlayers()) do
+local pChars={}
+for _,plr in ipairs(Players:GetPlayers()) do
 if plr.Character then pChars[plr.Character]=true end
 end
-local lp     = Players.LocalPlayer
-local myChar = lp and lp.Character
-local ok, kids = pcall(function() return workspace:GetChildren() end)
+local lp=Players.LocalPlayer; local myChar=lp and lp.Character
+local ok,kids=pcall(function() return workspace:GetChildren() end)
 if not ok or not kids then return nil end
-for _, c in ipairs(kids) do
+for _,c in ipairs(kids) do
 if (c.ClassName==string.char(70, 111, 108, 100, 101, 114) or c.ClassName==string.char(77, 111, 100, 101, 108)) and c~=myChar and not pChars[c] then
-local ok2, ck = pcall(function() return c:GetChildren() end)
+local ok2,ck=pcall(function() return c:GetChildren() end)
 if ok2 and ck then
-for _, child in ipairs(ck) do
+for _,child in ipairs(ck) do
 if child.ClassName==string.char(77, 111, 100, 101, 108) then
-local ok3, h = pcall(function()
-return child:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
-end)
+local ok3,h=pcall(function() return child:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100)) end)
 if ok3 and h then return c end
 end
 end
@@ -539,65 +588,52 @@ end
 return nil
 end
 local function getNPCFolder()
-local now = tick()
-if not _npcRef or (now-_npcStamp) > 5 then
-_npcRef   = findNPCFolder()
-_npcStamp = now
-end
+local now=tick()
+if not _npcRef or (now-_npcStamp)>5 then _npcRef=findNPCFolder(); _npcStamp=now end
 return _npcRef
 end
 local function rebuildEntities()
-local lp   = Players.LocalPlayer
-local char = lp and lp.Character
-local hrp  = char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+local lp=Players.LocalPlayer; local char=lp and lp.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
 if not hrp then entObjects={}; return end
-local myPos  = hrp.Position
-local maxDSq = CFG.entityMaxDist * CFG.entityMaxDist
-local out    = {}
-local pChars = {}; local pNames = {}
-for _, plr in ipairs(Players:GetPlayers()) do
+local myPos=hrp.Position; local maxDSq=CFG.entityMaxDist*CFG.entityMaxDist
+local out={}; local pChars={}; local pNames={}
+for _,plr in ipairs(Players:GetPlayers()) do
 if plr.Character then pChars[plr.Character]=true end
 pNames[plr.Name]=true
 end
 if CFG.showPlayers then
-for _, plr in ipairs(Players:GetPlayers()) do
+for _,plr in ipairs(Players:GetPlayers()) do
 if plr~=lp then
-local pc = plr.Character
-local ph = pc and pc:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+local pc=plr.Character; local ph=pc and pc:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
 if ph and ph.Parent then
 local rp=ph.Position
 local dx=rp.X-myPos.X; local dy=rp.Y-myPos.Y; local dz=rp.Z-myPos.Z
 if dx*dx+dy*dy+dz*dz<=maxDSq then
-out[#out+1]={
-hrp=ph, char=pc, label=plr.Name,
+out[#out+1]={hrp=ph,char=pc,label=plr.Name,
 hum=pc:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100)),
-isPlayer=true, color=Color3.fromRGB(80,220,255),
-}
+isPlayer=true,color=Color3.fromRGB(80,220,255)}
 end
 end
 end
 end
 end
 if CFG.showNPCs then
-local nf = getNPCFolder()
+local nf=getNPCFolder()
 if nf then
-local ok, kids = pcall(function() return nf:GetChildren() end)
+local ok,kids=pcall(function() return nf:GetChildren() end)
 if ok and kids then
-for _, child in ipairs(kids) do
+for _,child in ipairs(kids) do
 if child.ClassName==string.char(77, 111, 100, 101, 108) and not pChars[child] and child~=char and not pNames[child.Name] then
-local hum = child:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
+local hum=child:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
 if hum then
-local ph = child:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
-or child:FindFirstChild(string.char(84, 111, 114, 115, 111))
+local ph=child:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)) or child:FindFirstChild(string.char(84, 111, 114, 115, 111))
 if ph then
 local rp=ph.Position
 local dx=rp.X-myPos.X; local dy=rp.Y-myPos.Y; local dz=rp.Z-myPos.Z
 if dx*dx+dy*dy+dz*dz<=maxDSq then
-out[#out+1]={
-hrp=ph, char=child, label=child.Name,
-hum=hum, isPlayer=false,
-color=Color3.fromRGB(255,80,80),
-}
+out[#out+1]={hrp=ph,char=child,label=child.Name,
+hum=hum,isPlayer=false,color=Color3.fromRGB(255,80,80)}
 end
 end
 end
@@ -606,106 +642,74 @@ end
 end
 end
 end
-table.sort(out, function(a,b)
+table.sort(out,function(a,b)
 local ap=a.hrp.Position; local bp=b.hrp.Position
 local adx=ap.X-myPos.X; local ady=ap.Y-myPos.Y; local adz=ap.Z-myPos.Z
 local bdx=bp.X-myPos.X; local bdy=bp.Y-myPos.Y; local bdz=bp.Z-myPos.Z
 return adx*adx+ady*ady+adz*adz < bdx*bdx+bdy*bdy+bdz*bdz
 end)
 for i=ENT_MAX+1,#out do out[i]=nil end
-entObjects = out
+entObjects=out
 end
-local HAZ_POOL = 80
-local hazLabels = {}
-local hazDots   = {}
-for i = 1, HAZ_POOL do
-hazLabels[i] = newText(13)
-hazDots[i]   = newDot()
-end
-local hazObjects = {}
-local hazDrawn   = 0
-local _hazFolders = {
-sentry  = nil,
-corpse  = nil,
-slider  = nil,
-}
-local function resolveFolder(key, pathFn)
-local ref = _hazFolders[key]
+local HAZ_POOL=80; local hazLabels={}; local hazDots={}
+for i=1,HAZ_POOL do hazLabels[i]=newText(13); hazDots[i]=newDot() end
+local hazObjects={}; local hazDrawn=0
+local _hazFolders={sentry=nil,corpse=nil,slider=nil}
+local function resolveFolder(key,pathFn)
+local ref=_hazFolders[key]
 if ref and ref.Parent then return ref end
-local ok, f = pcall(pathFn)
-_hazFolders[key] = ok and f or nil
-return _hazFolders[key]
+local ok,f=pcall(pathFn); _hazFolders[key]=ok and f or nil; return _hazFolders[key]
 end
 local function getSliderTier(name)
-local n = name:match(string.char(91, 76, 108, 93, 101, 118, 101, 108, 91, 45, 37, 32, 93, 63, 40, 37, 100, 41)) or name:match(string.char(40, 37, 100, 41))
-if n then
-local t = tonumber(n)
-if t and t >= 0 and t <= 6 then return t end
-end
-return nil
+local n=name:match(string.char(91, 76, 108, 93, 101, 118, 101, 108, 91, 45, 37, 32, 93, 63, 40, 37, 100, 41)) or name:match(string.char(40, 37, 100, 41))
+if n then local t=tonumber(n); if t and t>=0 and t<=6 then return t end end
 end
 local function rebuildHazards()
-local lp   = Players.LocalPlayer
-local char = lp and lp.Character
-local hrp  = char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
-if not hrp then hazObjects = {}; return end
-local myPos  = hrp.Position
-local maxDSq = HAZARD.maxDist * HAZARD.maxDist
-local out    = {}
-local function tryAdd(anchor, label, color)
+local lp=Players.LocalPlayer; local char=lp and lp.Character
+local hrp=char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not hrp then hazObjects={}; return end
+local myPos=hrp.Position; local maxDSq=HAZARD.maxDist*HAZARD.maxDist; local out={}
+local function tryAdd(anchor,label,color)
 if not anchor or not anchor.Parent then return end
-local rp = anchor.Position
+local rp=anchor.Position
 local dx=rp.X-myPos.X; local dy=rp.Y-myPos.Y; local dz=rp.Z-myPos.Z
-if dx*dx+dy*dy+dz*dz <= maxDSq then
-out[#out+1] = { part=anchor, label=label, color=color }
+if dx*dx+dy*dy+dz*dz<=maxDSq then out[#out+1]={part=anchor,label=label,color=color} end
 end
-end
-local function scanFolder(folder, fn)
+local function scanFolder(folder,fn)
 if not folder then return end
-local ok, kids = pcall(function() return folder:GetChildren() end)
+local ok,kids=pcall(function() return folder:GetChildren() end)
 if not ok or not kids then return end
-for _, obj in ipairs(kids) do fn(obj) end
+for _,obj in ipairs(kids) do fn(obj) end
 end
 if HAZARD.sentryEnabled then
-local sf = resolveFolder(string.char(115, 101, 110, 116, 114, 121), function()
-return workspace.Buildings.EventObjects.Sentries
-end)
-scanFolder(sf, function(obj)
-local anchor = obj:FindFirstChild(string.char(66, 97, 115, 101))
-or obj:FindFirstChild(string.char(82, 111, 116, 97, 116, 111, 114))
-or obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
-tryAdd(anchor, string.char(91, 83, 69, 78, 84, 82, 89, 93, 32) .. obj.Name, HAZARD.sentryColor)
+local sf=resolveFolder(string.char(115, 101, 110, 116, 114, 121),function() return workspace.Buildings.EventObjects.Sentries end)
+scanFolder(sf,function(obj)
+local a=obj:FindFirstChild(string.char(66, 97, 115, 101)) or obj:FindFirstChild(string.char(82, 111, 116, 97, 116, 111, 114)) or obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+tryAdd(a,string.char(91, 83, 69, 78, 84, 82, 89, 93, 32)..obj.Name,HAZARD.sentryColor)
 end)
 end
 if HAZARD.corpseEnabled then
-local cf = resolveFolder(string.char(99, 111, 114, 112, 115, 101), function()
-return workspace.Buildings.Loots.Loots:FindFirstChild(string.char(67, 104, 97, 114, 97, 99, 116, 101, 114, 115))
-end)
-scanFolder(cf, function(m)
-if m.ClassName == string.char(77, 111, 100, 101, 108) then
-local anchor = m:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
-or m:FindFirstChild(string.char(84, 111, 114, 115, 111))
-or m:FindFirstChild(string.char(72, 101, 97, 100))
-or m:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
-tryAdd(anchor, string.char(91, 67, 79, 82, 80, 83, 69, 93, 32) .. m.Name, HAZARD.corpseColor)
+local cf=resolveFolder(string.char(99, 111, 114, 112, 115, 101),function() return workspace.Buildings.Loots.Loots:FindFirstChild(string.char(67, 104, 97, 114, 97, 99, 116, 101, 114, 115)) end)
+scanFolder(cf,function(m)
+if m.ClassName==string.char(77, 111, 100, 101, 108) then
+local a=m:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116)) or m:FindFirstChild(string.char(84, 111, 114, 115, 111)) or m:FindFirstChild(string.char(72, 101, 97, 100)) or m:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+tryAdd(a,string.char(91, 67, 79, 82, 80, 83, 69, 93, 32)..m.Name,HAZARD.corpseColor)
 end
 end)
 end
 if HAZARD.sliderEnabled then
-local slF = resolveFolder(string.char(115, 108, 105, 100, 101, 114), function()
-return workspace.Buildings.Loots.Interactable:FindFirstChild(string.char(75, 101, 121, 99, 97, 114, 100, 83, 108, 105, 100, 101, 114, 115))
-end)
-scanFolder(slF, function(obj)
-if obj.ClassName == string.char(77, 111, 100, 101, 108) then
-local anchor = obj.PrimaryPart or obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
-local tier   = getSliderTier(obj.Name)
-local color  = (tier and HAZARD.sliderColors[tier]) or HAZARD.sliderFallback
-local label  = tier and (string.char(91, 83, 76, 73, 68, 69, 82, 32, 84)..tier..string.char(93)) or string.char(91, 83, 76, 73, 68, 69, 82, 93)
-tryAdd(anchor, label, color)
+local slF=resolveFolder(string.char(115, 108, 105, 100, 101, 114),function() return workspace.Buildings.Loots.Interactable:FindFirstChild(string.char(75, 101, 121, 99, 97, 114, 100, 83, 108, 105, 100, 101, 114, 115)) end)
+scanFolder(slF,function(obj)
+if obj.ClassName==string.char(77, 111, 100, 101, 108) then
+local a=obj.PrimaryPart or obj:FindFirstChildWhichIsA(string.char(66, 97, 115, 101, 80, 97, 114, 116))
+local tier=getSliderTier(obj.Name)
+local color=(tier and HAZARD.sliderColors[tier]) or HAZARD.sliderFallback
+local label=tier and (string.char(91, 83, 76, 73, 68, 69, 82, 32, 84)..tier..string.char(93)) or string.char(91, 83, 76, 73, 68, 69, 82, 93)
+tryAdd(a,label,color)
 end
 end)
 end
-hazObjects = out
+hazObjects=out
 end
 task.spawn(function()
 while true do
@@ -715,161 +719,214 @@ if CFG.entityEnabled then pcall(rebuildEntities) end
 end
 end)
 task.spawn(function()
-while true do
-task.wait(2)
-pcall(rebuildHazards)
+while true do task.wait(2); pcall(rebuildHazards) end
+end)
+local Camera = workspace.CurrentCamera
+local _prevPos   = {}
+local _prevTime  = {}
+local function getBoneVelocity(bone)
+local now = tick()
+local cur = bone.Position
+local prev = _prevPos[bone]
+local pt   = _prevTime[bone]
+_prevPos[bone]  = cur
+_prevTime[bone] = now
+if not prev or not pt then return Vector3.new(0,0,0) end
+local dt = now - pt
+if dt <= 0 or dt > 0.5 then return Vector3.new(0,0,0) end
+return (cur - prev) / dt
 end
+AIM.predTime = 0.1
+local function getNearestTarget()
+local lp   = Players.LocalPlayer
+local char = lp and lp.Character
+local myHRP= char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not myHRP then return nil end
+local vp   = Camera.ViewportSize
+local cx,cy= vp.X*0.5, vp.Y*0.5
+local fovSq= AIM.fov * AIM.fov
+if AIM.lockEnabled and AIM.stickyTarget then
+local t=AIM.stickyTarget; local alive=true
+pcall(function()
+local hum=t.Parent and t.Parent:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
+if not hum or hum.Health<=0 then alive=false end
+end)
+if alive and t.Parent then
+local sc,on=WorldToScreen(t.Position)
+if on then
+local dx=sc.X-cx; local dy=sc.Y-cy
+if dx*dx+dy*dy<=fovSq*4 then return t end
+end
+end
+AIM.stickyTarget=nil
+end
+local best=nil; local bestDSq=math.huge
+local function checkChar(charModel, isPlayer)
+if AIM.targetMode==string.char(110, 112, 99)     and isPlayer       then return end
+if AIM.targetMode==string.char(112, 108, 97, 121, 101, 114, 115) and not isPlayer   then return end
+local bone=charModel:FindFirstChild(AIM.bone) or charModel:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+if not bone then return end
+local hum=charModel:FindFirstChildOfClass(string.char(72, 117, 109, 97, 110, 111, 105, 100))
+if hum and hum.Health<=0 then return end
+local sc,on=WorldToScreen(bone.Position)
+if not on then return end
+local dx=sc.X-cx; local dy=sc.Y-cy; local dSq=dx*dx+dy*dy
+if dSq<fovSq and dSq<bestDSq then bestDSq=dSq; best=bone end
+end
+for _,e in ipairs(entObjects) do
+if e.char and e.char.Parent then checkChar(e.char, e.isPlayer) end
+end
+if AIM.lockEnabled and best then AIM.stickyTarget=best end
+return best
+end
+local function doAimbot()
+if not AIM.enabled then return end
+if AIM.showFOV then
+local vp=Camera.ViewportSize
+fovCircle.Position=Vector2.new(vp.X*0.5,vp.Y*0.5)
+fovCircle.Visible=true
+else fovCircle.Visible=false end
+if not isAimbotKeyDown() then
+if AIM.lockEnabled then AIM.stickyTarget=nil end
+return
+end
+local target=getNearestTarget()
+if not target then return end
+local vel = getBoneVelocity(target)
+local predPos = target.Position + vel * AIM.predTime
+local sc,on=WorldToScreen(predPos)
+if not on then return end
+local vp=Camera.ViewportSize
+local dx=sc.X-(vp.X*0.5); local dy=sc.Y-(vp.Y*0.5)
+if math.abs(dx)<1 and math.abs(dy)<1 then return end
+local smooth=AIM.lockEnabled and AIM.lockSmooth or AIM.smooth
+local mx=math.floor(dx*smooth); local my=math.floor(dy*smooth)
+if mx==0 and math.abs(dx)>=1 then mx=dx>0 and 1 or -1 end
+if my==0 and math.abs(dy)>=1 then my=dy>0 and 1 or -1 end
+mousemoverel(mx,my)
+end
+RunService.Heartbeat:Connect(function()
+pcall(doAimbot)
 end)
 local V3_UP   = Vector3.new(0, 2.8, 0)
 local V3_DOWN = Vector3.new(0,-3.2, 0)
 local function hpColor(r)
-r = math.clamp(r,0,1)
-return Color3.fromRGB(math.floor(255*(1-r)), math.floor(220*r), 40)
+r=math.clamp(r,0,1)
+return Color3.fromRGB(math.floor(255*(1-r)),math.floor(220*r),40)
 end
 RunService.RenderStepped:Connect(function()
 if RECOIL.enabled and RECOIL.cache then
-pcall(applygc, RECOIL.cache, RECOIL.payload)
+pcall(applygc,RECOIL.cache,RECOIL.payload)
 end
-local lp    = Players.LocalPlayer
-local char  = lp and lp.Character
-local hrp   = char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
-local myPos = hrp and hrp.Position
-local drawn = 0
+local lp   =Players.LocalPlayer
+local char =lp and lp.Character
+local hrp  =char and char:FindFirstChild(string.char(72, 117, 109, 97, 110, 111, 105, 100, 82, 111, 111, 116, 80, 97, 114, 116))
+local myPos=hrp and hrp.Position
+local drawn=0
 if CFG.lootEnabled and myPos then
-for i = 1, #lootObjects do
-local e = lootObjects[i]
+for i=1,#lootObjects do
+local e=lootObjects[i]
 if e then
-local part = e.part
+local part=e.part
 if part and part.Parent then
-local sc, on = WorldToScreen(part.Position)
+local sc,on=WorldToScreen(part.Position)
 if on then
-drawn = drawn + 1
-if drawn <= LOOT_POOL then
-local rp = part.Position
+drawn=drawn+1
+if drawn<=LOOT_POOL then
+local rp=part.Position
 local dx=rp.X-myPos.X; local dy=rp.Y-myPos.Y; local dz=rp.Z-myPos.Z
-local dist = math.floor(math.sqrt(dx*dx+dy*dy+dz*dz))
-local lbl = lootLabels[drawn]
-local dot = lootDots[drawn]
-local txt = e.name .. string.char(32, 91) .. dist .. string.char(109, 93)
-lbl.Text     = txt
-lbl.Color    = e.color
-lbl.Position = Vector2.new(sc.X, sc.Y - 10)
-lbl.Visible  = true
-dot.Color    = e.color
-dot.Position = Vector2.new(sc.X, sc.Y + 6)
-dot.Visible  = true
+local dist=math.floor(math.sqrt(dx*dx+dy*dy+dz*dz))
+local lbl=lootLabels[drawn]; local dot=lootDots[drawn]
+lbl.Text=e.name..string.char(32, 91)..dist..string.char(109, 93); lbl.Color=e.color
+lbl.Position=Vector2.new(sc.X,sc.Y-10); lbl.Visible=true
+dot.Color=e.color; dot.Position=Vector2.new(sc.X,sc.Y+6); dot.Visible=true
 end
 end
 end
 end
 end
 end
-for i = drawn+1, lootDrawn do
-lootLabels[i].Visible = false
-lootDots[i].Visible   = false
-end
-lootDrawn = drawn
-local eDrawn = 0
+for i=drawn+1,lootDrawn do lootLabels[i].Visible=false; lootDots[i].Visible=false end
+lootDrawn=drawn
+local eDrawn=0
 if CFG.entityEnabled and myPos then
-for i = 1, #entObjects do
-local e = entObjects[i]
+for i=1,#entObjects do
+local e=entObjects[i]
 if e then
-local ph = e.hrp
+local ph=e.hrp
 if ph and ph.Parent then
-local headSc, headOn = WorldToScreen(ph.Position + V3_UP)
+local headSc,headOn=WorldToScreen(ph.Position+V3_UP)
 if headOn then
-local footSc, footOn = WorldToScreen(ph.Position + V3_DOWN)
-eDrawn = eDrawn + 1
-if eDrawn > ENT_MAX then break end
-local s = entSlots[eDrawn]
-local hum    = e.hum
-local hp     = hum and hum.Health    or 0
-local maxhp  = hum and hum.MaxHealth or 100
-local hRatio = maxhp>0 and math.clamp(hp/maxhp,0,1) or 0
-local hCol   = hpColor(hRatio)
-local rp2 = ph.Position
+local footSc,footOn=WorldToScreen(ph.Position+V3_DOWN)
+eDrawn=eDrawn+1
+if eDrawn>ENT_MAX then break end
+local s=entSlots[eDrawn]
+local hum=e.hum
+local hp=hum and hum.Health or 0
+local maxhp=hum and hum.MaxHealth or 100
+local hRatio=maxhp>0 and math.clamp(hp/maxhp,0,1) or 0
+local hCol=hpColor(hRatio)
+local rp2=ph.Position
 local dx=rp2.X-myPos.X; local dy=rp2.Y-myPos.Y; local dz=rp2.Z-myPos.Z
-local dist = math.floor(math.sqrt(dx*dx+dy*dy+dz*dz))
-local col  = e.color
-local hx   = headSc.X
-local hy   = headSc.Y
-local boxH = footOn and math.max(math.abs(footSc.Y-hy),10) or 60
+local dist=math.floor(math.sqrt(dx*dx+dy*dy+dz*dz))
+local col=e.color; local hx=headSc.X; local hy=headSc.Y
+local boxH=footOn and math.max(math.abs(footSc.Y-hy),10) or 60
 if CFG.showName then
-s.name.Text     = (e.isPlayer and string.char(91, 80, 93, 32) or string.char(91, 78, 80, 67, 93, 32)) .. e.label
-s.name.Color    = col
-s.name.Position = Vector2.new(hx, hy - 16)
-s.name.Visible  = true
-else s.name.Visible = false end
+s.name.Text=(e.isPlayer and string.char(91, 80, 93, 32) or string.char(91, 78, 80, 67, 93, 32))..e.label
+s.name.Color=col; s.name.Position=Vector2.new(hx,hy-16); s.name.Visible=true
+else s.name.Visible=false end
 if CFG.showDist then
-s.dist.Text     = dist .. string.char(109)
-s.dist.Color    = Color3.fromRGB(200,200,200)
-s.dist.Position = Vector2.new(hx, hy - 2)
-s.dist.Visible  = true
-else s.dist.Visible = false end
+s.dist.Text=dist..string.char(109); s.dist.Color=Color3.fromRGB(200,200,200)
+s.dist.Position=Vector2.new(hx,hy-2); s.dist.Visible=true
+else s.dist.Visible=false end
 if CFG.showHealth and footOn then
-local barX    = hx - boxH*0.25 - 6
-local barTop  = hy
-local barBot  = hy + boxH
-local fillBot = hy + boxH*(1-hRatio)
+local barX=hx-boxH*0.25-6; local barTop=hy; local barBot=hy+boxH
+local fillBot=hy+boxH*(1-hRatio)
 s.hpBg.From=Vector2.new(barX,barTop); s.hpBg.To=Vector2.new(barX,barBot); s.hpBg.Visible=true
-s.hpFg.Color=hCol
-s.hpFg.From=Vector2.new(barX,barBot); s.hpFg.To=Vector2.new(barX,fillBot); s.hpFg.Visible=true
+s.hpFg.Color=hCol; s.hpFg.From=Vector2.new(barX,barBot); s.hpFg.To=Vector2.new(barX,fillBot); s.hpFg.Visible=true
 s.hpTxt.Text=math.floor(hp)..string.char(104, 112); s.hpTxt.Color=hCol
-s.hpTxt.Position=Vector2.new(hx, barBot+2); s.hpTxt.Visible=true
-else
-s.hpBg.Visible=false; s.hpFg.Visible=false; s.hpTxt.Visible=false
-end
+s.hpTxt.Position=Vector2.new(hx,barBot+2); s.hpTxt.Visible=true
+else s.hpBg.Visible=false; s.hpFg.Visible=false; s.hpTxt.Visible=false end
 if CFG.showWeapon and footOn then
-local tool  = e.char and e.char:FindFirstChildOfClass(string.char(84, 111, 111, 108))
-local wname = tool and tool.Name
+local tool=e.char and e.char:FindFirstChildOfClass(string.char(84, 111, 111, 108))
+local wname=tool and tool.Name
 if wname then
-s.weapon.Text     = string.char(91) .. wname .. string.char(93)
-s.weapon.Color    = Color3.fromRGB(220,220,100)
-s.weapon.Position = Vector2.new(hx, hy+boxH+14)
-s.weapon.Visible  = true
-else s.weapon.Visible = false end
-else s.weapon.Visible = false end
+s.weapon.Text=string.char(91)..wname..string.char(93); s.weapon.Color=Color3.fromRGB(220,220,100)
+s.weapon.Position=Vector2.new(hx,hy+boxH+14); s.weapon.Visible=true
+else s.weapon.Visible=false end
+else s.weapon.Visible=false end
 end
 end
 end
 end
 end
-for i = eDrawn+1, entDrawn do hideEnt(entSlots[i]) end
-entDrawn = eDrawn
-local hDrawn = 0
+for i=eDrawn+1,entDrawn do hideEnt(entSlots[i]) end
+entDrawn=eDrawn
+local hDrawn=0
 if myPos then
-for i = 1, #hazObjects do
-local e = hazObjects[i]
+for i=1,#hazObjects do
+local e=hazObjects[i]
 if e then
-local part = e.part
+local part=e.part
 if part and part.Parent then
-local sc, on = WorldToScreen(part.Position)
+local sc,on=WorldToScreen(part.Position)
 if on then
-hDrawn = hDrawn + 1
-if hDrawn <= HAZ_POOL then
-local rp = part.Position
+hDrawn=hDrawn+1
+if hDrawn<=HAZ_POOL then
+local rp=part.Position
 local dx=rp.X-myPos.X; local dy=rp.Y-myPos.Y; local dz=rp.Z-myPos.Z
-local dist = math.floor(math.sqrt(dx*dx+dy*dy+dz*dz))
-local lbl = hazLabels[hDrawn]
-local dot = hazDots[hDrawn]
-local txt = e.label .. string.char(32, 91) .. dist .. string.char(109, 93)
-lbl.Text     = txt
-lbl.Color    = e.color
-lbl.Position = Vector2.new(sc.X, sc.Y - 10)
-lbl.Visible  = true
-dot.Color    = e.color
-dot.Position = Vector2.new(sc.X, sc.Y + 6)
-dot.Visible  = true
+local dist=math.floor(math.sqrt(dx*dx+dy*dy+dz*dz))
+local lbl=hazLabels[hDrawn]; local dot=hazDots[hDrawn]
+lbl.Text=e.label..string.char(32, 91)..dist..string.char(109, 93); lbl.Color=e.color
+lbl.Position=Vector2.new(sc.X,sc.Y-10); lbl.Visible=true
+dot.Color=e.color; dot.Position=Vector2.new(sc.X,sc.Y+6); dot.Visible=true
 end
 end
 end
 end
 end
 end
-for i = hDrawn+1, hazDrawn do
-hazLabels[i].Visible = false
-hazDots[i].Visible   = false
-end
-hazDrawn = hDrawn
+for i=hDrawn+1,hazDrawn do hazLabels[i].Visible=false; hazDots[i].Visible=false end
+hazDrawn=hDrawn
 end)
-notify(string.char(72, 97, 118, 111, 99, 32, 69, 83, 80, 32, 108, 111, 97, 100, 101, 100), string.char(69, 83, 80), 3)
+notify(string.char(72, 97, 118, 111, 99, 32, 69, 83, 80, 32, 108, 111, 97, 100, 101, 100),string.char(69, 83, 80),3)
